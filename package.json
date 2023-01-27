@@ -1,0 +1,11 @@
+{
+  "name": "stimulus-animation-orchestrator",
+  "version": "0.0.1",
+  "description": "Stimulus component that orchestrates animations including immediate, paused rendering and animations spanning pages",
+  "main": "dist/stimulus-animation-orchestrator.js",
+  "repository": {
+    "type": "git"
+  },
+  "author": "Aaron Kincer",
+  "license": "MIT"
+}
