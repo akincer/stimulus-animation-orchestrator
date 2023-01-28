@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
-import { storeItem } from "../imports/helper-functions";
-import {currentStepNumber, flowInstanceId} from "../imports/constants";
+import { capitalizeFirstLetter, storeItem } from "../imports/helper-functions";
+import { currentStepNumber, flowInstanceId } from "../imports/constants";
+import * as orchestratorCallbacks from "../imports/callbacks";
 
 class src_default extends Controller {
     connect() {
@@ -66,6 +67,39 @@ class src_default extends Controller {
         if ("currentStepNumber" in this.element.dataset) {
             storeItem(flowInstanceId, this.element.dataset.currentStepNumber);
         }
+    }
+
+    addListener(eventListener) {
+        let callbackName = eventListener
+
+        // check if event is a turbo event
+        if (eventListener.contains(':')) {
+
+            // This generates and sets the name of the callBack function for the turboEvent passed in
+            let turboEventParsed = eventListener.split(':');
+            callbackName = turboEventParsed[0]
+            let turboEventNameParsed = turboEventParsed[1].split('-')
+            for (const index in turboEventNameParsed) {
+                callbackName += capitalizeFirstLetter(turboEventNameParsed[index])
+            }
+            callbackName = callbackName + 'Callback';
+        }
+
+        // Flag to check if event has already been added
+        let callbackFlag = callbackName + 'Added';
+
+        this.createCallback(callbackName)
+
+        if (document[callbackFlag] !== true) {
+            document.addEventListener(eventListener, orchestratorCallbacks[callbackName])
+            document[callbackFlag] = true
+        }
+
+    }
+
+    createCallback(callbackName) {
+        let callbackCreatorFunction = 'create' + capitalizeFirstLetter(callbackName)
+        this[callbackCreatorFunction]()
     }
 }
 
