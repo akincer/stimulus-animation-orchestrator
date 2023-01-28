@@ -88,8 +88,6 @@ class src_default extends Controller {
         // Flag to check if event has already been added
         let callbackFlag = callbackName + 'Added';
 
-        this.createCallback(callbackName)
-
         if (document[callbackFlag] !== true) {
             document.addEventListener(eventListener, orchestratorCallbacks[callbackName])
             document[callbackFlag] = true
@@ -97,10 +95,6 @@ class src_default extends Controller {
 
     }
 
-    createCallback(callbackName) {
-        let callbackCreatorFunction = 'create' + capitalizeFirstLetter(callbackName)
-        this[callbackCreatorFunction]()
-    }
 }
 
 export { src_default as default };
