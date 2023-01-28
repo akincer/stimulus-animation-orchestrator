@@ -1,11 +1,16 @@
 {
-  "name": "stimulus-animation-orchestrator",
+  "name": "@akincer/stimulus-animation-orchestrator",
   "version": "0.0.1",
   "description": "Stimulus component that orchestrates animations including immediate, paused rendering and animations spanning pages",
   "main": "dist/stimulus-animation-orchestrator.js",
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "git://github.com/akincer/stimulus-animation-orchestrator"
+
   },
   "author": "Aaron Kincer",
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }

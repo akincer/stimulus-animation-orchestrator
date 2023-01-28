@@ -1,8 +1,71 @@
 import { Controller } from "@hotwired/stimulus";
+import { storeItem } from "../imports/helper-functions";
+import {currentStepNumber, flowInstanceId} from "../imports/constants";
 
 class src_default extends Controller {
     connect() {
-        console.log("Test connect stimulus-animation-orchestrator");
+        this.initialize();
+        this.getConfig();
+        this.getFormState();
+    }
+
+    initialize() {
+        // Store this on document for reference in callbacks
+        document.orchestrator = this
+
+        // Initialize event animations
+        if (!document.animations) {
+            document.animations = {};
+            document.animations['popstate'] = {};
+            document.animations['turbo:click'] = {};
+            document.animations['turbo:before-visit'] = {};
+            document.animations['turbo:submit-start'] = {};
+            document.animations['turbo:before-fetch-request'] = {};
+            document.animations['turbo:before-fetch-response'] = {};
+            document.animations['turbo:submit-end'] = {};
+            document.animations['turbo:before-cache'] = {};
+            document.animations['turbo:before-render'] = {};
+            document.animations['turbo:before-stream-render'] = {};
+            document.animations['turbo:render'] = {};
+            document.animations['turbo:load'] = {};
+            document.animations['turbo:frame-render'] = {};
+            document.animations['turbo:frame-load'] = {};
+            document.animations['turbo:fetch-request-error'] = {};
+        }
+    }
+
+    getConfig() {
+        if (!("transitionDurationMax" in this.element.dataset)) {
+            this.transitionDurationMax = 800;
+        } else {
+            this.transitionDurationMax = parseInt(this.element.dataset.transitionDurationMax);
+        }
+
+        if (!("transitionDurationMin" in this.element.dataset)) {
+            this.transitionDurationMin = 200;
+        } else {
+            this.transitionDurationMin = parseInt(this.element.dataset.transitionDurationMin);
+        }
+
+        if (!("defaultTransitionDuration" in this.element.dataset)) {
+            this.defaultTransitionDuration = 400;
+        } else {
+            this.defaultTransitionDuration = parseInt(this.element.dataset.defaultTransitionDuration);
+        }
+
+        if (!("defaultTransitionDuration" in this.element.dataset)) {
+            this.defaultTransitionDuration = 400;
+        }
+    }
+
+    getFormState() {
+        if ("currentStepNumber" in this.element.dataset) {
+            storeItem(currentStepNumber, this.element.dataset.currentStepNumber);
+        }
+
+        if ("currentStepNumber" in this.element.dataset) {
+            storeItem(flowInstanceId, this.element.dataset.currentStepNumber);
+        }
     }
 }
 
