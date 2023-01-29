@@ -1,6 +1,12 @@
 import { Controller } from "@hotwired/stimulus";
 import {capitalizeFirstLetter, fetchItem, storeItem} from "../imports/helper-functions";
-import {currentStepNumber, flowInstanceId, navigationSource} from "../imports/constants";
+import {
+    currentStepNumber,
+    flowInstanceId,
+    inlineAnimationSubscriptions,
+    jsonAnimationSubscriptions,
+    navigationSource
+} from "../imports/constants";
 import * as orchestratorCallbacks from "../imports/callbacks";
 
 class src_default extends Controller {
@@ -104,49 +110,50 @@ class src_default extends Controller {
         else
             eventSource = event.target.id;
 
-        let subscribers = this.getSubscribers(eventSource, eventType);
+        let subscribers = this.getSubscribers(eventSource, eventType, inlineAnimationSubscriptions);
 
         // Temp for testing
         this.subscribers = subscribers
     }
 
     // Gets the elements subscribed to animate on the event triggered
-    getSubscribers(eventSource, eventType) {
-        let animationSubscriptions, candidateSubscription, simpleAnimationSubscription, simpleAnimationSubscriptions, simpleAnimationSubscriptionsDefinition, candidateSubscribers = [...document.querySelectorAll('[data-orchestrator-element]')];
-        let subscribers = {};
+    getSubscribers(eventSource, eventType, subscriptionDefinitionType) {
+        let subscribers = {}, candidateSubscribers = [...document.querySelectorAll('[data-orchestrator-element]')];
+        let animationSubscriptions, animationSubscriptionsDefinition, candidateSubscriber, inlineAnimationSubscription;
 
         for (const candidateSubscriberIndex in candidateSubscribers) {
-            let candidateSubscriber = candidateSubscribers[candidateSubscriberIndex];
 
-            // Inline simple formatted subscriptions -- eventSourceElementId:eventName:predefined,animation,list:completionType
-            if ("inlineAnimationSubscriptions" in this.element.dataset) {
-                simpleAnimationSubscriptionsDefinition = candidateSubscriber.dataset.animationSubscriptions;
-                simpleAnimationSubscriptions = simpleAnimationSubscriptionsDefinition.split(' ');
-                for (const subscriptionIndex in simpleAnimationSubscriptions) {
-                    simpleAnimationSubscription = simpleAnimationSubscriptions[subscriptionIndex].split(':');
-                    if (simpleAnimationSubscription[0] === eventSource && simpleAnimationSubscription[1] === eventType) {
+            candidateSubscriber = candidateSubscribers[candidateSubscriberIndex];
+
+            if (subscriptionDefinitionType in candidateSubscriber.dataset) {
+
+                animationSubscriptionsDefinition = candidateSubscriber.dataset[subscriptionDefinitionType];
+
+                if (subscriptionDefinitionType === jsonAnimationSubscriptions) {
+                    animationSubscriptions = JSON.parse(animationSubscriptionsDefinition);
+                    if (animationSubscriptions[eventSource][eventType]) {
                         subscribers[candidateSubscriber.id] = {
                             element: candidateSubscriber,
-                            detail: simpleAnimationSubscription[2],
-                            completion: simpleAnimationSubscription[3],
-                            format: 'simple'
+                            detail: animationSubscriptions[eventSource][eventType],
+                            completion: animationSubscriptions[eventSource][eventType]['completion'],
+                            format: 'JSON'
                         };
                     }
                 }
-            }
-            // JSON formatted subscriptions TODO: structure parsing out of event detail needed
-            if ("jsonAnimationSubscriptions" in this.element.dataset) {
-                animationSubscriptions = candidateSubscriber.dataset.animationSubscriptions;
 
-                candidateSubscription = JSON.parse(animationSubscriptions);
-
-                if (candidateSubscription[eventSource][eventType]) {
-                    subscribers[candidateSubscriber.id] = {
-                        element: candidateSubscriber,
-                        detail: candidateSubscription[eventSource][eventType],
-                        completion: candidateSubscription[eventSource][eventType]['completion'],
-                        format: 'JSON'
-                    };
+                if (subscriptionDefinitionType === inlineAnimationSubscriptions) {
+                    animationSubscriptions = animationSubscriptionsDefinition.split(' ')
+                    for (const subscriptionIndex in animationSubscriptions) {
+                        inlineAnimationSubscription = animationSubscriptions[subscriptionIndex].split(':');
+                        if (inlineAnimationSubscription[0] === eventSource && inlineAnimationSubscription[1] === eventType) {
+                            subscribers[candidateSubscriber.id] = {
+                                element: candidateSubscriber,
+                                detail: inlineAnimationSubscription[2],
+                                completion: inlineAnimationSubscription[3],
+                                format: 'simple'
+                            };
+                        }
+                    }
                 }
             }
         }
