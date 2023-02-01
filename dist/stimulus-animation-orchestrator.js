@@ -102,7 +102,7 @@ class src_default extends Controller {
     }
 
     // Plays subscribed animations for the event
-    play(event) {
+    playSubscribedAnimations(event) {
         let eventSource, eventType = event.type;
 
         if (eventType === 'popstate')
@@ -110,10 +110,8 @@ class src_default extends Controller {
         else
             eventSource = event.target.id;
 
-        let subscribers = this.getSubscribers(eventSource, eventType, inlineAnimationSubscriptions);
-
-        // Temp for testing
-        this.subscribers = subscribers
+        let inlineSubscribers = this.getSubscribers(eventSource, eventType, inlineAnimationSubscriptions);
+        let jsonSubscribers = this.getSubscribers(eventSource, eventType, jsonAnimationSubscriptions);
     }
 
     // Gets the elements subscribed to animate on the event triggered
@@ -150,7 +148,7 @@ class src_default extends Controller {
                                 element: candidateSubscriber,
                                 detail: inlineAnimationSubscription[2],
                                 completion: inlineAnimationSubscription[3],
-                                format: 'simple'
+                                format: 'inline'
                             };
                         }
                     }
