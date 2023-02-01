@@ -25,4 +25,9 @@ export const exitLeft = 'exitLeft';
 export const exitRight = 'exitRight';
 export const exitUp = 'exitUp';
 export const exitDown = 'exitDown';
+export const exitToLeft = 'exitToLeft';
+export const exitToRight = 'exitToRight';
+export const exitToTop = 'exitToTop';
+export const exitToTopLeft = 'exitToTopLeft';
+export const exitToTopRight = 'exitToTopRight'
 
