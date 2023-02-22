@@ -37,6 +37,10 @@ export const turboBeforeCacheCallback = function (event) {
 export const turboBeforeRenderCallback = async function (event) {
     console.log('turboBeforeRenderCallback')
     console.log(event)
+    let thisPageTarget = document.getElementById('test')
+    let nextPageTarget = event.detail.newBody.querySelector("#test")
+    console.log("-> thisPageTarget", thisPageTarget);
+    console.log("-> nextPageTarget", nextPageTarget);
 }
 
 export const turboBeforeStreamRenderCallback = function (event) {
