@@ -79,7 +79,7 @@ class src_default extends Controller {
         let callbackName = eventListener
 
         // check if event is a turbo event
-        if (eventListener.contains(':')) {
+        if (eventListener.includes(':')) {
 
             // This generates and sets the name of the callBack function for the turboEvent passed in
             let turboEventParsed = eventListener.split(':');
