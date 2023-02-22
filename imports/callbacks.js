@@ -36,6 +36,7 @@ export const turboBeforeCacheCallback = function (event) {
 
 export const turboBeforeRenderCallback = async function (event) {
     console.log('turboBeforeRenderCallback')
+    console.log(event)
 }
 
 export const turboBeforeStreamRenderCallback = function (event) {
@@ -44,6 +45,7 @@ export const turboBeforeStreamRenderCallback = function (event) {
 
 export const turboRenderCallback = function (event) {
     console.log('turboRenderCallback')
+    console.log(event)
 }
 
 export const turboLoadCallback = function (event) {
