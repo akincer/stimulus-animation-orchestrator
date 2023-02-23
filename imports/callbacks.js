@@ -99,13 +99,13 @@ export const turboRenderCallback = async function (event) {
 
     // Move the element further
     let thisPageTarget = document.getElementById('test');
-    thisPageTarget.left = newLeft;
+    //thisPageTarget.left = newLeft;
     let boxBefore = thisPageTarget.getBoundingClientRect();
     console.log("-> boxBefore", boxBefore);
     const testKeyframes = new KeyframeEffect(
         thisPageTarget, // element to animate
         [
-            { transform: 'translateX(0)' }, // keyframe start
+            { transform: 'translateX(' + newLeft + ')' }, // keyframe start
             { transform: 'translateX(50px)' } // keyframe finish
         ],
         { duration: 500, fill: 'forwards' } // keyframe options
