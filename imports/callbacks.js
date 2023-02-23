@@ -38,7 +38,9 @@ export const turboBeforeRenderCallback = async function (event) {
     console.log('turboBeforeRenderCallback');
     console.log(event);
     let thisPageTarget = document.getElementById('test');
+    let boxBefore = thisPageTarget.getBoundingClientRect();
     let nextPageTarget = event.detail.newBody.querySelector("#test");
+    let nextBoxBefore = nextPageTarget.getBoundingClientRect();
     //console.log("-> thisPageTarget", thisPageTarget);
     // Get current coordinates for thisPageTarget
 
@@ -63,12 +65,16 @@ export const turboBeforeRenderCallback = async function (event) {
     await testAnimation.finished
 
     // Get new coordinates of thisPageTarget
-    let box = thisPageTarget.getBoundingClientRect();
+    let boxAfter = thisPageTarget.getBoundingClientRect();
 
     // Set nextPageTarget to match these coordinates
-    nextPageTarget.style.left = parseInt(box.left);
+    nextPageTarget.style.left = parseInt(boxAfter.left);
+    let nextBoxAfter = nextPageTarget.getBoundingClientRect();
 
-    console.log("-> nextPageTarget", nextPageTarget);
+    console.log("-> boxBefore", boxBefore);
+    console.log("-> boxAfter", boxAfter);
+    console.log("-> nextBoxBefore", nextBoxBefore);
+    console.log("-> nextBoxAfter", nextBoxAfter);
 
     // Resume rendering
     event.detail.resume();
