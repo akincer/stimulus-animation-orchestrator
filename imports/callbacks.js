@@ -88,12 +88,14 @@ export const turboBeforeStreamRenderCallback = function (event) {
 
 }
 
-export const turboRenderCallback = function (event) {
+export const turboRenderCallback = async function (event) {
     console.log('turboRenderCallback')
     console.log(event)
 
     // Move the element further
     let thisPageTarget = document.getElementById('test');
+    let boxBefore = thisPageTarget.getBoundingClientRect();
+    console.log("-> boxBefore", boxBefore);
     const testKeyframes = new KeyframeEffect(
         thisPageTarget, // element to animate
         [
@@ -107,6 +109,9 @@ export const turboRenderCallback = function (event) {
 
     // Play animation
     testAnimation.play();
+    await testAnimation.finished;
+    let afterBox = thisPageTarget.getBoundingClientRect();
+    console.log("-> afterBox", afterBox);
 }
 
 export const turboLoadCallback = function (event) {
