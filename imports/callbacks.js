@@ -96,6 +96,7 @@ export const turboRenderCallback = async function (event) {
     console.log(event)
 
     let newLeft = fetchItem('newLeft');
+    let newDistance = parseInt(newLeft) + 50;
 
     // Move the element further
     let thisPageTarget = document.getElementById('test');
@@ -106,7 +107,7 @@ export const turboRenderCallback = async function (event) {
         thisPageTarget, // element to animate
         [
             { transform: 'translateX(' + newLeft + ')' }, // keyframe start
-            { transform: 'translateX(50px)' } // keyframe finish
+            { transform: 'translateX(' + newDistance + 'px' + ')' } // keyframe finish
         ],
         { duration: 500, fill: 'forwards' } // keyframe options
     );
