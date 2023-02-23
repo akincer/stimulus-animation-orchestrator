@@ -98,7 +98,7 @@ export const turboRenderCallback = function (event) {
         thisPageTarget, // element to animate
         [
             { transform: 'translateX(82px)' }, // keyframe start
-            { transform: 'translateX(50px)' } // keyframe finish
+            { transform: 'translateX(132px)' } // keyframe finish
         ],
         { duration: 500, fill: 'forwards' } // keyframe options
     );
