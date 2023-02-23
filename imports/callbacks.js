@@ -39,7 +39,7 @@ export const turboBeforeRenderCallback = async function (event) {
     console.log(event);
     let thisPageTarget = document.getElementById('test');
     let nextPageTarget = event.detail.newBody.querySelector("#test");
-    console.log("-> thisPageTarget", thisPageTarget);
+    //console.log("-> thisPageTarget", thisPageTarget);
     // Get current coordinates for thisPageTarget
 
     // Pause rendering
@@ -66,7 +66,7 @@ export const turboBeforeRenderCallback = async function (event) {
     let box = thisPageTarget.getBoundingClientRect();
 
     // Set nextPageTarget to match these coordinates
-    nextPageTarget.style.left = box.left
+    nextPageTarget.style.left = parseInt(box.left);
 
     console.log("-> nextPageTarget", nextPageTarget);
 
