@@ -70,7 +70,7 @@ export const turboBeforeRenderCallback = async function (event) {
     // Set nextPageTarget to match these coordinates
     console.log("-> event.detail.newBody BEFORE setting left", event.detail.newBody);
     console.log("-> nextPageTarget BEFORE setting left", nextPageTarget);
-    nextPageTarget.style.left = boxAfter.left + 'px';
+    //nextPageTarget.style.left = boxAfter.left + 'px';
     console.log("-> nextPageTarget AFTER setting left", nextPageTarget);
     console.log("-> event.detail.newBody AFTER setting left", event.detail.newBody);
     let nextBoxAfter = nextPageTarget.getBoundingClientRect();
