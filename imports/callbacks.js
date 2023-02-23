@@ -97,7 +97,7 @@ export const turboRenderCallback = function (event) {
     const testKeyframes = new KeyframeEffect(
         thisPageTarget, // element to animate
         [
-            { transform: 'translateX(82px)' }, // keyframe start
+            { transform: 'translateX(0)' }, // keyframe start
             { transform: 'translateX(50px)' } // keyframe finish
         ],
         { duration: 500, fill: 'forwards' } // keyframe options
