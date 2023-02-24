@@ -74,7 +74,7 @@ export const turboBeforeRenderCallback = async function (event) {
     console.log("-> nextPageTarget BEFORE setting left", nextPageTarget);
     let newLeft = boxAfter.x - 32;
     nextPageTarget.style.left = newLeft + 'px';
-    storeItem('newLeft', boxAfter.x + 'px');
+    storeItem('newLeft', newLeft + 'px');
     console.log("-> nextPageTarget AFTER setting left", nextPageTarget);
     console.log("-> event.detail.newBody AFTER setting left", event.detail.newBody);
     let nextBoxAfter = nextPageTarget.getBoundingClientRect();
