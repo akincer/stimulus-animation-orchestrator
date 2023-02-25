@@ -116,6 +116,11 @@ class src_default extends Controller {
 
         // TODO: handle json subscription definitions
         let jsonSubscribers = this.getSubscribers(eventSource, eventType, jsonAnimationSubscriptions);
+
+        for (const subscriber in inlineSubscribers)
+        {
+            console.log("-> subscriber", subscriber);
+        }
     }
 
     // Gets the elements subscribed to animate on the event triggered
