@@ -119,7 +119,7 @@ class src_default extends Controller {
 
         for (const subscriber in inlineSubscribers)
         {
-            console.log("-> ${inlineSubscribers[subscriber]}", ${inlineSubscribers[subscriber]});
+            console.log("-> inlineSubscribers[subscriber]", inlineSubscribers[subscriber]);
         }
     }
 
