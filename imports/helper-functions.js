@@ -42,7 +42,7 @@ export function getExitToLeftFrame(element, position, section, options = []) {
     return frame;
 }
 
-export function getFadeoutFrame(element, position, section, options = []) {
+export function getFadeOutFrame(element, position, section, options = []) {
     let frame = {};
 
     if (position === positionStart) {
