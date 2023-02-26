@@ -193,6 +193,7 @@ class src_default extends Controller {
             }
 
             frameFunction = 'get' + capitalizeFirstLetter(animationSteps[stepIndex]) + 'Frame';
+            console.log("-> frameFunction", frameFunction);
             let tempFrame = orchestratorHelpers[frameFunction](element, positionStart, section, options);
             for (const property in tempFrame) {
                 startFrame[property] ? startFrame[property] += ' ' + tempFrame[property] : startFrame[property] = tempFrame[property];
