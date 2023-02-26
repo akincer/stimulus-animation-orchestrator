@@ -5,9 +5,10 @@ import {
     flowInstanceId,
     inlineAnimationSubscriptions,
     jsonAnimationSubscriptions,
-    navigationSource
+    navigationSource, positionEnd, positionStart, scheduleComplete, scheduleImmediate, scheduleSpan, sectionFull
 } from "../imports/constants";
 import * as orchestratorCallbacks from "../imports/callbacks";
+import * as orchestratorHelpers from "../imports/helper-functions";
 
 class src_default extends Controller {
     connect() {
@@ -38,6 +39,7 @@ class src_default extends Controller {
             document.animations['turbo:frame-render'] = {};
             document.animations['turbo:frame-load'] = {};
             document.animations['turbo:fetch-request-error'] = {};
+            document.animations['immediate'] = {};
         }
     }
 
@@ -101,8 +103,16 @@ class src_default extends Controller {
 
     }
 
+    getKeyEffect(subscriber, subscription) {
+        let schedule = subscription['completion'];
+        let element = subscription['element'];
+        let detail = subscription['detail'];
+
+
+    }
+
     // Plays subscribed animations for the event
-    playSubscribedAnimations(event) {
+    orchestrateSubscribedAnimations(event) {
         let eventSource, eventType = event.type;
 
         if (eventType === 'popstate')
@@ -120,7 +130,88 @@ class src_default extends Controller {
         for (const subscriber in inlineSubscribers)
         {
             console.log("-> inlineSubscribers[subscriber]", inlineSubscribers[subscriber]);
+
+            // Schedule animation
+            this.scheduleAnimation(subscriber, inlineSubscribers[subscriber])
         }
+
+        // Play immediate animations
+        for (const subscriber in document.animations['immediate']) {
+            let animationKeyFrameEffect = this.buildKeyFrameEffect(subscriber, document.animations['immediate'][subscriber]);
+            console.log("-> animationKeyFrameEffect", animationKeyFrameEffect);
+        }
+    }
+
+
+
+    splitAnimationSubscription(subscriber, subscription) {
+        // For spanned animations create two different subscriptions
+        let details = subscription['detail'].split(',');
+
+        for (const detailsIndex in details) {
+            if (details[detailsIndex].includes('#')) {
+                // Contains additional parameters
+            }
+
+        }
+    }
+
+    scheduleAnimation(subscriber, subscription) {
+        let schedule = subscription['completion'];
+        let element = subscription['element'];
+
+        if (schedule === scheduleImmediate) {
+            document.animations['immediate'][subscriber] = subscription
+        }
+
+        if (schedule === scheduleSpan && element.style.position === 'absolute') {
+            // Calculate the middle of each animation and create a subscription for each side of the middle
+            document.animations['turbo:before-render'][subscriber] = subscription
+            document.animations['turbo:render'][subscriber] = subscription
+        }
+
+        if (schedule === scheduleComplete || (schedule === scheduleSpan && element.style.position !== 'absolute')) {
+            // If the element is not positioned absolute span will yield unpredictable results so fallback is to let the animation complete before render
+            document.animations['turbo:before-render'][subscriber] = subscription
+        }
+    }
+
+    buildKeyFrameEffect(subscriber, subscription, section = sectionFull) {
+        let startFrame = {};
+        let endFrame = {};
+        let frameOptions = {};
+        let animationDetail = subscription['detail'];
+        let completion = subscription['completion'];
+        let element = subscription['element'];
+        let frameFunction;
+
+        let animationSteps = animationDetail.split(',');
+        for (const stepIndex in animationSteps) {
+            let options = [];
+            if (animationSteps[stepIndex].includes(':')) {
+                // Additional configuration parameters
+            }
+
+            frameFunction = 'get' + capitalizeFirstLetter(animationSteps[stepIndex]) + 'Frame';
+            let tempFrame = orchestratorHelpers[frameFunction](element, positionStart, section, options);
+            for (const property in tempFrame) {
+                startFrame[property] ? startFrame[property] += ' ' + tempFrame[property] : startFrame[property] = tempFrame[property];
+            }
+
+            tempFrame = orchestratorHelpers[frameFunction](element, positionEnd, section, options);
+            for (const property in tempFrame) {
+                endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
+            }
+        }
+
+        return new KeyframeEffect(
+            element,
+            [
+                startFrame,
+                endFrame
+            ],
+            frameOptions
+        );
     }
 
     // Gets the elements subscribed to animate on the event triggered
@@ -136,17 +227,21 @@ class src_default extends Controller {
 
                 animationSubscriptionsDefinition = candidateSubscriber.dataset[subscriptionDefinitionType];
 
+                // TODO: Handle JSON subscriptions
+                /*
                 if (subscriptionDefinitionType === jsonAnimationSubscriptions) {
                     animationSubscriptions = JSON.parse(animationSubscriptionsDefinition);
                     if (animationSubscriptions[eventSource][eventType]) {
                         subscribers[candidateSubscriber.id] = {
                             element: candidateSubscriber,
                             detail: animationSubscriptions[eventSource][eventType],
-                            completion: animationSubscriptions[eventSource][eventType]['completion'],
+                            schedule: animationSubscriptions[eventSource][eventType]['completion'],
                             format: 'JSON'
                         };
                     }
                 }
+
+                */
 
                 if (subscriptionDefinitionType === inlineAnimationSubscriptions) {
                     animationSubscriptions = animationSubscriptionsDefinition.split(' ')
