@@ -20,12 +20,12 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
 
         frameFunction = 'get' + capitalizeFirstLetter(animationSteps[stepIndex]) + 'Frame';
         console.log("-> frameFunction", frameFunction);
-        let tempFrame = window[frameFunction](element, positionStart, section, options);
+        let tempFrame = this[frameFunction](element, positionStart, section, options);
         for (const property in tempFrame) {
             startFrame[property] ? startFrame[property] += ' ' + tempFrame[property] : startFrame[property] = tempFrame[property];
         }
 
-        tempFrame = window[frameFunction](element, positionEnd, section, options);
+        tempFrame = this[frameFunction](element, positionEnd, section, options);
         for (const property in tempFrame) {
             endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
         }
