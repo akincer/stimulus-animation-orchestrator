@@ -1,5 +1,6 @@
 import {positionEnd, positionStart, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
 import {capitalizeFirstLetter} from "./helper-functions";
+import * as functions from "./waapi"
 
 export function buildKeyFrameEffect(subscriber, subscription, section = sectionFull) {
     let startFrame = {};
@@ -20,12 +21,12 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
 
         frameFunction = 'get' + capitalizeFirstLetter(animationSteps[stepIndex]) + 'Frame';
         console.log("-> frameFunction", frameFunction);
-        let tempFrame = this[frameFunction](element, positionStart, section, options);
+        let tempFrame = functions[frameFunction](element, positionStart, section, options);
         for (const property in tempFrame) {
             startFrame[property] ? startFrame[property] += ' ' + tempFrame[property] : startFrame[property] = tempFrame[property];
         }
 
-        tempFrame = this[frameFunction](element, positionEnd, section, options);
+        tempFrame = functions[frameFunction](element, positionEnd, section, options);
         for (const property in tempFrame) {
             endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
         }
