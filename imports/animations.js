@@ -58,7 +58,7 @@ export function getMoveToTargetFrame(element, position, section, options = []) {
             heightOffset = parseInt(options[3]);
             topOffset = heightOffset/2;
         }
-        frame.transform = 'translateX(' + (targetRect.left + leftOffset).toString() + 'px) translateY(' + (targetRect.top + topOffset).toString() + 'px)';
+        frame.transform = 'translateX(' + (targetRect.left - leftOffset).toString() + 'px) translateY(' + (targetRect.top - topOffset).toString() + 'px)';
     }
 
     return frame;
