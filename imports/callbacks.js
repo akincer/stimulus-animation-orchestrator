@@ -43,6 +43,7 @@ export const turboBeforeRenderCallback = async function (event) {
     // Pause rendering
     event.preventDefault();
 
+
     for (const subscriber in document.animations['turbo:before-render']) {
         let animationKeyFrameEffect;
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
