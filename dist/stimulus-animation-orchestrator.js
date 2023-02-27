@@ -182,6 +182,7 @@ class src_default extends Controller {
         let frameFunction;
 
         let animationSteps = animationDetail.split(',');
+        console.log("->buildKeyFrameEffect animationSteps", animationSteps);
         for (const stepIndex in animationSteps) {
             let options = [];
             if (animationSteps[stepIndex].includes('#')) {
