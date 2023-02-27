@@ -1,6 +1,6 @@
-import {positionEnd, positionStart, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
+import {positionEnd, positionStart, sectionFull} from "./constants";
 import {capitalizeFirstLetter} from "./helper-functions";
-import * as functions from "./waapi"
+import * as animations from "./animations"
 
 export function buildKeyFrameEffect(subscriber, subscription, section = sectionFull) {
     let startFrame = {};
@@ -17,16 +17,19 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
         let options = [];
         if (animationSteps[stepIndex].includes('#')) {
             // Additional configuration parameters
+            options = animationSteps[stepIndex].split('#');
+            frameFunction = 'get' + capitalizeFirstLetter(options[0]) + 'Frame';
+        } else {
+            frameFunction = 'get' + capitalizeFirstLetter(animationSteps[stepIndex]) + 'Frame';
         }
 
-        frameFunction = 'get' + capitalizeFirstLetter(animationSteps[stepIndex]) + 'Frame';
         console.log("-> frameFunction", frameFunction);
-        let tempFrame = functions[frameFunction](element, positionStart, section, options);
+        let tempFrame = animations[frameFunction](element, positionStart, section, options);
         for (const property in tempFrame) {
             startFrame[property] ? startFrame[property] += ' ' + tempFrame[property] : startFrame[property] = tempFrame[property];
         }
 
-        tempFrame = functions[frameFunction](element, positionEnd, section, options);
+        tempFrame = animations[frameFunction](element, positionEnd, section, options);
         for (const property in tempFrame) {
             endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
         }
@@ -47,40 +50,3 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     );
 }
 
-export function getExitToLeftFrame(element, position, section, options = []) {
-    let frame = {};
-    let rect = element.getBoundingClientRect();
-
-    if (position === positionStart) {
-        // Get element's current position
-        frame['transform'] = 'translateX(' + rect.left.toString() + 'px)';
-    }
-
-    if (position === positionEnd) {
-        if (section === sectionFull || section === sectionSecondHalf)
-            frame['transform'] = 'translateX(-' + rect.right.toString() + 'px)';
-
-        if (section === sectionFirstHalf)
-            frame['transform'] = 'translateX(-' + (rect.right / 2).toString() + 'px)';
-    }
-
-    return frame;
-}
-
-export function getFadeOutFrame(element, position, section, options = []) {
-    let frame = {};
-
-    if (position === positionStart) {
-        frame['opacity'] = 1;
-    }
-
-    if (position === positionEnd) {
-        if (section === sectionFull || section === sectionSecondHalf)
-            frame['opacity'] = 0;
-
-        if (section === sectionFirstHalf)
-            frame['opacity'] = 0.5;
-    }
-
-    return frame;
-}
