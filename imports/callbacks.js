@@ -43,6 +43,7 @@ export const turboBeforeRenderCallback = async function (event) {
     // Pause rendering
     event.preventDefault();
 
+    console.log("->turboBeforeREnderCallback document.animations['turbo:before-render']", document.animations['turbo:before-render']);
 
     for (const subscriber in document.animations['turbo:before-render']) {
         console.log("-> turboBeforeREnderCallback subscriber", subscriber);
