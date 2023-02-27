@@ -41,6 +41,7 @@ export function getFadeOutFrame(element, position, section, options = []) {
 export function getMoveToTargetFrame(element, position, section, options = []) {
     let frame = {};
     let rect = element.getBoundingClientRect();
+    console.log("-> getMoveToTargetFrame rect", rect);
 
     if (position === positionStart) {
         frame.transform = 'translateX(' + rect.left.toString() + 'px) translateY(' + rect.top.toString() + 'px)';
@@ -49,6 +50,7 @@ export function getMoveToTargetFrame(element, position, section, options = []) {
     if (position === positionEnd) {
         let target = document.getElementById(options[1]);
         let targetRect = target.getBoundingClientRect();
+        console.log("-> getMoveToTargetFrame targetRect", targetRect);
         let widthOffset = 0, heightOffset = 0, leftOffset = 0, topOffset = 0;
         if(!(typeof options[2] === 'undefined')) {
             widthOffset = parseInt(options[2]);
@@ -60,6 +62,9 @@ export function getMoveToTargetFrame(element, position, section, options = []) {
         }
         frame.transform = 'translateX(' + (targetRect.left - leftOffset).toString() + 'px) translateY(' + (targetRect.top - topOffset).toString() + 'px)';
     }
+
+    console.log("-> getMoveToTargetFrame frame", frame);
+    console.log("-> getMoveToTargetFrame position", position);
 
     return frame;
 }
