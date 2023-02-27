@@ -28,7 +28,7 @@ export function getExitToLeftFrame(element, position, section, options = []) {
 
     if (position === positionStart) {
         // Get element's current position
-        frame['transform'] = 'translateX(' + rect.left.toString() + 'px' + ')';
+        frame['transform'] = 'translateX(' + rect.left.toString() + 'px)';
     }
 
     if (position === positionEnd) {
@@ -36,7 +36,7 @@ export function getExitToLeftFrame(element, position, section, options = []) {
             frame['transform'] = 'translateX(-' + rect.right.toString() + ')';
 
         if (section === sectionFirstHalf)
-            frame['transform'] = 'translateX(-' + (rect.right / 2).toString() + ')';
+            frame['transform'] = 'translateX(-' + (rect.right / 2).toString() + 'px)';
     }
 
     return frame;

@@ -62,9 +62,6 @@ class src_default extends Controller {
             this.defaultTransitionDuration = parseInt(this.element.dataset.defaultTransitionDuration);
         }
 
-        if (!("defaultTransitionDuration" in this.element.dataset)) {
-            this.defaultTransitionDuration = 400;
-        }
     }
 
     getFormState() {
@@ -188,7 +185,7 @@ class src_default extends Controller {
         let animationSteps = animationDetail.split(',');
         for (const stepIndex in animationSteps) {
             let options = [];
-            if (animationSteps[stepIndex].includes(':')) {
+            if (animationSteps[stepIndex].includes('#')) {
                 // Additional configuration parameters
             }
 
@@ -206,6 +203,9 @@ class src_default extends Controller {
         }
         console.log("-> startFrame", startFrame);
         console.log("-> endFrame", endFrame);
+
+        frameOptions['duration'] = subscription['duration'];
+        frameOptions['fill'] = subscription['direction'];
 
         return new KeyframeEffect(
             element,
@@ -255,6 +255,8 @@ class src_default extends Controller {
                                 element: candidateSubscriber,
                                 detail: inlineAnimationSubscription[2],
                                 completion: inlineAnimationSubscription[3],
+                                direction: inlineAnimationSubscription[4],
+                                duration: inlineAnimationSubscription[5],
                                 format: 'inline'
                             };
                         }
