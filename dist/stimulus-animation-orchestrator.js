@@ -101,7 +101,7 @@ class src_default extends Controller {
     }
 
     getKeyEffect(subscriber, subscription) {
-        let schedule = subscription['completion'];
+        let schedule = subscription['schedule'];
         let element = subscription['element'];
         let detail = subscription['detail'];
 
@@ -134,9 +134,10 @@ class src_default extends Controller {
 
         // Play immediate animations
         for (const subscriber in document.animations['immediate']) {
-            let animationKeyFrameEffect = this.buildKeyFrameEffect(subscriber, document.animations['immediate'][subscriber]);
+            let animationKeyFrameEffect = this.buildKeyFrameEffect(subscriber, document.animations.immediate[subscriber]);
             const animationController = new Animation(animationKeyFrameEffect, document.timeline);
             animationController.play();
+            delete document.animations.immediate[subscriber];
         }
     }
 
@@ -155,7 +156,7 @@ class src_default extends Controller {
     }
 
     scheduleAnimation(subscriber, subscription) {
-        let schedule = subscription['completion'];
+        let schedule = subscription['schedule'];
         let element = subscription['element'];
 
         if (schedule === scheduleImmediate) {
@@ -179,7 +180,7 @@ class src_default extends Controller {
         let endFrame = {};
         let frameOptions = {};
         let animationDetail = subscription['detail'];
-        let completion = subscription['completion'];
+        let schedule = subscription['schedule'];
         let element = subscription['element'];
         let frameFunction;
 
@@ -239,7 +240,7 @@ class src_default extends Controller {
                         subscribers[candidateSubscriber.id] = {
                             element: candidateSubscriber,
                             detail: animationSubscriptions[eventSource][eventType],
-                            schedule: animationSubscriptions[eventSource][eventType]['completion'],
+                            schedule: animationSubscriptions[eventSource][eventType]['schedule'],
                             format: 'JSON'
                         };
                     }
@@ -255,7 +256,7 @@ class src_default extends Controller {
                             subscribers[candidateSubscriber.id] = {
                                 element: candidateSubscriber,
                                 detail: inlineAnimationSubscription[2],
-                                completion: inlineAnimationSubscription[3],
+                                schedule: inlineAnimationSubscription[3],
                                 direction: inlineAnimationSubscription[4],
                                 duration: parseInt(inlineAnimationSubscription[5]),
                                 format: 'inline'

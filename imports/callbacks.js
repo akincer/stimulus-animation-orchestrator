@@ -1,4 +1,5 @@
 import {fetchItem, storeItem} from "./helper-functions";
+import {scheduleComplete, scheduleSpan, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
 
 export const popStateCallback = function (event) {
 
@@ -37,17 +38,50 @@ export const turboBeforeCacheCallback = function (event) {
 }
 
 export const turboBeforeRenderCallback = async function (event) {
-    console.log('turboBeforeRenderCallback');
-    console.log(event);
-    let thisPageTarget = document.getElementById('test');
-    let boxBefore = thisPageTarget.getBoundingClientRect();
-    let nextPageTarget = event.detail.newBody.querySelector("#test");
-    let nextBoxBefore = nextPageTarget.getBoundingClientRect();
-    //console.log("-> thisPageTarget", thisPageTarget);
-    // Get current coordinates for thisPageTarget
+    let animationPromises = [];
 
     // Pause rendering
     event.preventDefault();
+
+    for (const subscriber in document.animations['turbo:before-render']) {
+        let animationKeyFrameEffect;
+        let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
+
+        if (document.animations['turbo:before-render'][subscriber]['completion'] === scheduleComplete || (document.animations['turbo:before-render'][subscriber]['completion'] === scheduleSpan && !nextPageSubscriber)) {
+            animationKeyFrameEffect = document.orchestrator.buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFull);
+        }
+
+        if (document.animations['turbo:before-render'][subscriber]['completion'] === scheduleSpan && nextPageSubscriber) {
+            animationKeyFrameEffect = document.orchestrator.buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFirstHalf);
+        }
+
+        const animationController = new Animation(animationKeyFrameEffect, document.timeline);
+        animationController.play();
+        animationPromises.push(animationController.finished);
+        //delete document.animations['turbo:before-render'][subscriber];
+    }
+
+    await Promise.all(animationPromises);
+
+    for (const subscriber in document.animations['turbo:before-render']) {
+        let boxAfter = document.animations['turbo:before-render'][subscriber].element.getBoundingClientRect();
+        let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
+        if (document.animations['turbo:before-render'][subscriber]['completion'] === scheduleSpan && nextPageSubscriber) {
+            nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
+            nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
+            nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).toString();
+        }
+        delete document.animations['turbo:before-render'][subscriber];
+    }
+
+    // Resume rendering
+    event.detail.resume();
+
+    /*
+    let thisPageTarget = document.getElementById('test');
+    let boxBefore = thisPageTarget.getBoundingClientRect();
+    let nextBoxBefore = nextPageTarget.getBoundingClientRect();
+    let nextPageTarget = event.detail.newBody.querySelector("#test");
 
     // Move a certain amount (example from MDN White Rabbit)
     const testKeyframes = new KeyframeEffect(
@@ -86,6 +120,7 @@ export const turboBeforeRenderCallback = async function (event) {
 
     // Resume rendering
     event.detail.resume();
+    */
 }
 
 export const turboBeforeStreamRenderCallback = function (event) {
@@ -93,9 +128,17 @@ export const turboBeforeStreamRenderCallback = function (event) {
 }
 
 export const turboRenderCallback = async function (event) {
-    console.log('turboRenderCallback')
-    console.log(event)
 
+    for (const subscriber in document.animations['turbo:render']) {
+        let animationKeyFrameEffect;
+        animationKeyFrameEffect = document.orchestrator.buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionSecondHalf);
+        const animationController = new Animation(animationKeyFrameEffect, document.timeline);
+        animationController.play();
+    }
+
+
+
+    /*
     let newLeft = fetchItem('newLeft');
     let newDistance = parseInt(newLeft) + 50;
 
@@ -120,6 +163,8 @@ export const turboRenderCallback = async function (event) {
     await testAnimation.finished;
     let afterBox = thisPageTarget.getBoundingClientRect();
     console.log("-> afterBox", afterBox);
+
+     */
 }
 
 export const turboLoadCallback = function (event) {
