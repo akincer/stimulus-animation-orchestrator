@@ -15,6 +15,9 @@ class src_default extends Controller {
         this.initialize();
         this.getConfig();
         this.getFormState();
+
+        // Store this on document for reference in callbacks
+        document.orchestrator = this
     }
 
     initialize() {
