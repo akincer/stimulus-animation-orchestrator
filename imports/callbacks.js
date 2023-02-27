@@ -43,7 +43,7 @@ export const turboBeforeRenderCallback = async function (event) {
     // Pause rendering
     event.preventDefault();
 
-    console.log("->turboBeforeREnderCallback document.animations['turbo:before-render']", document.animations['turbo:before-render']);
+    console.log("->turboBeforeRenderCallback document.animations['turbo:before-render']", document.animations['turbo:before-render']);
 
     for (const subscriber in document.animations['turbo:before-render']) {
         console.log("-> turboBeforeREnderCallback subscriber", subscriber);
@@ -52,11 +52,11 @@ export const turboBeforeRenderCallback = async function (event) {
         let animationKeyFrameEffect;
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
 
-        if (document.animations['turbo:before-render'][subscriber]['completion'] === scheduleComplete || (document.animations['turbo:before-render'][subscriber]['completion'] === scheduleSpan && !nextPageSubscriber)) {
+        if (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleComplete || (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleSpan && !nextPageSubscriber)) {
             animationKeyFrameEffect = document.orchestrator.buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFull);
         }
 
-        if (document.animations['turbo:before-render'][subscriber]['completion'] === scheduleSpan && nextPageSubscriber) {
+        if (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
             animationKeyFrameEffect = document.orchestrator.buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFirstHalf);
         }
 
@@ -71,7 +71,7 @@ export const turboBeforeRenderCallback = async function (event) {
     for (const subscriber in document.animations['turbo:before-render']) {
         let boxAfter = document.animations['turbo:before-render'][subscriber].element.getBoundingClientRect();
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
-        if (document.animations['turbo:before-render'][subscriber]['completion'] === scheduleSpan && nextPageSubscriber) {
+        if (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
             nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
             nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
             nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).toString();
