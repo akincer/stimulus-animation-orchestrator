@@ -204,6 +204,8 @@ class src_default extends Controller {
                 endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
             }
         }
+        console.log("-> startFrame", startFrame);
+        console.log("-> endFrame", endFrame);
 
         return new KeyframeEffect(
             element,
