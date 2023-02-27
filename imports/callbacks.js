@@ -1,5 +1,6 @@
 import {fetchItem, storeItem} from "./helper-functions";
 import {scheduleComplete, scheduleSpan, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
+import {buildKeyFrameEffect} from "./waapi";
 
 export const popStateCallback = function (event) {
 
@@ -53,11 +54,11 @@ export const turboBeforeRenderCallback = async function (event) {
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
 
         if (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleComplete || (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleSpan && !nextPageSubscriber)) {
-            animationKeyFrameEffect = document.orchestrator.buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFull);
+            animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFull);
         }
 
         if (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
-            animationKeyFrameEffect = document.orchestrator.buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFirstHalf);
+            animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFirstHalf);
         }
 
         const animationController = new Animation(animationKeyFrameEffect, document.timeline);
