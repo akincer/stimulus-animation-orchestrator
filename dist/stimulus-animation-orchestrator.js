@@ -256,7 +256,7 @@ class src_default extends Controller {
                                 detail: inlineAnimationSubscription[2],
                                 completion: inlineAnimationSubscription[3],
                                 direction: inlineAnimationSubscription[4],
-                                duration: inlineAnimationSubscription[5],
+                                duration: parseInt(inlineAnimationSubscription[5]),
                                 format: 'inline'
                             };
                         }
