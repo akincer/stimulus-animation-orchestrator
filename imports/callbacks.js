@@ -52,7 +52,6 @@ export const turboBeforeRenderCallback = async function (event) {
         let animationKeyFrameEffect;
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
 
-        console.log("-> turboBeforeRenderCallback document.orchestrator", document.orchestrator);
         if (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleComplete || (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleSpan && !nextPageSubscriber)) {
             animationKeyFrameEffect = document.orchestrator.buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFull);
         }
