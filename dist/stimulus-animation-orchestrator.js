@@ -18,9 +18,6 @@ class src_default extends Controller {
     }
 
     initialize() {
-        // Store this on document for reference in callbacks
-        document.orchestrator = this
-
         // Initialize event animations
         if (!document.animations) {
             document.animations = {};

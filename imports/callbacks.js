@@ -45,6 +45,9 @@ export const turboBeforeRenderCallback = async function (event) {
 
 
     for (const subscriber in document.animations['turbo:before-render']) {
+        console.log("-> turboBeforeREnderCallback subscriber", subscriber);
+        console.log("-> turboBeforeREnderCallback document.animations['turbo:before-render'][subscriber]", document.animations['turbo:before-render'][subscriber]);
+
         let animationKeyFrameEffect;
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
 
