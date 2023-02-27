@@ -135,7 +135,8 @@ class src_default extends Controller {
         // Play immediate animations
         for (const subscriber in document.animations['immediate']) {
             let animationKeyFrameEffect = this.buildKeyFrameEffect(subscriber, document.animations['immediate'][subscriber]);
-            console.log("-> animationKeyFrameEffect", animationKeyFrameEffect);
+            const animationController = new Animation(animationKeyFrameEffect, document.timeline);
+            animationController.play();
         }
     }
 
