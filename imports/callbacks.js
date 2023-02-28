@@ -3,7 +3,7 @@ import {scheduleComplete, scheduleSpan, sectionFirstHalf, sectionFull, sectionSe
 import {buildKeyFrameEffect} from "./waapi";
 
 export const popStateCallback = function (event) {
-
+    console.log("-> popStateCallback event", event);
 }
 
 export const turboClickCallback = function (event) {
@@ -15,7 +15,7 @@ export const turboBeforeVisitCallback = function (event) {
 }
 
 export const turboVisitCallback = function (event) {
-
+    console.log("-> turboVisitCallback event", event);
 }
 
 export const turboSubmitStartCallback = function (event) {
@@ -173,7 +173,7 @@ export const turboRenderCallback = async function (event) {
 }
 
 export const turboLoadCallback = function (event) {
-
+    console.log("-> turboLoadCallback event", event);
 }
 
 export const turboFrameRenderCallback = function (event) {
