@@ -98,11 +98,18 @@ class src_default extends Controller {
         // Flag to check if event has already been added
         let callbackFlag = callbackName + 'Added';
 
-        if (document[callbackFlag] !== true) {
-            document.addEventListener(eventListener, orchestratorCallbacks[callbackName])
-            document[callbackFlag] = true
+        if (eventListener === 'popstate') {
+            if (window.popStateListenerAdded !== true)
+            {
+                window.addEventListener('popstate', orchestratorCallbacks.popStateCallback);
+                window.popStateListenerAdded = true;
+            }
+        } else {
+            if (document[callbackFlag] !== true) {
+                document.addEventListener(eventListener, orchestratorCallbacks[callbackName])
+                document[callbackFlag] = true
+            }
         }
-
     }
 
     getKeyEffect(subscriber, subscription) {
