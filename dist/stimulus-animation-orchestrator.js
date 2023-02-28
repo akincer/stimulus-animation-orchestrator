@@ -235,6 +235,18 @@ class src_default extends Controller {
 
      */
 
+    parseInlineSubscription(subscriptionText) {
+        let parsedKeyValuePairs = {};
+        let keyValuePairs = subscriptionText.split(':');
+
+        for (const keyValuePairIndex in keyValuePairs) {
+            let pair = keyValuePairs[keyValuePairIndex].split('=');
+            let key = pair[0];
+            let value = pair[1];
+            parsedKeyValuePairs[key] = value;
+        }
+    }
+
     // Gets the elements subscribed to animate on the event triggered
     getSubscribers(eventSource, eventType, subscriptionDefinitionType) {
         let subscribers = {}, candidateSubscribers = [...document.querySelectorAll('[data-orchestrator-element]')];
@@ -267,14 +279,15 @@ class src_default extends Controller {
                 if (subscriptionDefinitionType === inlineAnimationSubscriptions) {
                     animationSubscriptions = animationSubscriptionsDefinition.split(' ')
                     for (const subscriptionIndex in animationSubscriptions) {
-                        inlineAnimationSubscription = animationSubscriptions[subscriptionIndex].split(':');
-                        if (inlineAnimationSubscription[0] === eventSource && inlineAnimationSubscription[1] === eventType) {
+                        //inlineAnimationSubscription = animationSubscriptions[subscriptionIndex].split(':');
+                        inlineAnimationSubscription = this.parseInlineSubscription(animationSubscriptions[subscriptionIndex]);
+                        if (inlineAnimationSubscription.source === eventSource && inlineAnimationSubscription.event === eventType) {
                             subscribers[candidateSubscriber.id] = {
                                 element: candidateSubscriber,
-                                detail: inlineAnimationSubscription[2],
-                                schedule: inlineAnimationSubscription[3],
-                                direction: inlineAnimationSubscription[4],
-                                duration: parseInt(inlineAnimationSubscription[5]),
+                                detail: inlineAnimationSubscription.detail,
+                                schedule: inlineAnimationSubscription.schedule,
+                                direction: inlineAnimationSubscription.direction,
+                                duration: parseInt(inlineAnimationSubscription.duration),
                                 format: 'inline'
                             };
                         }
