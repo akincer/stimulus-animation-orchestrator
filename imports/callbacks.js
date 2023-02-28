@@ -135,9 +135,10 @@ export const turboBeforeStreamRenderCallback = function (event) {
 
 export const turboRenderCallback = async function (event) {
 
+    console.log("-> turboRenderCallback document.animations['turbo:render']", document.animations['turbo:render']);
     for (const subscriber in document.animations['turbo:render']) {
         let animationKeyFrameEffect;
-        animationKeyFrameEffect = document.orchestrator.buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionSecondHalf);
+        animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionSecondHalf);
         const animationController = new Animation(animationKeyFrameEffect, document.timeline);
         animationController.play();
     }
