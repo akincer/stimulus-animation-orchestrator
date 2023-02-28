@@ -75,6 +75,10 @@ class src_default extends Controller {
         }
     }
 
+    testLoad(event) {
+        console.log("-> testLoad event", event);
+    }
+
     addListener(eventListener) {
         let callbackName = eventListener
 
