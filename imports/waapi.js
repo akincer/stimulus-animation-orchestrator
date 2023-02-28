@@ -8,7 +8,7 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     let frameOptions = {};
     let animationDetail = subscription['detail'];
     let schedule = subscription['schedule'];
-    let element = subscription['element'];
+    let element = document.getElementById(subscriber);
     let frameFunction;
 
     let animationSteps = animationDetail.split(',');
