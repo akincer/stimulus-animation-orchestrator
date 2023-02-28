@@ -44,7 +44,8 @@ export function getMoveToTargetFrame(element, position, section, options = []) {
     console.log("-> getMoveToTargetFrame rect", rect);
 
     if (position === positionStart) {
-        frame.transform = 'translateX(' + rect.left.toString() + 'px) translateY(' + rect.top.toString() + 'px)';
+        //frame.transform = 'translateX(' + rect.left.toString() + 'px) translateY(' + rect.top.toString() + 'px)';
+        frame.transform = 'translateX(0) translateY(0)';
     }
 
     if (position === positionEnd) {
