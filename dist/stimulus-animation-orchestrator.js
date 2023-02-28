@@ -164,13 +164,13 @@ class src_default extends Controller {
             document.animations['immediate'][subscriber] = subscription
         }
 
-        if (schedule === scheduleSpan && element.style.position === 'absolute') {
+        if (schedule === scheduleSpan && getComputedStyle(element).position === 'absolute') {
             // Calculate the middle of each animation and create a subscription for each side of the middle
             document.animations['turbo:before-render'][subscriber] = subscription
             document.animations['turbo:render'][subscriber] = subscription
         }
 
-        if (schedule === scheduleComplete || (schedule === scheduleSpan && element.style.position !== 'absolute')) {
+        if (schedule === scheduleComplete || (schedule === scheduleSpan && getComputedStyle(element).position !== 'absolute')) {
             // If the element is not positioned absolute span will yield unpredictable results so fallback is to let the animation complete before render
             document.animations['turbo:before-render'][subscriber] = subscription
         }
