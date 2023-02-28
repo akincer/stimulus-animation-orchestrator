@@ -245,6 +245,8 @@ class src_default extends Controller {
             let value = pair[1];
             parsedKeyValuePairs[key] = value;
         }
+
+        return parsedKeyValuePairs;
     }
 
     // Gets the elements subscribed to animate on the event triggered
