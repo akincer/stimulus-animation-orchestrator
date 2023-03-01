@@ -7,11 +7,11 @@ export const popStateCallback = function (event) {
 }
 
 export const turboClickCallback = function (event) {
-
+    console.log("-> turboClickCallback event", event);
 }
 
 export const turboBeforeVisitCallback = function (event) {
-
+    console.log("-> turboBeforeVisitCallback event", event);
 }
 
 export const turboVisitCallback = function (event) {
@@ -19,23 +19,23 @@ export const turboVisitCallback = function (event) {
 }
 
 export const turboSubmitStartCallback = function (event) {
-
+    console.log("-> turboSubmitStartCallback event", event);
 }
 
 export const turboBeforeFetchRequestCallback = function (event) {
-
+    console.log("-> turboBeforeFetchRequestCallback event", event);
 }
 
 export const turboBeforeFetchResponseCallback = function (event) {
-
+    console.log("-> turboBeforeFetchResponseCallback event", event);
 }
 
 export const turboSubmitEndCallback = function (event) {
-
+    console.log("-> turboSubmitEndCallback event", event);
 }
 
 export const turboBeforeCacheCallback = function (event) {
-
+    console.log("-> turboBeforeCacheCallback event", event);
 }
 
 export const turboBeforeRenderCallback = async function (event) {
@@ -47,8 +47,8 @@ export const turboBeforeRenderCallback = async function (event) {
     console.log("->turboBeforeRenderCallback document.animations['turbo:before-render']", document.animations['turbo:before-render']);
 
     for (const subscriber in document.animations['turbo:before-render']) {
-        console.log("-> turboBeforeREnderCallback subscriber", subscriber);
-        console.log("-> turboBeforeREnderCallback document.animations['turbo:before-render'][subscriber]", document.animations['turbo:before-render'][subscriber]);
+        console.log("-> turboBeforeRenderCallback subscriber", subscriber);
+        console.log("-> turboBeforeRenderCallback document.animations['turbo:before-render'][subscriber]", document.animations['turbo:before-render'][subscriber]);
 
         let animationKeyFrameEffect;
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
@@ -85,10 +85,11 @@ export const turboBeforeRenderCallback = async function (event) {
 }
 
 export const turboBeforeStreamRenderCallback = function (event) {
-
+    console.log("-> turboBeforeStreamRenderCallback event", event);
 }
 
 export const turboRenderCallback = async function (event) {
+    console.log("-> turboRenderCallback event", event);
     for (const subscriber in document.animations['turbo:render']) {
         let animationKeyFrameEffect;
         animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:render'][subscriber], sectionSecondHalf);
@@ -106,13 +107,13 @@ export const turboLoadCallback = function (event) {
 }
 
 export const turboFrameRenderCallback = function (event) {
-
+    console.log("-> turboFrameRenderCallback event", event);
 }
 
 export const turboFrameLoadCallback = function (event) {
-
+    console.log("-> turboFrameLoadCallback event", event);
 }
 
 export const turboFetchRequestErrorCallback = function (event) {
-
+    console.log("-> turboFetchRequestErrorCallback event", event);
 }

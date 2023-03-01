@@ -19,6 +19,24 @@ class src_default extends Controller {
 
         // Store this on document for reference in callbacks
         document.orchestrator = this
+
+        this.addListener('popstate');
+        this.addListener('turbo:click');
+        this.addListener('turbo:before-visit');
+        this.addListener('turbo:visit');
+        this.addListener('turbo:submit-start');
+        this.addListener('turbo:before-fetch-request');
+        this.addListener('turbo:before-fetch-response');
+        this.addListener('turbo:submit-end');
+        this.addListener('turbo:before-cache');
+        this.addListener('turbo:before-render');
+        this.addListener('turbo:before-stream-render');
+        this.addListener('turbo:render');
+        this.addListener('turbo:load');
+        this.addListener('turbo:frame-render');
+        this.addListener('turbo:fetch-request-error');
+
+
     }
 
     initialize() {
@@ -28,6 +46,7 @@ class src_default extends Controller {
             document.animations['popstate'] = {};
             document.animations['turbo:click'] = {};
             document.animations['turbo:before-visit'] = {};
+            document.animations['turbo:visit'] = {};
             document.animations['turbo:submit-start'] = {};
             document.animations['turbo:before-fetch-request'] = {};
             document.animations['turbo:before-fetch-response'] = {};
