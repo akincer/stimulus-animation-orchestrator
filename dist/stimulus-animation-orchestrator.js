@@ -98,8 +98,20 @@ class src_default extends Controller {
         console.log("-> testLoad event", event);
     }
 
-    addListener(eventListener) {
-        let callbackName = eventListener
+    getListenerTarget(eventListener) {
+        if (eventListener === 'popstate')
+            return window;
+        else
+            return document;
+    }
+
+    normalizeEventListener(eventListener) {
+
+    }
+
+    addListener(eventListener, eventListenerCallback = null) {
+        let callbackName = eventListener, callbackFlag;
+
 
         // check if event is a turbo event
         if (eventListener.includes(':')) {
@@ -115,20 +127,16 @@ class src_default extends Controller {
         }
 
         // Flag to check if event has already been added
-        let callbackFlag = callbackName + 'Added';
+        !!eventListenerCallback ? callbackFlag = 'custom' + capitalizeFirstLetter(callbackName) + 'Added' : callbackName + 'Added';
 
-        if (eventListener === 'popstate') {
-            if (window.popStateListenerAdded !== true)
-            {
-                window.addEventListener('popstate', orchestratorCallbacks.popStateCallback);
-                window.popStateListenerAdded = true;
-            }
-        } else {
-            if (document[callbackFlag] !== true) {
-                document.addEventListener(eventListener, orchestratorCallbacks[callbackName])
-                document[callbackFlag] = true
-            }
+        let eventListenerTarget = this.getListenerTarget(eventListener);
+
+        if (eventListenerTarget[callbackFlag] !== true) {
+            console.log("-> addListener callbackName", callbackName);
+            eventListenerTarget.addEventListener(eventListener, orchestratorCallbacks[callbackName])
+            eventListenerTarget[callbackFlag] = true
         }
+
     }
 
     getKeyEffect(subscriber, subscription) {
