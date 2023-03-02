@@ -127,7 +127,7 @@ class src_default extends Controller {
         }
 
         // Flag to check if event has already been added
-        !!eventListenerCallback ? callbackFlag = 'custom' + capitalizeFirstLetter(callbackName) + 'Added' : callbackName + 'Added';
+        !!eventListenerCallback ? callbackFlag = 'custom' + capitalizeFirstLetter(callbackName) + 'Added' : callbackFlag = callbackName + 'Added';
 
         let eventListenerTarget = this.getListenerTarget(eventListener);
 
