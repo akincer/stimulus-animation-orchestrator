@@ -181,6 +181,9 @@ class src_default extends Controller {
             this.scheduleAnimation(subscriber, inlineSubscribers[subscriber])
         }
 
+        console.log("-> orchestrateSubscribedAnimations document.animations['turbo:render']", document.animations['turbo:render']);
+        console.log("-> orchestrateSubscribedAnimations document.animations['turbo:before-render']", document.animations['turbo:before-render']);
+
         // Play immediate animations
         for (const subscriber in document.animations['immediate']) {
             let animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations.immediate[subscriber]);
