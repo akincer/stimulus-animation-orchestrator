@@ -61,6 +61,8 @@ export const turboBeforeRenderCallback = async function (event) {
             animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFirstHalf);
         }
 
+        console.log("-> turboBeforeRenderCallback animationKeyFrameEffect", animationKeyFrameEffect);
+
         const animationController = new Animation(animationKeyFrameEffect, document.timeline);
         animationController.play();
         animationPromises.push(animationController.finished);
