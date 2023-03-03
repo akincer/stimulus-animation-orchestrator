@@ -213,12 +213,14 @@ class src_default extends Controller {
 
             if (schedule === scheduleImmediate || schedule === scheduleNow) {
                 document.animations['immediate'][subscriber] = subscription
+                console.log("-> scheduleAnimation scheduleImmediate subscription", subscription);
             }
 
             if (schedule === scheduleSpanPages && getComputedStyle(element).position === 'absolute') {
                 // Calculate the middle of each animation and create a subscription for each side of the middle
                 document.animations['turbo:before-render'][subscriber] = subscription
                 document.animations['turbo:render'][subscriber] = subscription
+                console.log("-> scheduleAnimation scheduleSpanPages subscription", subscription);
             }
 
             if (schedule === schedulePreNextPageRender || (schedule === scheduleSpanPages && getComputedStyle(element).position !== 'absolute')) {
@@ -227,9 +229,10 @@ class src_default extends Controller {
                 console.log("-> scheduleAnimation schedulePreNextPageRender subscription", subscription);
             }
 
-            if (schedule === schedulePostNextPageRender)
+            if (schedule === schedulePostNextPageRender) {
                 document.animations['turbo:render'][subscriber] = subscription
-
+                console.log("-> scheduleAnimation schedulePreNextPageRender subscription", subscription);
+            }
         }
     }
 
