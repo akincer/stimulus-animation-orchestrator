@@ -4,6 +4,9 @@ export function getExitToLeftFrame(element, position, section, options = []) {
     let frame = {};
     let rect = element.getBoundingClientRect();
 
+    console.log("-> getExitToLeftFrame element", element);
+    console.log("-> getExitToLeftFrame rect", rect);
+
     if (position === positionStart) {
         // Get element's current position
         //frame['transform'] = 'translateX(' + rect.left.toString() + 'px)';
@@ -24,6 +27,9 @@ export function getExitToLeftFrame(element, position, section, options = []) {
 export function getEnterFromRightFrame(element, position, section, options = []) {
     let frame = {};
     let rect = element.getBoundingClientRect();
+
+    console.log("-> getEnterFromRightFrame element", element);
+    console.log("-> getEnterFromRightFrame rect", rect);
 
     if (position === positionStart) {
         if (section === sectionFull || section === sectionSecondHalf)
