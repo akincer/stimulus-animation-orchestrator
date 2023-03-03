@@ -221,6 +221,7 @@ class src_default extends Controller {
         if (schedule === schedulePreNextPageRender || (schedule === scheduleSpanPages && getComputedStyle(element).position !== 'absolute')) {
             // If the element is not positioned absolute span will yield unpredictable results so fallback is to let the animation complete before render
             document.animations['turbo:before-render'][subscriber] = subscription
+            console.log("-> scheduleAnimation schedulePreNextPageRender subscription", subscription);
         }
 
         if (schedule === schedulePostNextPageRender)
