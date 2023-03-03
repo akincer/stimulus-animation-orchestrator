@@ -268,7 +268,7 @@ class src_default extends Controller {
     parseInlineSubscription(subscriptionText) {
         let parsedKeyValuePairs = {};
         let keyValuePairs = subscriptionText.split(':');
-
+        console.log("-> keyValuePairs", keyValuePairs);
         for (const keyValuePairIndex in keyValuePairs) {
             let pair = keyValuePairs[keyValuePairIndex].split('->');
             let key = pair[0];
