@@ -21,6 +21,8 @@ export function getExitToLeftFrame(element, position, section, options = []) {
             frame['transform'] = 'translateX(-' + (rect.right / 2).toString() + 'px)';
     }
 
+    console.log("-> getExitToLeftFrame frame", frame);
+
     return frame;
 }
 
@@ -42,6 +44,8 @@ export function getEnterFromRightFrame(element, position, section, options = [])
     if (position === positionEnd) {
         frame.transform = 'translateX(0) translateY(0)';
     }
+
+    console.log("-> getEnterFromRightFrame frame", frame);
 
     return frame;
 }
