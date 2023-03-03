@@ -5,7 +5,14 @@ import {
     flowInstanceId,
     inlineAnimationSubscriptions,
     jsonAnimationSubscriptions,
-    navigationSource, positionEnd, positionStart, scheduleComplete, scheduleImmediate, scheduleSpan, sectionFull
+    navigationSource,
+    positionEnd,
+    positionStart,
+    scheduleComplete,
+    scheduleImmediate,
+    scheduleNow, schedulePostNextPageRender, schedulePreNextPageRender,
+    scheduleSpan, scheduleSpanPages,
+    sectionFull
 } from "../imports/constants";
 import * as orchestratorCallbacks from "../imports/callbacks";
 import * as orchestratorHelpers from "../imports/helper-functions";
@@ -201,20 +208,23 @@ class src_default extends Controller {
         let schedule = subscription['schedule'];
         let element = subscription['element'];
 
-        if (schedule === scheduleImmediate) {
+        if (schedule === scheduleImmediate || schedule === scheduleNow) {
             document.animations['immediate'][subscriber] = subscription
         }
 
-        if (schedule === scheduleSpan && getComputedStyle(element).position === 'absolute') {
+        if (schedule === scheduleSpanPages && getComputedStyle(element).position === 'absolute') {
             // Calculate the middle of each animation and create a subscription for each side of the middle
             document.animations['turbo:before-render'][subscriber] = subscription
             document.animations['turbo:render'][subscriber] = subscription
         }
 
-        if (schedule === scheduleComplete || (schedule === scheduleSpan && getComputedStyle(element).position !== 'absolute')) {
+        if (schedule === schedulePreNextPageRender || (schedule === scheduleSpanPages && getComputedStyle(element).position !== 'absolute')) {
             // If the element is not positioned absolute span will yield unpredictable results so fallback is to let the animation complete before render
             document.animations['turbo:before-render'][subscriber] = subscription
         }
+
+        if (schedule === schedulePostNextPageRender)
+            document.animations['turbo:render'][subscriber] = subscription
     }
 
     /*
@@ -268,7 +278,7 @@ class src_default extends Controller {
     parseInlineSubscription(subscriptionText) {
         let parsedKeyValuePairs = {};
         let keyValuePairs = subscriptionText.split(':');
-        console.log("-> keyValuePairs", keyValuePairs);
+
         for (const keyValuePairIndex in keyValuePairs) {
             let pair = keyValuePairs[keyValuePairIndex].split('->');
             let key = pair[0];

@@ -6,7 +6,8 @@ export function getExitToLeftFrame(element, position, section, options = []) {
 
     if (position === positionStart) {
         // Get element's current position
-        frame['transform'] = 'translateX(' + rect.left.toString() + 'px)';
+        //frame['transform'] = 'translateX(' + rect.left.toString() + 'px)';
+        frame.transform = 'translateX(0) translateY(0)';
     }
 
     if (position === positionEnd) {
@@ -15,6 +16,44 @@ export function getExitToLeftFrame(element, position, section, options = []) {
 
         if (section === sectionFirstHalf)
             frame['transform'] = 'translateX(-' + (rect.right / 2).toString() + 'px)';
+    }
+
+    return frame;
+}
+
+export function getEnterFromRightFrame(element, position, section, options = []) {
+    let frame = {};
+    let rect = element.getBoundingClientRect();
+
+    if (position === positionStart) {
+        if (section === sectionFull || section === sectionSecondHalf)
+            frame['transform'] = 'translateX(-' + (window.innerWidth - rect.left).toString() + 'px)';
+
+        if (section === sectionFirstHalf)
+            frame['transform'] = 'translateX(-' + ((window.innerWidth - rect.left) / 2).toString() + 'px)';
+    }
+
+    if (position === positionEnd) {
+        frame.transform = 'translateX(0) translateY(0)';
+    }
+
+    return frame;
+}
+
+export function getEnterFromLeftFrame(element, position, section, options = []) {
+    let frame = {};
+    let rect = element.getBoundingClientRect();
+
+    if (position === positionStart) {
+        if (section === sectionFull || section === sectionSecondHalf)
+            frame['transform'] = 'translateX(' + (window.innerWidth - rect.right).toString() + 'px)';
+
+        if (section === sectionFirstHalf)
+            frame['transform'] = 'translateX(' + ((window.innerWidth - rect.right) / 2).toString() + 'px)';
+    }
+
+    if (position === positionEnd) {
+        frame.transform = 'translateX(0) translateY(0)';
     }
 
     return frame;
@@ -30,6 +69,24 @@ export function getFadeOutFrame(element, position, section, options = []) {
     if (position === positionEnd) {
         if (section === sectionFull || section === sectionSecondHalf)
             frame['opacity'] = 0;
+
+        if (section === sectionFirstHalf)
+            frame['opacity'] = 0.5;
+    }
+
+    return frame;
+}
+
+export function getFadeInFrame(element, position, section, options = []) {
+    let frame = {};
+
+    if (position === positionStart) {
+        frame['opacity'] = 0;
+    }
+
+    if (position === positionEnd) {
+        if (section === sectionFull || section === sectionSecondHalf)
+            frame['opacity'] = 1;
 
         if (section === sectionFirstHalf)
             frame['opacity'] = 0.5;
