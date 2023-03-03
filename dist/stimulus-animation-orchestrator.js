@@ -204,28 +204,33 @@ class src_default extends Controller {
         }
     }
 
-    scheduleAnimation(subscriber, subscription) {
-        let schedule = subscription['schedule'];
-        let element = subscription['element'];
+    scheduleAnimation(subscriber, subscriptions) {
 
-        if (schedule === scheduleImmediate || schedule === scheduleNow) {
-            document.animations['immediate'][subscriber] = subscription
+        for (const subscriptionIndex in subscriptions) {
+            let subscription = subscriptions[subscriptionIndex];
+            let schedule = subscription['schedule'];
+            let element = subscription['element'];
+
+            if (schedule === scheduleImmediate || schedule === scheduleNow) {
+                document.animations['immediate'][subscriber] = subscription
+            }
+
+            if (schedule === scheduleSpanPages && getComputedStyle(element).position === 'absolute') {
+                // Calculate the middle of each animation and create a subscription for each side of the middle
+                document.animations['turbo:before-render'][subscriber] = subscription
+                document.animations['turbo:render'][subscriber] = subscription
+            }
+
+            if (schedule === schedulePreNextPageRender || (schedule === scheduleSpanPages && getComputedStyle(element).position !== 'absolute')) {
+                // If the element is not positioned absolute span will yield unpredictable results so fallback is to let the animation complete before render
+                document.animations['turbo:before-render'][subscriber] = subscription
+                console.log("-> scheduleAnimation schedulePreNextPageRender subscription", subscription);
+            }
+
+            if (schedule === schedulePostNextPageRender)
+                document.animations['turbo:render'][subscriber] = subscription
+
         }
-
-        if (schedule === scheduleSpanPages && getComputedStyle(element).position === 'absolute') {
-            // Calculate the middle of each animation and create a subscription for each side of the middle
-            document.animations['turbo:before-render'][subscriber] = subscription
-            document.animations['turbo:render'][subscriber] = subscription
-        }
-
-        if (schedule === schedulePreNextPageRender || (schedule === scheduleSpanPages && getComputedStyle(element).position !== 'absolute')) {
-            // If the element is not positioned absolute span will yield unpredictable results so fallback is to let the animation complete before render
-            document.animations['turbo:before-render'][subscriber] = subscription
-            console.log("-> scheduleAnimation schedulePreNextPageRender subscription", subscription);
-        }
-
-        if (schedule === schedulePostNextPageRender)
-            document.animations['turbo:render'][subscriber] = subscription
     }
 
     /*
@@ -298,6 +303,7 @@ class src_default extends Controller {
         for (const candidateSubscriberIndex in candidateSubscribers) {
 
             candidateSubscriber = candidateSubscribers[candidateSubscriberIndex];
+            subscribers[candidateSubscriber.id] = [];
 
             if (subscriptionDefinitionType in candidateSubscriber.dataset) {
 
@@ -325,14 +331,14 @@ class src_default extends Controller {
                         //inlineAnimationSubscription = animationSubscriptions[subscriptionIndex].split(':');
                         inlineAnimationSubscription = this.parseInlineSubscription(animationSubscriptions[subscriptionIndex]);
                         if (inlineAnimationSubscription.source === eventSource && inlineAnimationSubscription.event === eventType) {
-                            subscribers[candidateSubscriber.id] = {
+                            subscribers[candidateSubscriber.id].push({
                                 element: candidateSubscriber,
                                 detail: inlineAnimationSubscription.detail,
                                 schedule: inlineAnimationSubscription.schedule,
                                 direction: inlineAnimationSubscription.direction,
                                 duration: parseInt(inlineAnimationSubscription.duration),
                                 format: 'inline'
-                            };
+                            });
                         }
                     }
                 }
