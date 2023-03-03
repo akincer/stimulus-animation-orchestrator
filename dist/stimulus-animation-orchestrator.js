@@ -231,7 +231,7 @@ class src_default extends Controller {
 
             if (schedule === schedulePostNextPageRender) {
                 document.animations['turbo:render'][subscriber] = subscription
-                console.log("-> scheduleAnimation schedulePreNextPageRender subscription", subscription);
+                console.log("-> scheduleAnimation schedulePostNextPageRender subscription", subscription);
             }
         }
     }
