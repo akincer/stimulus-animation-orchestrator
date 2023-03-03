@@ -105,35 +105,38 @@ class src_default extends Controller {
             return document;
     }
 
-    normalizeEventListener(eventListener) {
-
-    }
-
-    addListener(eventListener, eventListenerCallback = null) {
-        let callbackName = eventListener, callbackFlag;
-
+    getCallbackName(eventListener) {
+        let callbackName = eventListener;
 
         // check if event is a turbo event
         if (eventListener.includes(':')) {
 
             // This generates and sets the name of the callBack function for the turboEvent passed in
             let turboEventParsed = eventListener.split(':');
-            callbackName = turboEventParsed[0]
+            callbackName = turboEventParsed[0];
             let turboEventNameParsed = turboEventParsed[1].split('-')
             for (const index in turboEventNameParsed) {
-                callbackName += capitalizeFirstLetter(turboEventNameParsed[index])
+                callbackName += capitalizeFirstLetter(turboEventNameParsed[index]);
             }
-            callbackName = callbackName + 'Callback';
         }
+
+        callbackName += 'Callback'
+
+        return callbackName;
+    }
+
+    addListener(eventListener, eventListenerCallback = null) {
+        let callbackName, callbackFlag, eventListenerTarget;
+
+        callbackName = this.getCallbackName(eventListener);
 
         // Flag to check if event has already been added
         !!eventListenerCallback ? callbackFlag = 'custom' + capitalizeFirstLetter(callbackName) + 'Added' : callbackFlag = callbackName + 'Added';
-
-        let eventListenerTarget = this.getListenerTarget(eventListener);
+        eventListenerTarget = this.getListenerTarget(eventListener);
 
         if (eventListenerTarget[callbackFlag] !== true) {
             console.log("-> addListener callbackName", callbackName);
-            eventListenerTarget.addEventListener(eventListener, orchestratorCallbacks[callbackName])
+            eventListenerTarget.addEventListener(eventListener, !!eventListenerCallback ? eventListenerCallback : orchestratorCallbacks[callbackName])
             eventListenerTarget[callbackFlag] = true
         }
 
@@ -267,7 +270,7 @@ class src_default extends Controller {
         let keyValuePairs = subscriptionText.split(':');
 
         for (const keyValuePairIndex in keyValuePairs) {
-            let pair = keyValuePairs[keyValuePairIndex].split('=');
+            let pair = keyValuePairs[keyValuePairIndex].split('->');
             let key = pair[0];
             let value = pair[1];
             parsedKeyValuePairs[key] = value;
