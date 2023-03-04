@@ -297,7 +297,7 @@ class src_default extends Controller {
 
     parseInlineSubscription(subscriptionText) {
         let parsedKeyValuePairs = {};
-        let keyValuePairs = subscriptionText.split(':');
+        let keyValuePairs = subscriptionText.trim().split(':');
 
         for (const keyValuePairIndex in keyValuePairs) {
             let pair = keyValuePairs[keyValuePairIndex].split('->');
@@ -340,7 +340,10 @@ class src_default extends Controller {
                 */
 
                 if (subscriptionDefinitionType === inlineAnimationSubscriptions) {
-                    animationSubscriptions = animationSubscriptionsDefinition.split(' ')
+                    if (animationSubscriptionsDefinition.includes("\n"))
+                        animationSubscriptions = animationSubscriptionsDefinition.split("\n")
+                    else
+                        animationSubscriptions = animationSubscriptionsDefinition.split(' ')
                     for (const subscriptionIndex in animationSubscriptions) {
                         //inlineAnimationSubscription = animationSubscriptions[subscriptionIndex].split(':');
                         inlineAnimationSubscription = this.parseInlineSubscription(animationSubscriptions[subscriptionIndex]);
