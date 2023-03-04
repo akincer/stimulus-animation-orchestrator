@@ -1,6 +1,6 @@
 {
   "name": "@akincer/stimulus-animation-orchestrator",
-  "version": "0.0.109",
+  "version": "0.0.110",
   "description": "Stimulus component that orchestrates animations including immediate, paused rendering and animations spanning pages",
   "main": "dist/stimulus-animation-orchestrator.js",
   "repository": {

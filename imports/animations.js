@@ -82,10 +82,10 @@ export function getEnterFromLeftFrame(element, position, section, options = []) 
 
     if (position === positionStart) {
         if (section === sectionFull || section === sectionSecondHalf)
-            frame['transform'] = 'translateX(-' + (window.innerWidth - rect.right).toString() + 'px)';
+            frame['transform'] = 'translateX(-' + (window.innerWidth - rect.left).toString() + 'px)';
 
         if (section === sectionFirstHalf)
-            frame['transform'] = 'translateX(-' + ((window.innerWidth - rect.right) / 2).toString() + 'px)';
+            frame['transform'] = 'translateX(-' + ((window.innerWidth - rect.left) / 2).toString() + 'px)';
     }
 
     if (position === positionEnd) {
