@@ -93,6 +93,7 @@ export const turboBeforeRenderCallback = async function (event) {
                 });
             const animationController = new Animation(animationKeyFrameEffect, document.timeline);
             animationController.play();
+            animationPromises.push(animationController.finished);
         }
     }
 
