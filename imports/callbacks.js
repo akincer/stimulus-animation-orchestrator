@@ -24,16 +24,8 @@ export const turboBeforeVisitCallback = function (event) {
 
 export const turboVisitCallback = function (event) {
     console.log("-> turboVisitCallback event", event);
-    console.log("-> turboVisitCallback event.detail.action", event.detail.action);
-    if (event.detail.action === 'restore') {
-        document.playDefaultAnimation = false
-        console.log("-> turboVisitCallback document.playDefaultAnimation", document.playDefaultAnimation);
-        console.log("-> turboVisitCallback document.playDefaultAnimation type", typeof document.playDefaultAnimation);
-    } else {
-        document.playDefaultAnimation = true
-        console.log("-> turboVisitCallback document.playDefaultAnimation", document.playDefaultAnimation);
-        console.log("-> turboVisitCallback document.playDefaultAnimation type", typeof document.playDefaultAnimation);
-    }
+    document.preRenderDefaultAnimationExecuted = false
+    document.postRenderDefaultAnimationExecuted = false
 }
 
 export const turboSubmitStartCallback = function (event) {
@@ -88,9 +80,7 @@ export const turboBeforeRenderCallback = async function (event) {
         //delete document.animations['turbo:before-render'][subscriber];
     }
 
-    console.log("-> turboBeforeRenderCallback document.playDefaultAnimation", document.playDefaultAnimation);
-    console.log("-> turboBeforeRenderCallback document.playDefaultAnimation type", typeof document.playDefaultAnimation);
-    if (!skipDefaultAnimation() && document.playDefaultAnimation) {
+    if (!skipDefaultAnimation() && !document.preRenderDefaultAnimationExecuted) {
         console.log("-> turboBeforeRenderCallback *** Playing default animation ***");
         for (const defaultSubscriberIndex in defaultSubscribers) {
             let element = defaultSubscribers[defaultSubscriberIndex];
@@ -107,6 +97,7 @@ export const turboBeforeRenderCallback = async function (event) {
             animationController.play();
             animationPromises.push(animationController.finished);
         }
+        document.preRenderDefaultAnimationExecuted = true;
     }
 
     await Promise.all(animationPromises);
@@ -140,9 +131,7 @@ export const turboRenderCallback = async function (event) {
         animationController.play();
     }
 
-    console.log("-> turboRenderCallback document.playDefaultAnimation", document.playDefaultAnimation);
-    console.log("-> turboRenderCallback document.playDefaultAnimation type", typeof document.playDefaultAnimation);
-    if (!skipDefaultAnimation() && document.playDefaultAnimation) {
+    if (!skipDefaultAnimation() && !document.postRenderDefaultAnimationExecuted) {
         console.log("-> turboRenderCallback *** Playing default animation ***");
         for (const defaultSubscriberIndex in defaultSubscribers) {
             let element = defaultSubscribers[defaultSubscriberIndex]
@@ -159,6 +148,7 @@ export const turboRenderCallback = async function (event) {
             animationController.play();
 
         }
+        document.postRenderDefaultAnimationExecuted = true;
     }
 
     for (const subscriber in document.animations['turbo:render']) {
