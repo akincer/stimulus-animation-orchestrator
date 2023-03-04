@@ -138,12 +138,16 @@ class src_default extends Controller {
         callbackName = this.getCallbackName(eventListener);
 
         // Flag to check if event has already been added
-        !!eventListenerCallback ? callbackFlag = 'custom' + capitalizeFirstLetter(callbackName) + 'Added' : callbackFlag = callbackName + 'Added';
+        //eventListenerCallback instanceof Function ? callbackFlag = 'custom' + capitalizeFirstLetter(callbackName) + 'Added' : callbackFlag = callbackName + 'Added';
+        if (eventListenerCallback instanceof Function)
+            callbackName = 'custom' + capitalizeFirstLetter(callbackName);
+
+        callbackFlag = `${callbackName}Added`;
         eventListenerTarget = this.getListenerTarget(eventListener);
 
         if (eventListenerTarget[callbackFlag] !== true) {
             console.log("-> addListener callbackName", callbackName);
-            eventListenerTarget.addEventListener(eventListener, !!eventListenerCallback ? eventListenerCallback : orchestratorCallbacks[callbackName])
+            eventListenerTarget.addEventListener(eventListener, eventListenerCallback instanceof Function ? eventListenerCallback : orchestratorCallbacks[callbackName])
             eventListenerTarget[callbackFlag] = true
         }
 
