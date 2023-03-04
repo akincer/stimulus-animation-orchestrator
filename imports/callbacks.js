@@ -1,5 +1,6 @@
 import {fetchItem, storeItem} from "./helper-functions";
 import {
+    directionForwards,
     scheduleComplete,
     schedulePostNextPageRender, schedulePreNextPageRender,
     scheduleSpan,
@@ -7,7 +8,7 @@ import {
     sectionFull,
     sectionSecondHalf
 } from "./constants";
-import {buildKeyFrameEffect} from "./waapi";
+import {buildKeyFrameEffect, skipDefaultAnimation} from "./waapi";
 
 export const popStateCallback = function (event) {
     console.log("-> popStateCallback event", event);
@@ -47,6 +48,7 @@ export const turboBeforeCacheCallback = function (event) {
 
 export const turboBeforeRenderCallback = async function (event) {
     let animationPromises = [];
+    let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
 
     // Pause rendering
     event.preventDefault();
@@ -76,6 +78,23 @@ export const turboBeforeRenderCallback = async function (event) {
         //delete document.animations['turbo:before-render'][subscriber];
     }
 
+    if (!skipDefaultAnimation()) {
+        for (const defaultSubscriberIndex in defaultSubscribers) {
+            let element = document.getElementById(defaultSubscribers[defaultSubscriberIndex].id)
+            let animationKeyFrameEffect = buildKeyFrameEffect(element.id,
+                {
+                    element: element,
+                    detail: document.defaultPreAnimation,
+                    schedule: schedulePreNextPageRender,
+                    direction: directionForwards,
+                    duration: parseInt(document.defaultAnimationDuration),
+                    format: 'inline'
+                });
+            const animationController = new Animation(animationKeyFrameEffect, document.timeline);
+            animationController.play();
+        }
+    }
+
     await Promise.all(animationPromises);
 
     for (const subscriber in document.animations['turbo:before-render']) {
@@ -98,6 +117,7 @@ export const turboBeforeStreamRenderCallback = function (event) {
 }
 
 export const turboRenderCallback = async function (event) {
+    let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     console.log("-> turboRenderCallback event", event);
     for (const subscriber in document.animations['turbo:render']) {
         let animationKeyFrameEffect;
@@ -106,9 +126,28 @@ export const turboRenderCallback = async function (event) {
         animationController.play();
     }
 
+    if (!skipDefaultAnimation()) {
+        for (const defaultSubscriberIndex in defaultSubscribers) {
+            let element = document.getElementById(defaultSubscribers[defaultSubscriberIndex].id)
+            let animationKeyFrameEffect = buildKeyFrameEffect(element.id,
+                {
+                    element: element,
+                    detail: document.defaultPreAnimation,
+                    schedule: schedulePostNextPageRender,
+                    direction: directionForwards,
+                    duration: parseInt(document.defaultAnimationDuration),
+                    format: 'inline'
+                });
+            const animationController = new Animation(animationKeyFrameEffect, document.timeline);
+            animationController.play();
+        }
+    }
+
     for (const subscriber in document.animations['turbo:render']) {
         delete document.animations['turbo:render'][subscriber];
     }
+
+    delete document.inlineSubscribers;
 }
 
 export const turboLoadCallback = function (event) {

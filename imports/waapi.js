@@ -1,4 +1,4 @@
-import {positionEnd, positionStart, sectionFull} from "./constants";
+import {positionEnd, positionStart, scheduleSpan, sectionFull} from "./constants";
 import {capitalizeFirstLetter} from "./helper-functions";
 import * as animations from "./animations"
 
@@ -50,3 +50,10 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     );
 }
 
+export function skipDefaultAnimation() {
+    for (const subscriber in document.inlineSubscribers) {
+        for (const subscriptionIndex in document.inlineSubscribers[subscriber]) {
+            return document.inlineSubscribers[subscriber][subscriptionIndex]['schedule'] === scheduleSpan;
+        }
+    }
+}

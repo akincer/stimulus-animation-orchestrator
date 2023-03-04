@@ -71,24 +71,27 @@ class src_default extends Controller {
     }
 
     getConfig() {
-        if (!("transitionDurationMax" in this.element.dataset)) {
-            this.transitionDurationMax = 800;
+        if (!("orchestratorDefaultAnimationDuration" in this.element.dataset)) {
+            this.defaultAnimationDuration = 600;
         } else {
-            this.transitionDurationMax = parseInt(this.element.dataset.transitionDurationMax);
+            this.defaultAnimationDuration = parseInt(this.element.dataset.orchestratorDefaultAnimationDuration);
         }
 
-        if (!("transitionDurationMin" in this.element.dataset)) {
-            this.transitionDurationMin = 200;
+        if (!("orchestratorDefaultPreAnimation" in this.element.dataset)) {
+            this.defaultPreAnimation = 'fadeOut';
         } else {
-            this.transitionDurationMin = parseInt(this.element.dataset.transitionDurationMin);
+            this.defaultPreAnimation = this.element.dataset.orchestratorDefaultPreAnimation;
         }
 
-        if (!("defaultTransitionDuration" in this.element.dataset)) {
-            this.defaultTransitionDuration = 400;
+        if (!("orchestratorDefaultPostAnimation" in this.element.dataset)) {
+            this.defaultPostAnimation = 'fadeIn';
         } else {
-            this.defaultTransitionDuration = parseInt(this.element.dataset.defaultTransitionDuration);
+            this.defaultPostAnimation = this.element.dataset.orchestratorDefaultPostAnimation;
         }
 
+        document.defaultAnimationDuration = this.defaultAnimationDuration
+        document.defaultPreAnimation = this.defaultPreAnimation
+        document.defaultPostAnimation = this.defaultPostAnimation
     }
 
     getFormState() {
@@ -171,6 +174,7 @@ class src_default extends Controller {
             eventSource = event.target.id;
 
         let inlineSubscribers = this.getSubscribers(eventSource, eventType, inlineAnimationSubscriptions);
+        document.inlineSubscribers = inlineSubscribers;
 
         console.log("-> inlineSubscribers", inlineSubscribers);
 

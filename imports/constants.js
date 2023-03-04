@@ -20,6 +20,7 @@ export const sectionFirstHalf = 'firstHalf';
 export const sectionSecondHalf = 'secondHalf';
 export const positionStart = 'start';
 export const positionEnd = 'end';
+export const directionForwards = 'forwards';
 
 // Animation actions
 export const enterFromBottom = 'enterFromBottom';
