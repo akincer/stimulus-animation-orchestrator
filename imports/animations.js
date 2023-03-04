@@ -26,6 +26,32 @@ export function getExitToLeftFrame(element, position, section, options = []) {
     return frame;
 }
 
+export function getExitToRightFrame(element, position, section, options = []) {
+    let frame = {};
+    let rect = element.getBoundingClientRect();
+
+    console.log("-> getExitToRightFrame element", element);
+    console.log("-> getExitToRightFrame rect", rect);
+
+    if (position === positionStart) {
+        // Get element's current position
+        //frame['transform'] = 'translateX(' + rect.left.toString() + 'px)';
+        frame.transform = 'translateX(0) translateY(0)';
+    }
+
+    if (position === positionEnd) {
+        if (section === sectionFull || section === sectionSecondHalf)
+            frame['transform'] = 'translateX(' + (window.innerWidth - rect.left).toString() + 'px)';
+
+        if (section === sectionFirstHalf)
+            frame['transform'] = 'translateX(' + ((window.innerWidth - rect.left) / 2).toString() + 'px)';
+    }
+
+    console.log("-> getExitToRightFrame frame", frame);
+
+    return frame;
+}
+
 export function getEnterFromRightFrame(element, position, section, options = []) {
     let frame = {};
     let rect = element.getBoundingClientRect();
