@@ -128,7 +128,7 @@ export const turboRenderCallback = async function (event) {
     }
 
     if (!skipDefaultAnimation()) {
-        console.log("-> turboBeforeRenderCallback defaultSubscribers", defaultSubscribers);
+        console.log("-> turboRenderCallback defaultSubscribers", defaultSubscribers);
         for (const defaultSubscriberIndex in defaultSubscribers) {
             let element = defaultSubscribers[defaultSubscriberIndex]
             let animationKeyFrameEffect = buildKeyFrameEffect(element.id,
