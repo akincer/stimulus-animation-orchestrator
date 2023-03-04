@@ -149,8 +149,8 @@ export const turboRenderCallback = async function (event) {
             animationController.play();
 
         }
-        document.restorePending = false;
     }
+    document.restorePending = false;
 
     for (const subscriber in document.animations['turbo:render']) {
         delete document.animations['turbo:render'][subscriber];
