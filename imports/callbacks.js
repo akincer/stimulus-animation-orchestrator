@@ -84,6 +84,8 @@ export const turboBeforeRenderCallback = async function (event) {
         //delete document.animations['turbo:before-render'][subscriber];
     }
 
+    console.log("-> turboBeforeRenderCallback document.playDefaultAnimation", document.playDefaultAnimation);
+    console.log("-> turboBeforeRenderCallback document.playDefaultAnimation type", typeof document.playDefaultAnimation);
     if (!skipDefaultAnimation() && document.playDefaultAnimation) {
         console.log("-> turboBeforeRenderCallback *** Playing default animation ***");
         for (const defaultSubscriberIndex in defaultSubscribers) {
@@ -134,6 +136,8 @@ export const turboRenderCallback = async function (event) {
         animationController.play();
     }
 
+    console.log("-> turboRenderCallback document.playDefaultAnimation", document.playDefaultAnimation);
+    console.log("-> turboRenderCallback document.playDefaultAnimation type", typeof document.playDefaultAnimation);
     if (!skipDefaultAnimation() && document.playDefaultAnimation) {
         console.log("-> turboRenderCallback *** Playing default animation ***");
         for (const defaultSubscriberIndex in defaultSubscribers) {
