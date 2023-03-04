@@ -79,9 +79,9 @@ export const turboBeforeRenderCallback = async function (event) {
     }
 
     if (!skipDefaultAnimation()) {
+        console.log("-> turboBeforeRenderCallback defaultSubscribers", defaultSubscribers);
         for (const defaultSubscriberIndex in defaultSubscribers) {
-            console.log("-> turboBeforeRenderCallback defaultSubscribers", defaultSubscribers);
-            let element = document.getElementById(defaultSubscribers[defaultSubscriberIndex].id)
+            let element = defaultSubscribers[defaultSubscriberIndex];
             let animationKeyFrameEffect = buildKeyFrameEffect(element.id,
                 {
                     element: element,
@@ -128,8 +128,9 @@ export const turboRenderCallback = async function (event) {
     }
 
     if (!skipDefaultAnimation()) {
+        console.log("-> turboBeforeRenderCallback defaultSubscribers", defaultSubscribers);
         for (const defaultSubscriberIndex in defaultSubscribers) {
-            let element = document.getElementById(defaultSubscribers[defaultSubscriberIndex].id)
+            let element = defaultSubscribers[defaultSubscriberIndex]
             let animationKeyFrameEffect = buildKeyFrameEffect(element.id,
                 {
                     element: element,
