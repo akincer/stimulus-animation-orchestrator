@@ -51,9 +51,12 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
 }
 
 export function skipDefaultAnimation() {
+    let spanScheduled = false;
     for (const subscriber in document.inlineSubscribers) {
         for (const subscriptionIndex in document.inlineSubscribers[subscriber]) {
-            return document.inlineSubscribers[subscriber][subscriptionIndex]['schedule'] === scheduleSpan;
+            if (document.inlineSubscribers[subscriber][subscriptionIndex]['schedule'] === scheduleSpan)
+                spanScheduled = true;
         }
     }
+    return spanScheduled;
 }
