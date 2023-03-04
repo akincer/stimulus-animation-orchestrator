@@ -50,6 +50,9 @@ export const turboBeforeRenderCallback = async function (event) {
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
 
+    // Prep for render to play default animation
+    document.defaultRenderAnimationPlayed = false;
+
     // Pause rendering
     event.preventDefault();
 
@@ -128,7 +131,7 @@ export const turboRenderCallback = async function (event) {
         animationController.play();
     }
 
-    if (!skipDefaultAnimation()) {
+    if (!skipDefaultAnimation() && !document.defaultRenderAnimationPlayed) {
         console.log("-> turboRenderCallback defaultSubscribers", defaultSubscribers);
         for (const defaultSubscriberIndex in defaultSubscribers) {
             let element = defaultSubscribers[defaultSubscriberIndex]
@@ -143,6 +146,7 @@ export const turboRenderCallback = async function (event) {
                 });
             const animationController = new Animation(animationKeyFrameEffect, document.timeline);
             animationController.play();
+            document.defaultRenderAnimationPlayed = true;
         }
     }
 
