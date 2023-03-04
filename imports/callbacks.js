@@ -25,7 +25,8 @@ export const turboBeforeVisitCallback = function (event) {
 export const turboVisitCallback = function (event) {
     console.log("-> turboVisitCallback event", event);
     document.preRenderDefaultAnimationExecuted = false
-    document.postRenderDefaultAnimationExecuted = false
+    if (event.detail.action === 'restore')
+        document.restorePending = true
 }
 
 export const turboSubmitStartCallback = function (event) {
@@ -131,7 +132,7 @@ export const turboRenderCallback = async function (event) {
         animationController.play();
     }
 
-    if (!skipDefaultAnimation() && !document.postRenderDefaultAnimationExecuted) {
+    if (!skipDefaultAnimation() && !document.restorePending) {
         console.log("-> turboRenderCallback *** Playing default animation ***");
         for (const defaultSubscriberIndex in defaultSubscribers) {
             let element = defaultSubscribers[defaultSubscriberIndex]
@@ -148,7 +149,7 @@ export const turboRenderCallback = async function (event) {
             animationController.play();
 
         }
-        document.postRenderDefaultAnimationExecuted = true;
+        document.restorePending = false;
     }
 
     for (const subscriber in document.animations['turbo:render']) {
