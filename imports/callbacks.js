@@ -24,6 +24,7 @@ export const turboBeforeVisitCallback = function (event) {
 
 export const turboVisitCallback = function (event) {
     console.log("-> turboVisitCallback event", event);
+    console.log("-> turboVisitCallback event.detail.action", event.detail.action);
     if (event.detail.action === 'restore') {
         document.playDefaultAnimation = false
     } else {
