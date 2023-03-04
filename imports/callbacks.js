@@ -24,6 +24,11 @@ export const turboBeforeVisitCallback = function (event) {
 
 export const turboVisitCallback = function (event) {
     console.log("-> turboVisitCallback event", event);
+    if (event.detail.action === 'replace') {
+        document.playDefaultAnimation = false
+    } else {
+        document.playDefaultAnimation = true
+    }
 }
 
 export const turboSubmitStartCallback = function (event) {
@@ -49,9 +54,6 @@ export const turboBeforeCacheCallback = function (event) {
 export const turboBeforeRenderCallback = async function (event) {
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
-
-    // Prep for render to play default animation
-    document.defaultRenderAnimationPlayed = false;
 
     // Pause rendering
     event.preventDefault();
@@ -81,7 +83,7 @@ export const turboBeforeRenderCallback = async function (event) {
         //delete document.animations['turbo:before-render'][subscriber];
     }
 
-    if (!skipDefaultAnimation()) {
+    if (!skipDefaultAnimation() && document.playDefaultAnimation) {
         console.log("-> turboBeforeRenderCallback *** Playing default animation ***");
         for (const defaultSubscriberIndex in defaultSubscribers) {
             let element = defaultSubscribers[defaultSubscriberIndex];
@@ -131,7 +133,7 @@ export const turboRenderCallback = async function (event) {
         animationController.play();
     }
 
-    if (!skipDefaultAnimation() && !document.defaultRenderAnimationPlayed) {
+    if (!skipDefaultAnimation() && document.playDefaultAnimation) {
         console.log("-> turboRenderCallback *** Playing default animation ***");
         for (const defaultSubscriberIndex in defaultSubscribers) {
             let element = defaultSubscribers[defaultSubscriberIndex]
@@ -146,7 +148,7 @@ export const turboRenderCallback = async function (event) {
                 });
             const animationController = new Animation(animationKeyFrameEffect, document.timeline);
             animationController.play();
-            document.defaultRenderAnimationPlayed = true;
+
         }
     }
 
