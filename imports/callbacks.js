@@ -27,8 +27,12 @@ export const turboVisitCallback = function (event) {
     console.log("-> turboVisitCallback event.detail.action", event.detail.action);
     if (event.detail.action === 'restore') {
         document.playDefaultAnimation = false
+        console.log("-> turboVisitCallback document.playDefaultAnimation", document.playDefaultAnimation);
+        console.log("-> turboVisitCallback document.playDefaultAnimation type", typeof document.playDefaultAnimation);
     } else {
         document.playDefaultAnimation = true
+        console.log("-> turboVisitCallback document.playDefaultAnimation", document.playDefaultAnimation);
+        console.log("-> turboVisitCallback document.playDefaultAnimation type", typeof document.playDefaultAnimation);
     }
 }
 
