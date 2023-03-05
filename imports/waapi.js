@@ -34,8 +34,8 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
             endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
         }
     }
-    console.log("-> startFrame", startFrame);
-    console.log("-> endFrame", endFrame);
+    console.log("-> startFrame", startFrame, 'frameFunction', frameFunction);
+    console.log("-> endFrame", endFrame, 'frameFunction', frameFunction);
 
     frameOptions['duration'] = subscription['duration'];
     frameOptions['fill'] = subscription['direction'];
