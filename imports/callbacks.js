@@ -124,6 +124,7 @@ export const turboBeforeStreamRenderCallback = function (event) {
 }
 
 export const turboRenderCallback = async function (event) {
+    let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     console.log("-> turboRenderCallback event", event);
     for (const subscriber in document.animations['turbo:render']) {
@@ -134,6 +135,7 @@ export const turboRenderCallback = async function (event) {
         animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:render'][subscriber], sectionSecondHalf);
         const animationController = new Animation(animationKeyFrameEffect, document.timeline);
         animationController.play();
+        animationPromises.push(animationController.finished);
     }
 
     if (!skipDefaultAnimation() && !document.restorePending) {
@@ -156,6 +158,7 @@ export const turboRenderCallback = async function (event) {
     }
     document.restorePending = false;
 
+    await Promise.all(animationPromises);
     for (const subscriber in document.animations['turbo:render']) {
         //let boxAfter = document.animations['turbo:render'][subscriber].element.getBoundingClientRect();
         let nextPageSubscriber = document.getElementById(subscriber);
