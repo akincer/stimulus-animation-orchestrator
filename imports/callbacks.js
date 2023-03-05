@@ -162,13 +162,14 @@ export const turboRenderCallback = async function (event) {
         let boxAfter = nextPageSubscriber.getBoundingClientRect();
         if (document.animations['turbo:render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
             if (document.moveToTarget[subscriber]) {
-                nextPageSubscriber.style.left = document.moveToTarget[subscriber]['left'];
-                nextPageSubscriber.style.top = document.moveToTarget[subscriber]['top'];
+                //nextPageSubscriber.style.left = document.moveToTarget[subscriber]['left'];
+               // nextPageSubscriber.style.top = document.moveToTarget[subscriber]['top'];
+                console.log("-> turboRenderCallback subscriber", subscriber);
+                console.log("-> turboRenderCallback document.moveToTarget[subscriber]['left']", document.moveToTarget[subscriber]['left']);
+                console.log("-> turboRenderCallback document.moveToTarget[subscriber]['top']", document.moveToTarget[subscriber]['top']);
                 delete document.moveToTarget[subscriber];
             }
-            console.log("-> turboRenderCallback subscriber", subscriber);
-            console.log("-> turboRenderCallback subscriber.style.left", nextPageSubscriber.style.left);
-            console.log("-> turboRenderCallback boxAfter.left.toString() + 'px'", boxAfter.left.toString() + 'px');
+
             //nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
             //nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
             //nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:render'][subscriber].element).toString();
