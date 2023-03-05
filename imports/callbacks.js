@@ -161,12 +161,17 @@ export const turboRenderCallback = async function (event) {
         let nextPageSubscriber = document.getElementById(subscriber);
         let boxAfter = nextPageSubscriber.getBoundingClientRect();
         if (document.animations['turbo:render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
+            if (document.moveToTarget[subscriber]) {
+                nextPageSubscriber.style.left = document.moveToTarget[subscriber]['left'];
+                nextPageSubscriber.style.top = document.moveToTarget[subscriber]['top'];
+                delete document.moveToTarget[subscriber];
+            }
             console.log("-> turboRenderCallback subscriber", subscriber);
             console.log("-> turboRenderCallback subscriber.style.left", nextPageSubscriber.style.left);
             console.log("-> turboRenderCallback boxAfter.left.toString() + 'px'", boxAfter.left.toString() + 'px');
-            nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
-            nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
-            nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:render'][subscriber].element).toString();
+            //nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
+            //nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
+            //nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:render'][subscriber].element).toString();
         }
         delete document.animations['turbo:render'][subscriber];
     }

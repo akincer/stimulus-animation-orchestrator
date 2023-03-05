@@ -67,6 +67,7 @@ class src_default extends Controller {
             document.animations['turbo:frame-load'] = {};
             document.animations['turbo:fetch-request-error'] = {};
             document.animations['immediate'] = {};
+            document.moveToTarget = {};
         }
     }
 
