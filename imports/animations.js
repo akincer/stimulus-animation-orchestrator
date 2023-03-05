@@ -158,8 +158,8 @@ export function getMoveToTargetFrame(element, position, section, options = []) {
         }
         if (section === sectionFull || section === sectionSecondHalf) {
             frame.transform = 'translateX(' + (targetRect.left - leftOffset - rect.left).toString() + 'px) translateY(' + (targetRect.top - topOffset - rect.top).toString() + 'px)';
-            document.moveToTarget[element.id]['target']['left'] = (rect.left + (targetRect.left - leftOffset - rect.left)).toString() + 'px';
-            document.moveToTarget[element.id]['target']['top'] = (rect.top + (targetRect.top - topOffset - rect.top)).toString() + 'px';
+            document.moveToTarget[element.id]['left'] = (rect.left + (targetRect.left - leftOffset - rect.left)).toString() + 'px';
+            document.moveToTarget[element.id]['top'] = (rect.top + (targetRect.top - topOffset - rect.top)).toString() + 'px';
             console.log("-> moveToTarget X distance", (targetRect.left - leftOffset - rect.left).toString() + 'px');
             console.log("-> moveToTarget Y distance", (targetRect.top - topOffset - rect.top).toString() + 'px');
         }
