@@ -157,6 +157,13 @@ export const turboRenderCallback = async function (event) {
     document.restorePending = false;
 
     for (const subscriber in document.animations['turbo:render']) {
+        let boxAfter = document.animations['turbo:render'][subscriber].element.getBoundingClientRect();
+        let nextPageSubscriber = document.getElementById(subscriber);
+        if (document.animations['turbo:render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
+            nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
+            nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
+            nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:render'][subscriber].element).toString();
+        }
         delete document.animations['turbo:render'][subscriber];
     }
 
