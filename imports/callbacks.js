@@ -167,10 +167,10 @@ export const turboRenderCallback = async function (event) {
             if (document.moveToTarget[subscriber]) {
                 let rect = nextPageSubscriber.getBoundingClientRect();
                 console.log("-> turboRenderCallback rect BEFORE", rect);
-                nextPageSubscriber.style.left = document.moveToTarget[subscriber]['left'];
-                nextPageSubscriber.style.top = document.moveToTarget[subscriber]['top'];
+                nextPageSubscriber.style.left = rect.left.toString() + 'px';
+                nextPageSubscriber.style.top = rect.top.toString() + 'px';
                 rect = nextPageSubscriber.getBoundingClientRect();
-                console.log("-> turboRenderCallback rect BEFORE", rect);
+                console.log("-> turboRenderCallback rect AFTER", rect);
                 console.log("-> turboRenderCallback subscriber", subscriber);
                 console.log("-> turboRenderCallback document.moveToTarget[subscriber]['left']", document.moveToTarget[subscriber]['left']);
                 console.log("-> turboRenderCallback document.moveToTarget[subscriber]['top']", document.moveToTarget[subscriber]['top']);
