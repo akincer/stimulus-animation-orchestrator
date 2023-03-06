@@ -165,8 +165,12 @@ export const turboRenderCallback = async function (event) {
         let boxAfter = nextPageSubscriber.getBoundingClientRect();
         if (document.animations['turbo:render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
             if (document.moveToTarget[subscriber]) {
+                let rect = nextPageSubscriber.getBoundingClientRect();
+                console.log("-> turboRenderCallback rect BEFORE", rect);
                 nextPageSubscriber.style.left = document.moveToTarget[subscriber]['left'];
                 nextPageSubscriber.style.top = document.moveToTarget[subscriber]['top'];
+                rect = nextPageSubscriber.getBoundingClientRect();
+                console.log("-> turboRenderCallback rect BEFORE", rect);
                 console.log("-> turboRenderCallback subscriber", subscriber);
                 console.log("-> turboRenderCallback document.moveToTarget[subscriber]['left']", document.moveToTarget[subscriber]['left']);
                 console.log("-> turboRenderCallback document.moveToTarget[subscriber]['top']", document.moveToTarget[subscriber]['top']);
