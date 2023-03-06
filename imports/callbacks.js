@@ -175,7 +175,7 @@ export const turboRenderCallback = async function (event) {
                 rect = nextPageSubscriber.getBoundingClientRect();
                 console.log("-> turboRenderCallback rect AFTER", rect);
                 console.log("-> turboRenderCallback animationControllers[subscriber]", animationControllers[subscriber]);
-                animationControllers[subscriber].stop();
+                animationControllers[subscriber].cancel();
                 console.log("-> turboRenderCallback subscriber", subscriber);
                 console.log("-> turboRenderCallback document.moveToTarget[subscriber]['left']", document.moveToTarget[subscriber]['left']);
                 console.log("-> turboRenderCallback document.moveToTarget[subscriber]['top']", document.moveToTarget[subscriber]['top']);
