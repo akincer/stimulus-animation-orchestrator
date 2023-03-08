@@ -180,15 +180,15 @@ export function getFillColorFromLeftFrame(element, position, section, options = 
     let frame = {};
 
     if (position === positionStart) {
-        frame['background'] = "linear-gradient(0deg to right 0% rgba(var(--color-primary-dark)";
+        frame['background'] = "linear-gradient(0deg, to right, 0%, rgba(var(--color-primary-dark)";
     }
 
     if (position === positionEnd) {
         if (section === sectionFull || section === sectionSecondHalf)
-            frame['background'] = "linear-gradient(0deg to right 100% rgba(var(--color-primary-dark)";
+            frame['background'] = "linear-gradient(0deg, to right, 100%, rgba(var(--color-primary-dark)";
 
         if (section === sectionFirstHalf)
-            frame['background'] = "linear-gradient(0deg to right 50% rgba(var(--color-primary-dark)";
+            frame['background'] = "linear-gradient(0deg, to right, 50%, rgba(var(--color-primary-dark)";
     }
 
     return frame;
