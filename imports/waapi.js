@@ -60,3 +60,7 @@ export function skipDefaultAnimation() {
     }
     return spanScheduled;
 }
+
+export function parseOptions () {
+
+}

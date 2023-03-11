@@ -182,14 +182,22 @@ export function getFillColorFromLeftFrame(element, position, section, options = 
     if (position === positionStart) {
         //frame['background'] = "linear-gradient(to right, blue 0%, gray 0%)";
         frame['background-position'] = "0% 0%";
+        frame['transform'] = "scale(0)"
     }
 
     if (position === positionEnd) {
-        if (section === sectionFull || section === sectionSecondHalf)
-            frame['background-position'] = "100% 100%";
+        if (section === sectionFull || section === sectionSecondHalf) {
+            frame['background'] = "100% 100%";
+            frame['transform'] = "scale(1)"
+        }
 
-        if (section === sectionFirstHalf)
+
+        if (section === sectionFirstHalf) {
             frame['background'] = "50% 50%";
+            frame['transform'] = "scale(0.5)"
+        }
+
+
     }
 
     return frame;
