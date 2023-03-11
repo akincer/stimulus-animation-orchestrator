@@ -187,13 +187,13 @@ export function getFillColorFromLeftFrame(element, position, section, options = 
 
     if (position === positionEnd) {
         if (section === sectionFull || section === sectionSecondHalf) {
-            frame['background'] = "100% 100%";
+            frame['background-position'] = "100% 100%";
             frame['transform'] = "scale(1)"
         }
 
 
         if (section === sectionFirstHalf) {
-            frame['background'] = "50% 50%";
+            frame['background-position'] = "50% 50%";
             frame['transform'] = "scale(0.5)"
         }
 
