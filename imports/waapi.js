@@ -3,9 +3,8 @@ import {capitalizeFirstLetter} from "./helper-functions";
 import * as animations from "./animations"
 
 export function buildKeyFrameEffect(subscriber, subscription, section = sectionFull) {
-    let startFrame = {};
-    let endFrame = {};
-    let frameOptions = {};
+    let startFrame = {}, endFrame = {};
+    let frameEffectOptions = {}, frameOptions = {};
     let animationDetail = subscription['detail'];
     let schedule = subscription['schedule'];
     let element = document.getElementById(subscriber);
@@ -16,19 +15,19 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     for (const stepIndex in animationSteps) {
         if (animationSteps[stepIndex].includes('#')) {
             // Additional configuration parameters
-            let options = parseOptions(animationSteps[stepIndex]);
-            frameFunction = 'get' + capitalizeFirstLetter(options.animation) + 'Frame';
+            frameOptions = parseOptions(animationSteps[stepIndex]);
+            frameFunction = 'get' + capitalizeFirstLetter(frameOptions.animation) + 'Frame';
         } else {
             frameFunction = 'get' + capitalizeFirstLetter(animationSteps[stepIndex]) + 'Frame';
         }
 
         console.log("-> frameFunction", frameFunction, ' for element ', element);
-        let tempFrame = animations[frameFunction](element, positionStart, section, options);
+        let tempFrame = animations[frameFunction](element, positionStart, section, frameOptions);
         for (const property in tempFrame) {
             startFrame[property] ? startFrame[property] += ' ' + tempFrame[property] : startFrame[property] = tempFrame[property];
         }
 
-        tempFrame = animations[frameFunction](element, positionEnd, section, options);
+        tempFrame = animations[frameFunction](element, positionEnd, section, frameOptions);
         for (const property in tempFrame) {
             endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
         }
@@ -36,8 +35,8 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     console.log("-> startFrame", startFrame, 'frameFunction', frameFunction);
     console.log("-> endFrame", endFrame, 'frameFunction', frameFunction);
 
-    frameOptions['duration'] = subscription['duration'];
-    frameOptions['fill'] = subscription['direction'];
+    frameEffectOptions['duration'] = subscription['duration'];
+    frameEffectOptions['fill'] = subscription['direction'];
 
     return new KeyframeEffect(
         element,
@@ -45,7 +44,7 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
             startFrame,
             endFrame
         ],
-        frameOptions
+        frameEffectOptions
     );
 }
 
