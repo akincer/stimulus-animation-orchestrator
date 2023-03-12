@@ -1,6 +1,6 @@
 import {positionEnd, positionStart, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
 
-export function getExitToLeftFrame(element, position, section, options = []) {
+export function getExitToLeftFrame(element, position, section, options = {}) {
     let frame = {};
     let rect = element.getBoundingClientRect();
 
@@ -26,7 +26,7 @@ export function getExitToLeftFrame(element, position, section, options = []) {
     return frame;
 }
 
-export function getExitToRightFrame(element, position, section, options = []) {
+export function getExitToRightFrame(element, position, section, options = {}) {
     let frame = {};
     let rect = element.getBoundingClientRect();
 
@@ -52,7 +52,7 @@ export function getExitToRightFrame(element, position, section, options = []) {
     return frame;
 }
 
-export function getEnterFromRightFrame(element, position, section, options = []) {
+export function getEnterFromRightFrame(element, position, section, options = {}) {
     let frame = {};
     let rect = element.getBoundingClientRect();
 
@@ -76,7 +76,7 @@ export function getEnterFromRightFrame(element, position, section, options = [])
     return frame;
 }
 
-export function getEnterFromLeftFrame(element, position, section, options = []) {
+export function getEnterFromLeftFrame(element, position, section, options = {}) {
     let frame = {};
     let rect = element.getBoundingClientRect();
 
@@ -95,7 +95,7 @@ export function getEnterFromLeftFrame(element, position, section, options = []) 
     return frame;
 }
 
-export function getFadeOutFrame(element, position, section, options = []) {
+export function getFadeOutFrame(element, position, section, options = {}) {
     let frame = {};
 
     if (position === positionStart) {
@@ -113,7 +113,7 @@ export function getFadeOutFrame(element, position, section, options = []) {
     return frame;
 }
 
-export function getFadeInFrame(element, position, section, options = []) {
+export function getFadeInFrame(element, position, section, options = {}) {
     let frame = {};
 
     if (position === positionStart) {
@@ -131,7 +131,7 @@ export function getFadeInFrame(element, position, section, options = []) {
     return frame;
 }
 
-export function getMoveToTargetFrame(element, position, section, options = []) {
+export function getMoveToTargetFrame(element, position, section, options = {}) {
     let frame = {};
     let rect = element.getBoundingClientRect();
     console.log("-> moveToTarget rect", rect);
@@ -142,20 +142,19 @@ export function getMoveToTargetFrame(element, position, section, options = []) {
     }
 
     if (position === positionEnd) {
-        let target = document.getElementById(options[1]);
+        let target = document.getElementById(options.targetId);
         document.moveToTarget[element.id] = {}
         document.moveToTarget[element.id]['target'] = target.id
         let targetRect = target.getBoundingClientRect();
         console.log("-> moveToTarget targetRect", targetRect);
+
         let widthOffset = 0, heightOffset = 0, leftOffset = 0, topOffset = 0;
-        if(!(typeof options[2] === 'undefined')) {
-            widthOffset = parseInt(options[2]);
-            leftOffset = widthOffset/2;
-        }
-        if(!(typeof options[3] === 'undefined')) {
-            heightOffset = parseInt(options[3]);
-            topOffset = heightOffset/2;
-        }
+        if(options.widthOffset)
+            leftOffset = options.widthOffset/2;
+
+        if(options.heightOffset)
+            topOffset = options.heightOffset/2;
+
         if (section === sectionFull || section === sectionSecondHalf) {
             frame.transform = 'translateX(' + (targetRect.left - leftOffset - rect.left).toString() + 'px) translateY(' + (targetRect.top - topOffset - rect.top).toString() + 'px)';
             document.moveToTarget[element.id]['left'] = (targetRect.left - leftOffset).toString() + 'px';
@@ -176,7 +175,7 @@ export function getMoveToTargetFrame(element, position, section, options = []) {
     return frame;
 }
 
-export function getFillColorFromLeftFrame(element, position, section, options = []) {
+export function getFillColorFromLeftFrame(element, position, section, options = {}) {
     let frame = {};
 
     if (position === positionStart) {

@@ -14,11 +14,10 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     let animationSteps = animationDetail.split(',');
     console.log("->buildKeyFrameEffect animationSteps", animationSteps);
     for (const stepIndex in animationSteps) {
-        let options = [];
         if (animationSteps[stepIndex].includes('#')) {
             // Additional configuration parameters
-            options = animationSteps[stepIndex].split('#');
-            frameFunction = 'get' + capitalizeFirstLetter(options[0]) + 'Frame';
+            let options = parseOptions(animationSteps[stepIndex]);
+            frameFunction = 'get' + capitalizeFirstLetter(options.animation) + 'Frame';
         } else {
             frameFunction = 'get' + capitalizeFirstLetter(animationSteps[stepIndex]) + 'Frame';
         }
@@ -61,6 +60,15 @@ export function skipDefaultAnimation() {
     return spanScheduled;
 }
 
-export function parseOptions () {
-
+export function parseOptions (optionsRaw) {
+    let options = {}, optionsData = optionsRaw.split('#');
+    for (const optionIndex in optionsData) {
+        if (optionsData[optionIndex].includes('=')) {
+            let key = optionsData[optionIndex].split('=')[0], value = optionsData[optionIndex].split('=')[1];
+            options[key] = value;
+        } else {
+            options.animation = optionsData[optionIndex];
+        }
+    }
+    return options;
 }
