@@ -135,6 +135,7 @@ export function getMoveToTargetFrame(element, position, section, options = {}) {
     let frame = {};
     let rect = element.getBoundingClientRect();
     console.log("-> moveToTarget rect", rect);
+    console.log("-> getMoveToTargetFrame options", options);
 
     if (position === positionStart) {
         //frame.transform = 'translateX(' + rect.left.toString() + 'px) translateY(' + rect.top.toString() + 'px)';
