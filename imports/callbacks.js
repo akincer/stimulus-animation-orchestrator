@@ -110,6 +110,7 @@ export const turboBeforeRenderCallback = async function (event) {
         if (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
             nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
             nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
+            nextPageSubscriber.style.width = boxAfter.width.toString() + 'px';
             nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).toString();
         }
         delete document.animations['turbo:before-render'][subscriber];
@@ -180,7 +181,9 @@ export const turboRenderCallback = async function (event) {
 
             if (document.resizeWidth[subscriber]) {
                 let rect = nextPageSubscriber.getBoundingClientRect();
-
+                nextPageSubscriber.style.width = rect.width.toString() + 'px';
+                animationControllers[subscriber].cancel();
+                delete document.resizeWidth[subscriber];
             }
         }
         delete document.animations['turbo:render'][subscriber];
