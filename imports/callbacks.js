@@ -169,14 +169,17 @@ export const turboRenderCallback = async function (event) {
         if (document.animations['turbo:render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
             if (document.moveToTarget[subscriber]) {
                 let rect = nextPageSubscriber.getBoundingClientRect();
+                console.log("-> turboRenderCallback nextPageSubscriber", nextPageSubscriber);
                 nextPageSubscriber.style.left = rect.left.toString() + 'px';
                 nextPageSubscriber.style.top = rect.top.toString() + 'px';
+                console.log("-> turboRenderCallback turboRenderCallback LEFT: ", rect.left.toString() + 'px', ' TOP: ', rect.top.toString() + 'px');
                 rect = nextPageSubscriber.getBoundingClientRect();
                 animationControllers[subscriber].cancel();
                 delete document.moveToTarget[subscriber];
             }
 
             if (document.resizeWidth[subscriber]) {
+                let rect = nextPageSubscriber.getBoundingClientRect();
 
             }
         }
