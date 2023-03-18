@@ -152,10 +152,10 @@ export function getMoveToTargetFrame(element, position, section, options = {}) {
 
         let widthOffset = 0, heightOffset = 0, leftOffset = 0, topOffset = 0;
         if(options.widthOffset)
-            leftOffset = options.widthOffset/2;
+            leftOffset = parseFloat(options.widthOffset)/2;
 
         if(options.heightOffset)
-            topOffset = options.heightOffset/2;
+            topOffset = parseFloat(options.heightOffset)/2;
 
         if (section === sectionFull || section === sectionSecondHalf) {
             frame.transform = 'translateX(' + (targetRect.left - leftOffset - rect.left).toString() + 'px) translateY(' + (targetRect.top - topOffset - rect.top).toString() + 'px)';
