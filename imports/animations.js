@@ -161,6 +161,7 @@ export function getMoveToTargetFrame(element, position, section, options = {}) {
             frame.transform = 'translateX(' + (targetRect.left - leftOffset - rect.left).toString() + 'px) translateY(' + (targetRect.top - topOffset - rect.top).toString() + 'px)';
             document.moveToTarget[element.id]['left'] = (targetRect.left - leftOffset).toString() + 'px';
             document.moveToTarget[element.id]['top'] = (targetRect.top - topOffset).toString() + 'px';
+            console.log("-> getMoveToTargetFrame calculation (", targetRect.left , " - ", leftOffset, ").toString()");
             console.log("-> moveToTarget X distance", (targetRect.left - leftOffset).toString()+ 'px');
             console.log("-> moveToTarget Y distance", (targetRect.top - topOffset).toString() + 'px');
         }
