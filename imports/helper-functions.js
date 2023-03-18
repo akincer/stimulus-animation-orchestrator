@@ -32,7 +32,9 @@ export function getUnit(str) {
     }
     if (str.endsWith("px")) {
         return "px";
-    } else if (str.endsWith("%") || str.endsWith("pt")) {
+    } else if (str.endsWith("%")) {
+        return "%";
+    } else if (str.endsWith("pt")) {
         return "pt";
     } else if (str.endsWith("em")) {
         return "em";
