@@ -1,9 +1,9 @@
-import {positionEnd, positionStart, scheduleSpan, sectionFull} from "./constants";
+import {positionEnd, positionStart, scheduleSpan, sectionFull, typeSingle} from "./constants";
 import {capitalizeFirstLetter} from "./helper-functions";
 import * as animations from "./animations"
 
 export function buildKeyFrameEffect(subscriber, subscription, section = sectionFull) {
-    let startFrame = {}, endFrame = {};
+    let frames = [], startFrame = {}, endFrame = {};
     let frameEffectOptions = {}, frameOptions = {};
     let animationDetail = subscription['detail'];
     let schedule = subscription['schedule'];
@@ -22,21 +22,29 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
         }
 
         console.log("-> frameFunction", frameFunction, ' for element ', element);
-        let tempFrame = animations[frameFunction](element, positionStart, section, frameOptions);
-        for (const property in tempFrame) {
-            startFrame[property] ? startFrame[property] += ' ' + tempFrame[property] : startFrame[property] = tempFrame[property];
+        if (frameOptions.type === typeSingle) {
+            let tempFrame = animations[frameFunction](element, positionStart, section, frameOptions);
+            for (const property in tempFrame) {
+                startFrame[property] ? startFrame[property] += ' ' + tempFrame[property] : startFrame[property] = tempFrame[property];
+            }
+
+            tempFrame = animations[frameFunction](element, positionEnd, section, frameOptions);
+            for (const property in tempFrame) {
+                endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
+            }
+            frames.push(startFrame, endFrame);
         }
 
-        tempFrame = animations[frameFunction](element, positionEnd, section, frameOptions);
-        for (const property in tempFrame) {
-            endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
-        }
+
+
     }
     console.log("-> startFrame", startFrame, 'frameFunction', frameFunction);
     console.log("-> endFrame", endFrame, 'frameFunction', frameFunction);
 
-    frameEffectOptions['duration'] = subscription['duration'];
-    frameEffectOptions['fill'] = subscription['direction'];
+
+    !!subscription['duration'] ? frameEffectOptions['duration'] = subscription['duration'] : frameEffectOptions['duration'] = document.defaultAnimationDuration;
+    !!subscription['direction'] ? frameEffectOptions['fill'] = subscription['direction'] : frameEffectOptions['fill'] = document.orchestratorDefaultFillDirection;
+    !!subscription['easing'] ? frameEffectOptions['easing'] = subscription['easing'] : null;
 
     return new KeyframeEffect(
         element,
@@ -67,6 +75,7 @@ export function parseOptions (optionsRaw) {
             options[key] = value;
         } else {
             options.animation = optionsData[optionIndex];
+            options.type = typeSingle
         }
     }
     return options;

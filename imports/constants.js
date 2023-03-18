@@ -21,6 +21,7 @@ export const sectionSecondHalf = 'secondHalf';
 export const positionStart = 'start';
 export const positionEnd = 'end';
 export const directionForwards = 'forwards';
+export const typeSingle = 'single';
 
 // Animation actions
 export const enterFromBottom = 'enterFromBottom';
@@ -42,5 +43,9 @@ export const exitToLeft = 'exitToLeft';
 export const exitToRight = 'exitToRight';
 export const exitToTop = 'exitToTop';
 export const exitToTopLeft = 'exitToTopLeft';
-export const exitToTopRight = 'exitToTopRight'
+export const exitToTopRight = 'exitToTopRight';
+export const fillColorFromLeft = 'fillColorFromLeft';
+export const fillColorFromRight = 'fillColorFromRight';
+export const fillColorFromBottom = 'fillColorFromBottom';
+export const fillColorFromTop = 'fillColorFromTop';
 

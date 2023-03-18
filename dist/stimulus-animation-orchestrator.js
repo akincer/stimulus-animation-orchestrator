@@ -74,8 +74,18 @@ class src_default extends Controller {
     getConfig() {
         if (!("orchestratorDefaultAnimationDuration" in this.element.dataset)) {
             this.defaultAnimationDuration = 600;
+            document.defaultAnimationDuration = 600;
         } else {
             this.defaultAnimationDuration = parseInt(this.element.dataset.orchestratorDefaultAnimationDuration);
+            document.defaultAnimationDuration = parseInt(this.element.dataset.orchestratorDefaultAnimationDuration);
+        }
+
+        if (!("orchestratorDefaultFillDirection" in this.element.dataset)) {
+            this.orchestratorDefaultFillDirection = 'forwards';
+            document.orchestratorDefaultFillDirection = 'forwards';
+        } else {
+            this.orchestratorDefaultFillDirection = parseInt(this.element.dataset.orchestratorDefaultFillDirection);
+            document.orchestratorDefaultFillDirection = parseInt(this.element.dataset.orchestratorDefaultFillDirection);
         }
 
         if (!("orchestratorDefaultPreAnimation" in this.element.dataset)) {

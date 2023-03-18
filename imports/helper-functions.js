@@ -13,12 +13,31 @@ export function fetchItem(itemName)
         ?.split('=')[1];
 }
 
-export function capitalizeFirstLetter(stringValue) {
-    return stringValue.charAt(0).toUpperCase() + stringValue.slice(1);
+export function capitalizeFirstLetter(str) {
+    if (typeof str !== "string") {
+        return "";
+    }
+
+    return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 export function isAlphanumeric(string) {
     let alphanumericRegEx = /^[0-9a-zA-Z]+$/;
     return !!string.match(alphanumericRegEx);
+}
+
+export function getUnit(str) {
+    if (typeof str !== "string") {
+        return "";
+    }
+    if (str.endsWith("px")) {
+        return "px";
+    } else if (str.endsWith("%") || str.endsWith("pt")) {
+        return "pt";
+    } else if (str.endsWith("em")) {
+        return "em";
+    } else {
+        return "";
+    }
 }
 

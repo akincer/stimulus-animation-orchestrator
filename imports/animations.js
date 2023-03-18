@@ -1,4 +1,5 @@
 import {positionEnd, positionStart, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
+import {getUnit} from "./helper-functions";
 
 export function getExitToLeftFrame(element, position, section, options = {}) {
     let frame = {};
@@ -198,9 +199,32 @@ export function getFillColorFromLeftFrame(element, position, section, options = 
             frame['background-position'] = "left";
             frame['transform'] = "scale(0.5)"
         }
-
-
     }
 
     return frame;
+}
+
+export function getResizeWidthFrame(element, position, section, options = {}) {
+    let frame = {};
+    let rect = element.getBoundingClientRect();
+
+    if (position === positionStart) {
+        if (options.startWidth)
+            frame['width'] = options.startWidth;
+        else
+            frame['width'] = rect.width;
+    }
+
+    if (position === positionEnd) {
+        if (section === sectionFull || section === sectionSecondHalf) {
+            frame['width'] = options.endWidth;
+        }
+
+        if (section === sectionFirstHalf) {
+            frame['width'] = (parseFloat(options.endWidth)/2).toString() + getUnit(options.endWidth);
+        }
+    }
+
+    return frame;
+
 }
