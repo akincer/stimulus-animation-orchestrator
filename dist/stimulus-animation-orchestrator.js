@@ -240,7 +240,7 @@ class src_default extends Controller {
             }
 
             //if (schedule === scheduleSpanPages && getComputedStyle(element).position === 'absolute') {
-            if (schedule === scheduleSpanPages && getComputedStyle(element).position === 'absolute') {
+            if (schedule === scheduleSpanPages) {
                 // Calculate the middle of each animation and create a subscription for each side of the middle
                 document.animations['turbo:before-render'][subscriber] = subscription
                 document.animations['turbo:render'][subscriber] = subscription
