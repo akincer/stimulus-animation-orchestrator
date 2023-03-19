@@ -239,6 +239,7 @@ class src_default extends Controller {
                 console.log("-> scheduleAnimation scheduleImmediate subscription", subscription);
             }
 
+            //if (schedule === scheduleSpanPages && getComputedStyle(element).position === 'absolute') {
             if (schedule === scheduleSpanPages && getComputedStyle(element).position === 'absolute') {
                 // Calculate the middle of each animation and create a subscription for each side of the middle
                 document.animations['turbo:before-render'][subscriber] = subscription
@@ -246,7 +247,8 @@ class src_default extends Controller {
                 console.log("-> scheduleAnimation scheduleSpanPages subscription", subscription);
             }
 
-            if (schedule === schedulePreNextPageRender || (schedule === scheduleSpanPages && getComputedStyle(element).position !== 'absolute')) {
+            //if (schedule === schedulePreNextPageRender || (schedule === scheduleSpanPages && getComputedStyle(element).position !== 'absolute')) {
+            if (schedule === schedulePreNextPageRender) {
                 // If the element is not positioned absolute span will yield unpredictable results so fallback is to let the animation complete before render
                 document.animations['turbo:before-render'][subscriber] = subscription
                 console.log("-> scheduleAnimation schedulePreNextPageRender subscription", subscription);
