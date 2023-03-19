@@ -26,24 +26,27 @@ export function isAlphanumeric(string) {
     return !!string.match(alphanumericRegEx);
 }
 
-export function getUnit(str) {
-    if (typeof str !== "string") {
-        return "";
-    }
-    if (str.endsWith("px")) {
-        return "px";
-    } else if (str.endsWith("%")) {
-        return "%";
-    } else if (str.endsWith("pt")) {
-        return "pt";
-    } else if (str.endsWith("em")) {
-        return "em";
-    } else {
-        return "";
-    }
-}
-
 export function midpoint(num1, num2) {
-    return (parseFloat(num1) + parseFloat(num2)) / 2;
+    if (typeof num1 === "string")
+        return ((parseFloat(num1) + parseFloat(num2)) / 2).toString() + getUnit(num1);
+
+    if (typeof num1 === "number" || typeof num1 === "bigint")
+        return num1 + num2;
+
+    return NaN;
 }
 
+export function getUnit(str) {
+    // Find the index of the first non-digit character
+    const start = str.search(/\D/);
+
+    // If no non-digit characters are found, return an empty string
+    if (start === -1) {
+        return "";
+    }
+
+    const end = str.length
+
+    // Return the text portion of the string
+    return str.slice(start, end);
+}

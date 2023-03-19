@@ -213,7 +213,7 @@ export function getResizeWidthFrame(element, position, section, options = {}) {
         if (options.startWidth && section === sectionFirstHalf)
             frame['width'] = options.startWidth;
         else if (options.startWidth && options.endWidth && section === sectionSecondHalf)
-            frame['width'] = (midpoint(options.startWidth, options.endWidth)).toString() + getUnit(options.endWidth);
+            frame['width'] = midpoint(options.startWidth, options.endWidth);
         else
             frame['width'] = rect.width;
     }
@@ -224,7 +224,7 @@ export function getResizeWidthFrame(element, position, section, options = {}) {
         }
 
         if (section === sectionFirstHalf) {
-            frame['width'] = (parseFloat(options.endWidth)/2).toString() + getUnit(options.endWidth);
+            frame['width'] = midpoint(options.startWidth, options.endWidth);
         }
     }
 
