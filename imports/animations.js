@@ -1,5 +1,5 @@
 import {positionEnd, positionStart, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
-import {getUnit} from "./helper-functions";
+import {getUnit, midpoint} from "./helper-functions";
 
 export function getExitToLeftFrame(element, position, section, options = {}) {
     let frame = {};
@@ -212,8 +212,8 @@ export function getResizeWidthFrame(element, position, section, options = {}) {
     if (position === positionStart) {
         if (options.startWidth && section === sectionFirstHalf)
             frame['width'] = options.startWidth;
-        else if (section === sectionSecondHalf)
-            frame['width'] = (parseFloat(options.endWidth)/2).toString() + getUnit(options.endWidth);
+        else if (options.startWidth && options.endWidth && section === sectionSecondHalf)
+            frame['width'] = (midpoint(options.startWidth, options.endWidth)).toString() + getUnit(options.endWidth);
         else
             frame['width'] = rect.width;
     }
