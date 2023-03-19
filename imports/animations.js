@@ -210,8 +210,10 @@ export function getResizeWidthFrame(element, position, section, options = {}) {
     let rect = element.getBoundingClientRect();
 
     if (position === positionStart) {
-        if (options.startWidth)
+        if (options.startWidth && section === sectionFirstHalf)
             frame['width'] = options.startWidth;
+        else if (section === sectionSecondHalf)
+            frame['width'] = (parseFloat(options.endWidth)/2).toString() + getUnit(options.endWidth);
         else
             frame['width'] = rect.width;
     }
