@@ -62,7 +62,7 @@ export function getCssVariableColor(variableName) {
     console.log("-> computedValue", computedValue);
 
     // Check if the computed value is a color value
-    if (/^#[0-9A-F]{6}$/i.test(computedValue) || /^#[0-9A-F]{3}$/i.test(computedValue) || /^rgba?\(.+\)$/i.test(computedValue) || /^hsla?\(.+\)$/i.test(computedValue)) {
+    if (/^#[0-9A-F]{6}$/i.test(computedValue) || /^#[0-9A-F]{3}$/i.test(computedValue) || /^rgb?\(.+\)$/i.test(computedValue) || /^rgba?\(.+\)$/i.test(computedValue) || /^hsla?\(.+\)$/i.test(computedValue)) {
         return computedValue;
     } else {
         return null; // The computed value is not a valid color value

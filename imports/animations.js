@@ -246,6 +246,9 @@ export function getChangeColorFrame(element, position, section, options = {}) {
     if (isCssVariable(endcolor))
         endcolor = getCssVariableColor(endcolor);
 
+    console.log("-> after getCssVariableColor startColor", startColor);
+    console.log("-> after getCssVariableColor endcolor", endcolor);
+
     if (position === positionStart) {
         if (section === sectionFull || section === sectionFirstHalf)
             frame[property] = startColor;
