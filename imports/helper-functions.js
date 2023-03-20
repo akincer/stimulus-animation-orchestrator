@@ -57,9 +57,14 @@ export function isCssVariable(str) {
 
 export function getCssVariableColor(variableName) {
     // Get the computed value of the CSS variable
-    const computedValue = getComputedStyle(document.body).getPropertyValue(variableName).trim();
+    let computedValue = getComputedStyle(document.body).getPropertyValue(variableName).trim();
 
     console.log("-> computedValue", computedValue);
+    if (isRgb(computedValue))
+        computedValue = 'rgb(' + computedValue + ')';
+
+    if (isRgba(computedValue))
+        computedValue = 'rgba(' + computedValue + ')';
 
     // Check if the computed value is a color value
     if (/^#[0-9A-F]{6}$/i.test(computedValue) || /^#[0-9A-F]{3}$/i.test(computedValue) || /^rgb?\(.+\)$/i.test(computedValue) || /^rgba?\(.+\)$/i.test(computedValue) || /^hsla?\(.+\)$/i.test(computedValue)) {
@@ -97,4 +102,12 @@ export function calculateMidpointColor(color1, color2) {
     midpointComponents.forEach(component => midpointColor += component.toString(16).toUpperCase().padStart(2, '0'));
 
     return midpointColor;
+}
+
+export function isRgb(str) {
+    return /^\d+,\s?\d+,\s?\d+$/i.test(str);
+}
+
+export function isRgba(str) {
+    return /^\d+,\s?\d+,\s?\d+,\s?\d+$/i.test(str);
 }
