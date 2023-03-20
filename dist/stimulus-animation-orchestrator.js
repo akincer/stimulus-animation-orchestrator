@@ -73,37 +73,32 @@ class src_default extends Controller {
     }
 
     getConfig() {
-        if (!("orchestratorDefaultAnimationDuration" in this.element.dataset)) {
-            this.defaultAnimationDuration = 600;
+
+        if (!("orchestratorDefaultAnimationDuration" in this.element.dataset))
             document.defaultAnimationDuration = 600;
-        } else {
-            this.defaultAnimationDuration = parseInt(this.element.dataset.orchestratorDefaultAnimationDuration);
+        else
             document.defaultAnimationDuration = parseInt(this.element.dataset.orchestratorDefaultAnimationDuration);
-        }
 
-        if (!("orchestratorDefaultFillDirection" in this.element.dataset)) {
-            this.orchestratorDefaultFillDirection = 'forwards';
+        if (!("orchestratorDefaultFillDirection" in this.element.dataset))
             document.orchestratorDefaultFillDirection = 'forwards';
-        } else {
-            this.orchestratorDefaultFillDirection = parseInt(this.element.dataset.orchestratorDefaultFillDirection);
+        else
             document.orchestratorDefaultFillDirection = parseInt(this.element.dataset.orchestratorDefaultFillDirection);
-        }
 
-        if (!("orchestratorDefaultPreAnimation" in this.element.dataset)) {
-            this.defaultPreAnimation = 'fadeOut';
-        } else {
-            this.defaultPreAnimation = this.element.dataset.orchestratorDefaultPreAnimation;
-        }
+        if (!("orchestratorDefaultEasing" in this.element.dataset))
+            document.orchestratorDefaultEasing = 'linear';
+        else
+            document.orchestratorDefaultEasing = parseInt(this.element.dataset.orchestratorDefaultEasing);
 
-        if (!("orchestratorDefaultPostAnimation" in this.element.dataset)) {
-            this.defaultPostAnimation = 'fadeIn';
-        } else {
-            this.defaultPostAnimation = this.element.dataset.orchestratorDefaultPostAnimation;
-        }
+        if (!("orchestratorDefaultPreAnimation" in this.element.dataset))
+            document.defaultPreAnimation = 'fadeOut';
+        else
+            document.defaultPreAnimation = this.element.dataset.orchestratorDefaultPreAnimation;
 
-        document.defaultAnimationDuration = this.defaultAnimationDuration
-        document.defaultPreAnimation = this.defaultPreAnimation
-        document.defaultPostAnimation = this.defaultPostAnimation
+        if (!("orchestratorDefaultPostAnimation" in this.element.dataset))
+            document.defaultPostAnimation = 'fadeIn';
+        else
+            document.defaultPostAnimation = this.element.dataset.orchestratorDefaultPostAnimation;
+
     }
 
     getFormState() {

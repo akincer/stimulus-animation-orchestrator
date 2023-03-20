@@ -1,5 +1,5 @@
 import {positionEnd, positionStart, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
-import {getUnit, midpoint} from "./helper-functions";
+import {calculateMidpointColor, getCssVariableColor, getUnit, isCssVariable, midpoint} from "./helper-functions";
 
 export function getExitToLeftFrame(element, position, section, options = {}) {
     let frame = {};
@@ -230,4 +230,32 @@ export function getResizeWidthFrame(element, position, section, options = {}) {
 
     return frame;
 
+}
+
+export function getChangeColorFrame(element, position, section, options = {}) {
+    let frame = {}, property, startColor, endcolor = options.endColor;
+
+    !!options.property ? property = options.property : property = 'background';
+    !!options.startColor ? startColor = options.startColor : startColor = window.getComputedStyle(element)[property];
+
+    if (isCssVariable(startColor))
+        startColor = getCssVariableColor(startColor);
+
+    if (isCssVariable(endcolor))
+        endcolor = getCssVariableColor(endcolor);
+
+    if (position === positionStart) {
+        if (section === sectionFull || section === sectionFirstHalf)
+            frame[property] = startColor;
+        else
+            frame[property] = calculateMidpointColor(startColor, endcolor);
+    }
+
+    if (position === positionEnd) {
+        if (section === sectionFull || section === sectionSecondHalf)
+            frame[property] = endcolor;
+
+        if (section === sectionFirstHalf)
+            frame[property] = calculateMidpointColor(startColor, endcolor);
+    }
 }

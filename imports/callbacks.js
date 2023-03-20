@@ -111,7 +111,7 @@ export const turboBeforeRenderCallback = async function (event) {
             nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
             nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
             nextPageSubscriber.style.width = boxAfter.width.toString() + 'px';
-            nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).toString();
+            nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).opacity.toString();
         }
         delete document.animations['turbo:before-render'][subscriber];
     }

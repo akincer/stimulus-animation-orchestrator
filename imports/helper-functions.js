@@ -50,3 +50,46 @@ export function getUnit(str) {
     // Return the text portion of the string
     return str.slice(start, end);
 }
+
+export function isCssVariable(str) {
+    return typeof str === "string" && str.trim().startsWith("--") && str.trim().length > 2;
+}
+
+export function getCssVariableColor(variableName) {
+    // Get the computed value of the CSS variable
+    const computedValue = getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+
+    // Check if the computed value is a color value
+    if (/^#[0-9A-F]{6}$/i.test(computedValue) || /^#[0-9A-F]{3}$/i.test(computedValue) || /^rgba?\(.+\)$/i.test(computedValue) || /^hsla?\(.+\)$/i.test(computedValue)) {
+        return computedValue;
+    } else {
+        return null; // The computed value is not a valid color value
+    }
+}
+
+export function calculateMidpointColor(color1, color2) {
+    let color1normalized = color1, color2normalized = color2;
+
+    if (isCssVariable(color1))
+        color1normalized = getCssVariableColor(color1)
+
+    if (isCssVariable(color2))
+        color2normalized = getCssVariableColor(color2)
+
+    // Extract the color format and components for color1
+    const color1Format = color1normalized.substring(0, 3);
+    const color1Components = color1normalized.substring(3).match(/[A-Za-z0-9]{2}/g).map(val => parseInt(val, 16));
+
+    // Extract the color format and components for color2
+    const color2Format = color2normalized.substring(0, 3);
+    const color2Components = color2normalized.substring(3).match(/[A-Za-z0-9]{2}/g).map(val => parseInt(val, 16));
+
+    // Calculate the midpoint between the components
+    const midpointComponents = color1Components.map((val, index) => Math.round((val + color2Components[index]) / 2));
+
+    // Construct the midpoint color in the original format
+    let midpointColor = color1Format;
+    midpointComponents.forEach(component => midpointColor += component.toString(16).toUpperCase().padStart(2, '0'));
+
+    return midpointColor;
+}
