@@ -76,6 +76,9 @@ export function calculateMidpointColor(color1, color2) {
     if (isCssVariable(color2))
         color2normalized = getCssVariableColor(color2)
 
+    console.log("-> color1", color1, ' color2', color2);
+    console.log("-> color1normalized", color1normalized, 'color2normalized', color2normalized);
+
     // Extract the color format and components for color1
     const color1Format = color1normalized.substring(0, 3);
     const color1Components = color1normalized.substring(3).match(/[A-Za-z0-9]{2}/g).map(val => parseInt(val, 16));
