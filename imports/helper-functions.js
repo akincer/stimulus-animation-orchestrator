@@ -57,7 +57,7 @@ export function isCssVariable(str) {
 
 export function getCssVariableColor(variableName) {
     // Get the computed value of the CSS variable
-    const computedValue = getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+    const computedValue = getComputedStyle(document.body).getPropertyValue(variableName).trim();
 
     // Check if the computed value is a color value
     if (/^#[0-9A-F]{6}$/i.test(computedValue) || /^#[0-9A-F]{3}$/i.test(computedValue) || /^rgba?\(.+\)$/i.test(computedValue) || /^hsla?\(.+\)$/i.test(computedValue)) {
