@@ -238,6 +238,8 @@ export function getChangeColorFrame(element, position, section, options = {}) {
     !!options.property ? property = options.property : property = 'background';
     !!options.startColor ? startColor = options.startColor : startColor = window.getComputedStyle(element)[property];
 
+    console.log("-> startColor", startColor);
+
     if (isCssVariable(startColor))
         startColor = getCssVariableColor(startColor);
 
