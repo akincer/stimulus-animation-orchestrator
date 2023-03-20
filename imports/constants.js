@@ -48,4 +48,5 @@ export const fillColorFromLeft = 'fillColorFromLeft';
 export const fillColorFromRight = 'fillColorFromRight';
 export const fillColorFromBottom = 'fillColorFromBottom';
 export const fillColorFromTop = 'fillColorFromTop';
+export const changeColor = 'changeColor';
 
