@@ -236,7 +236,7 @@ export function getChangeColorFrame(element, position, section, options = {}) {
     let frame = {}, property, startColor, endcolor = options.endColor;
 
     !!options.property ? property = options.property : property = 'background';
-    !!options.startColor ? startColor = options.startColor : startColor = window.getComputedStyle(element)[property];
+    !!options.startColor ? startColor = options.startColor : startColor = window.getComputedStyle(element).getPropertyValue(property);
 
     console.log("-> startColor", startColor);
 
