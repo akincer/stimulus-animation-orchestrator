@@ -70,7 +70,7 @@ export function skipDefaultAnimation() {
 }
 
 export function parseOptions (optionsRaw) {
-    let options = {}, optionsData = optionsRaw.split('#');
+    let options = {}, optionsData = optionsRaw.split(optionsDelimiter);
     for (const optionIndex in optionsData) {
         let pair = optionsData[optionIndex].split('=');
         if (!optionsData[optionIndex].includes('='))
