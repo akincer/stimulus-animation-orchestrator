@@ -22,7 +22,7 @@ export const positionStart = 'start';
 export const positionEnd = 'end';
 export const directionForwards = 'forwards';
 export const typeSingle = 'single';
-export const optionsDelimiter = '#';
+export const optionsDelimiter = '||';
 export const subscriptionDelimiter = '->';
 
 // Animation actions
