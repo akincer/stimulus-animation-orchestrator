@@ -254,14 +254,14 @@ export function getChangeColorFrame(element, position, section, options = {}) {
         if (section === sectionFull || section === sectionFirstHalf)
             frame[property] = startColor;
         else
-            frame[property] = calculateMidpointColor(startColor, endcolor);
+            frame[property] = calculateMidpointColor(startColor, endColor);
     }
 
     if (position === positionEnd) {
         if (section === sectionFull || section === sectionSecondHalf)
-            frame[property] = endcolor;
+            frame[property] = endColor;
 
         if (section === sectionFirstHalf)
-            frame[property] = calculateMidpointColor(startColor, endcolor);
+            frame[property] = calculateMidpointColor(startColor, endColor);
     }
 }
