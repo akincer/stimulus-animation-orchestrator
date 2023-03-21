@@ -71,13 +71,15 @@ export function skipDefaultAnimation() {
 export function parseOptions (optionsRaw) {
     let options = {}, optionsData = optionsRaw.split('#');
     for (const optionIndex in optionsData) {
-        if (optionsData[optionIndex].includes('=')) {
-            let key = optionsData[optionIndex].split('=')[0], value = optionsData[optionIndex].split('=')[1];
-            options[key] = value;
-        } else {
-            options.animation = optionsData[optionIndex];
-            options.type = typeSingle
-        }
+        let pair = optionsData[optionIndex].split('=');
+        if (!optionsData[optionIndex].includes('='))
+            console.log("-> optionsData invalid options key pair", optionsData);
+        let key = pair[0];
+        let value = pair[1];
+        options[key] = value;
     }
+    if (!options['type'])
+        options['type'] = typeSingle
+
     return options;
 }
