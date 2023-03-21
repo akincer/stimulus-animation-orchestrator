@@ -81,6 +81,6 @@ export function parseOptions (optionsRaw) {
     if (!options['type'])
         options['type'] = typeSingle
 
-    console.log("-> parseOptions options", options);
+    console.log("-> parseOptions parsed options", options);
     return options;
 }
