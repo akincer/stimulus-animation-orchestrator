@@ -3,6 +3,7 @@ import {capitalizeFirstLetter} from "./helper-functions";
 import * as animations from "./animations"
 
 export function buildKeyFrameEffect(subscriber, subscription, section = sectionFull) {
+    console.log("-> buildKeyFrameEffect subscriber", subscriber, 'subscription', subscription, 'section', section);
     let frames = [], startFrame = {}, endFrame = {};
     let frameEffectOptions = {}, frameOptions = {};
     let animationDetail = subscription['detail'];
