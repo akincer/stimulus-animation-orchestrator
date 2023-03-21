@@ -233,22 +233,22 @@ export function getResizeWidthFrame(element, position, section, options = {}) {
 }
 
 export function getChangeColorFrame(element, position, section, options = {}) {
-    let frame = {}, property, startColor, endcolor = options.endColor;
+    let frame = {}, property, startColor, endColor = options.endColor;
 
     !!options.property ? property = options.property : property = 'background';
     !!options.startColor ? startColor = options.startColor : startColor = window.getComputedStyle(element).getPropertyValue(property);
 
     console.log("-> getChangeColorFrame options", options);
-    console.log("-> startColor", startColor);
+    console.log("-> startColor", startColor, " endColor", endColor);
 
     if (isCssVariable(startColor))
         startColor = getCssVariableColor(startColor);
 
-    if (isCssVariable(endcolor))
-        endcolor = getCssVariableColor(endcolor);
+    if (isCssVariable(endColor))
+        endColor = getCssVariableColor(endColor);
 
     console.log("-> after getCssVariableColor startColor", startColor);
-    console.log("-> after getCssVariableColor endcolor", endcolor);
+    console.log("-> after getCssVariableColor endColor", endColor);
 
     if (position === positionStart) {
         if (section === sectionFull || section === sectionFirstHalf)
