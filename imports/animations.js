@@ -274,4 +274,6 @@ export function getChangeColorFrame(element, position, section, options = {}) {
         if (section === sectionFirstHalf)
             frame[property] = midpointColor(startColor, endColor);
     }
+
+    return frame;
 }
