@@ -109,6 +109,7 @@ export const turboBeforeRenderCallback = async function (event) {
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
         if (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
             console.log("-> turboBeforeRenderCallback CHANGING WIDTH, OPACITY, LEFT AND TOP FOR nextPageSubscriber", nextPageSubscriber);
+            console.log("-> turboBeforeRenderCallback document.animations['turbo:before-render'][subscriber]", document.animations['turbo:before-render'][subscriber]);
             nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
             nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
             nextPageSubscriber.style.width = boxAfter.width.toString() + 'px';
