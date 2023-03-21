@@ -49,4 +49,8 @@ export const fillColorFromRight = 'fillColorFromRight';
 export const fillColorFromBottom = 'fillColorFromBottom';
 export const fillColorFromTop = 'fillColorFromTop';
 export const changeColor = 'changeColor';
+export const moveToTarget = 'moveToTarget';
+export const resizeWidth = 'resizeWidth';
+export const fadeIn = 'fadeIn';
+export const fadeOut = 'fadeOut';
 

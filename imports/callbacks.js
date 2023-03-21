@@ -1,6 +1,6 @@
 import {fetchItem, storeItem} from "./helper-functions";
 import {
-    directionForwards,
+    directionForwards, fadeIn, fadeOut, moveToTarget, resizeWidth,
     scheduleComplete,
     schedulePostNextPageRender, schedulePreNextPageRender,
     scheduleSpan,
@@ -107,13 +107,20 @@ export const turboBeforeRenderCallback = async function (event) {
     for (const subscriber in document.animations['turbo:before-render']) {
         let boxAfter = document.animations['turbo:before-render'][subscriber].element.getBoundingClientRect();
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
+        let animation = document.animations['turbo:before-render'][subscriber].animation;
         if (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
             console.log("-> turboBeforeRenderCallback CHANGING WIDTH, OPACITY, LEFT AND TOP FOR nextPageSubscriber", nextPageSubscriber);
             console.log("-> turboBeforeRenderCallback document.animations['turbo:before-render'][subscriber]", document.animations['turbo:before-render'][subscriber]);
-            nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
-            nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
-            nextPageSubscriber.style.width = boxAfter.width.toString() + 'px';
-            nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).opacity.toString();
+            if (animation === moveToTarget) {
+                nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
+                nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
+            }
+            if (animation === resizeWidth) {
+                nextPageSubscriber.style.width = boxAfter.width.toString() + 'px';
+            }
+            if (animation === fadeIn || animation == fadeOut) {
+                nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).opacity.toString();
+            }
         }
         delete document.animations['turbo:before-render'][subscriber];
     }
