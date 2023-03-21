@@ -12,7 +12,7 @@ import {
     scheduleImmediate,
     scheduleNow, schedulePostNextPageRender, schedulePreNextPageRender,
     scheduleSpan, scheduleSpanPages,
-    sectionFull
+    sectionFull, subscriptionDelimiter
 } from "../imports/constants";
 import * as orchestratorCallbacks from "../imports/callbacks";
 import * as orchestratorHelpers from "../imports/helper-functions";
@@ -309,7 +309,7 @@ class src_default extends Controller {
         let keyValuePairs = subscriptionText.trim().split(':');
 
         for (const keyValuePairIndex in keyValuePairs) {
-            let pair = keyValuePairs[keyValuePairIndex].split('->');
+            let pair = keyValuePairs[keyValuePairIndex].split(subscriptionDelimiter);
             let key = pair[0];
             let value = pair[1];
             parsedKeyValuePairs[key] = value;

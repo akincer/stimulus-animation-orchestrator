@@ -1,4 +1,4 @@
-import {positionEnd, positionStart, scheduleSpan, sectionFull, typeSingle} from "./constants";
+import {optionsDelimiter, positionEnd, positionStart, scheduleSpan, sectionFull, typeSingle} from "./constants";
 import {capitalizeFirstLetter} from "./helper-functions";
 import * as animations from "./animations"
 
@@ -14,7 +14,7 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     let animationSteps = animationDetail.split(',');
     console.log("->buildKeyFrameEffect animationSteps", animationSteps);
     for (const stepIndex in animationSteps) {
-        if (animationSteps[stepIndex].includes('#')) {
+        if (animationSteps[stepIndex].includes(optionsDelimiter)) {
             // Additional configuration parameters
             frameOptions = parseOptions(animationSteps[stepIndex]);
             frameFunction = 'get' + capitalizeFirstLetter(subscription.animation) + 'Frame';
