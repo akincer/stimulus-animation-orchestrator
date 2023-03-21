@@ -17,7 +17,7 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
         if (animationSteps[stepIndex].includes('#')) {
             // Additional configuration parameters
             frameOptions = parseOptions(animationSteps[stepIndex]);
-            frameFunction = 'get' + capitalizeFirstLetter(frameOptions.animation) + 'Frame';
+            frameFunction = 'get' + capitalizeFirstLetter(subscription.animation) + 'Frame';
         } else {
             frameFunction = 'get' + capitalizeFirstLetter(animationSteps[stepIndex]) + 'Frame';
         }

@@ -360,6 +360,7 @@ class src_default extends Controller {
                         if (inlineAnimationSubscription.source === eventSource && inlineAnimationSubscription.event === eventType) {
                             subscribers[candidateSubscriber.id].push({
                                 element: candidateSubscriber,
+                                animation: inlineAnimationSubscription.animation,
                                 detail: inlineAnimationSubscription.detail,
                                 schedule: inlineAnimationSubscription.schedule,
                                 direction: inlineAnimationSubscription.direction,
