@@ -108,6 +108,7 @@ export const turboBeforeRenderCallback = async function (event) {
         let boxAfter = document.animations['turbo:before-render'][subscriber].element.getBoundingClientRect();
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
         if (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
+            console.log("-> turboBeforeRenderCallback CHANGING WIDTH, OPACITY, LEFT AND TOP FOR nextPageSubscriber", nextPageSubscriber);
             nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
             nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
             nextPageSubscriber.style.width = boxAfter.width.toString() + 'px';
@@ -170,7 +171,7 @@ export const turboRenderCallback = async function (event) {
         if (document.animations['turbo:render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
             if (document.moveToTarget[subscriber]) {
                 let rect = nextPageSubscriber.getBoundingClientRect();
-                console.log("-> turboRenderCallback nextPageSubscriber", nextPageSubscriber);
+                console.log("-> turboRenderCallback CHANGING LEFT AND TOP FOR nextPageSubscriber", nextPageSubscriber);
                 nextPageSubscriber.style.left = rect.left.toString() + 'px';
                 nextPageSubscriber.style.top = rect.top.toString() + 'px';
                 console.log("-> turboRenderCallback turboRenderCallback LEFT: ", rect.left.toString() + 'px', ' TOP: ', rect.top.toString() + 'px');
@@ -181,6 +182,7 @@ export const turboRenderCallback = async function (event) {
 
             if (document.resizeWidth[subscriber]) {
                 let rect = nextPageSubscriber.getBoundingClientRect();
+                console.log("-> turboRenderCallback CHANGING WIDTH FOR nextPageSubscriber", nextPageSubscriber);
                 nextPageSubscriber.style.width = rect.width.toString() + 'px';
                 animationControllers[subscriber].cancel();
                 delete document.resizeWidth[subscriber];
