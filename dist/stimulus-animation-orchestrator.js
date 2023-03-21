@@ -315,6 +315,7 @@ class src_default extends Controller {
             parsedKeyValuePairs[key] = value;
         }
 
+        console.log("-> parseInlineSubscription parsedKeyValuePairs", parsedKeyValuePairs);
         return parsedKeyValuePairs;
     }
 
