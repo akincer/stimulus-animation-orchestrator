@@ -142,6 +142,7 @@ export function getFadeInFrame(element, position, section, options = {}) {
 export function getMoveToTargetFrame(element, position, section, options = {}) {
     let frame = {};
     let rect = element.getBoundingClientRect();
+    console.log("-> getMoveToTargetFrame element", element);
     console.log("-> moveToTarget rect", rect);
     console.log("-> getMoveToTargetFrame options", options);
 
