@@ -247,7 +247,7 @@ export function getChangeColorFrame(element, position, section, options = {}) {
     !!options.startColor ? startColor = options.startColor : startColor = window.getComputedStyle(element).getPropertyValue(property);
 
     console.log("-> getChangeColorFrame options", options);
-    console.log("-> startColor", startColor, " endColor", endColor);
+    console.log("-> getChangeColorFrame startColor", startColor, " endColor", endColor);
 
     if (isCssVariable(startColor))
         startColor = getCssVariableColor(startColor);
@@ -255,8 +255,8 @@ export function getChangeColorFrame(element, position, section, options = {}) {
     if (isCssVariable(endColor))
         endColor = getCssVariableColor(endColor);
 
-    console.log("-> after getCssVariableColor startColor", startColor);
-    console.log("-> after getCssVariableColor endColor", endColor);
+    console.log("-> getChangeColorFrame after getCssVariableColor startColor", startColor);
+    console.log("-> getChangeColorFrame after getCssVariableColor endColor", endColor);
 
 
 
@@ -275,5 +275,6 @@ export function getChangeColorFrame(element, position, section, options = {}) {
             frame[property] = midpointColor(startColor, endColor);
     }
 
+    console.log("-> getChangeColorFrame frame", frame);
     return frame;
 }
