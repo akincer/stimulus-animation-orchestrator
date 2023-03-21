@@ -111,3 +111,62 @@ export function isRgb(str) {
 export function isRgba(str) {
     return /^\d+,\s?\d+,\s?\d+,\s?\d+$/i.test(str);
 }
+
+export function convertToRGB(color) {
+    if (color.startsWith('#')) {
+        const hex = color.substring(1);
+        const red = parseInt(hex.substring(0, 2), 16);
+        const green = parseInt(hex.substring(2, 4), 16);
+        const blue = parseInt(hex.substring(4, 6), 16);
+        return { red, green, blue };
+    } else if (color.startsWith('rgb')) {
+        const values = color.substring(color.indexOf('(') + 1, color.indexOf(')')).split(',');
+        return {
+            red: parseInt(values[0]),
+            green: parseInt(values[1]),
+            blue: parseInt(values[2]),
+        };
+    } else if (color.startsWith('hsl')) {
+        const hslToRgb = (h, s, l) => {
+            const hueToRgb = (p, q, t) => {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1 / 6) return p + (q - p) * 6 * t;
+                if (t < 1 / 2) return q;
+                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                return p;
+            };
+
+            h /= 360;
+            s /= 100;
+            l /= 100;
+
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
+
+            return {
+                red: Math.round(hueToRgb(p, q, h + 1 / 3) * 255),
+                green: Math.round(hueToRgb(p, q, h) * 255),
+                blue: Math.round(hueToRgb(p, q, h - 1 / 3) * 255),
+            };
+        };
+
+        const values = color.substring(color.indexOf('(') + 1, color.indexOf(')')).split(',');
+        return hslToRgb(parseFloat(values[0]), parseFloat(values[1]), parseFloat(values[2]));
+    } else {
+        throw new Error('Unsupported color format');
+    }
+}
+
+export function midpointColor(color1, color2) {
+    const color1RGB = convertToRGB(color1);
+    const color2RGB = convertToRGB(color2);
+
+    const midpointRGB = {
+        red: Math.round((color1RGB.red + color2RGB.red) / 2),
+        green: Math.round((color1RGB.green + color2RGB.green) / 2),
+        blue: Math.round((color1RGB.blue + color2RGB.blue) / 2),
+    };
+
+    return `rgb(${midpointRGB.red}, ${midpointRGB.green}, ${midpointRGB.blue})`;
+}
