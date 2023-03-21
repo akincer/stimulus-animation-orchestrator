@@ -33,6 +33,7 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
             for (const property in tempFrame) {
                 endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
             }
+            console.log("-> startFrame", startFrame, "endFrame", endFrame, "element", element);
             frames.push(startFrame, endFrame);
         }
 
