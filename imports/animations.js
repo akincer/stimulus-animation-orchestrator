@@ -268,15 +268,16 @@ export function getChangeColorFrame(element, position, section, options = {}) {
 
 
     if (position === positionStart) {
-        if (section === sectionFull || section === sectionFirstHalf) {
-            frame[hyphenatedToCamelCase(property)] = startColor;
-            console.log("-> positionStart sectionFull or sectionFirstHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
-        }
-        else {
-            frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
-            console.log("-> positionStart sectionSecondHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
-        }
-
+        //if (section === sectionFull || section === sectionFirstHalf) {
+        //    frame[hyphenatedToCamelCase(property)] = startColor;
+        //    console.log("-> positionStart sectionFull or sectionFirstHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
+        //}
+        //else {
+        //    frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
+        //    console.log("-> positionStart sectionSecondHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
+        //}
+        frame[hyphenatedToCamelCase(property)] = startColor;
+        console.log("-> positionStart sectionFull or sectionFirstHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
     }
 
     if (position === positionEnd) {
@@ -287,7 +288,8 @@ export function getChangeColorFrame(element, position, section, options = {}) {
         }
 
         if (section === sectionFirstHalf) {
-            frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
+            //frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
+            frame[hyphenatedToCamelCase(property)] = startColor;
             console.log("-> positionEnd sectionFirstHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
         }
 
