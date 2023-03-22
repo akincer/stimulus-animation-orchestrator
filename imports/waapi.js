@@ -48,6 +48,7 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     !!subscription['direction'] ? frameEffectOptions['fill'] = subscription['direction'] : frameEffectOptions['fill'] = document.orchestratorDefaultFillDirection;
     !!subscription['easing'] ? frameEffectOptions['easing'] = subscription['easing'] : frameEffectOptions['easing'] = document.orchestratorDefaultEasing;
 
+
     console.log("-> buildKeyFrameEffect frameEffectOptions", frameEffectOptions);
 
     return new KeyframeEffect(
