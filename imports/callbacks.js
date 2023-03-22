@@ -1,5 +1,6 @@
 import {fetchItem, storeItem} from "./helper-functions";
 import {
+    changeColor,
     directionForwards, fadeIn, fadeOut, moveToTarget, resizeWidth,
     scheduleComplete,
     schedulePostNextPageRender, schedulePreNextPageRender,
@@ -120,6 +121,9 @@ export const turboBeforeRenderCallback = async function (event) {
             }
             if (animation === fadeIn || animation == fadeOut) {
                 nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).opacity.toString();
+            }
+            if (animation === changeColor) {
+                nextPageSubscriber.style.backgroundColor = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).backgroundColor;
             }
         }
         delete document.animations['turbo:before-render'][subscriber];
