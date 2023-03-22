@@ -55,4 +55,7 @@ export const moveToTarget = 'moveToTarget';
 export const resizeWidth = 'resizeWidth';
 export const fadeIn = 'fadeIn';
 export const fadeOut = 'fadeOut';
-
+export const easeInOut = 'ease-in-out';
+export const easeIn = 'ease-in';
+export const easeOut = 'ease-out';
+export const ease = 'ease';

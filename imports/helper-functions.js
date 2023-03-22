@@ -171,3 +171,7 @@ export function midpointColor(color1, color2) {
 
     return `rgb(${midpointRGB.red}, ${midpointRGB.green}, ${midpointRGB.blue})`;
 }
+
+export function hyphenatedToCamelCase(str) {
+    return str.replace(/-./g, match => match.charAt(1).toUpperCase());
+}

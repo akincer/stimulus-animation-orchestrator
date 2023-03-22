@@ -1,5 +1,14 @@
-import {optionsDelimiter, positionEnd, positionStart, scheduleSpan, sectionFull, typeSingle} from "./constants";
-import {capitalizeFirstLetter} from "./helper-functions";
+import {
+    easeIn, easeOut,
+    optionsDelimiter,
+    positionEnd,
+    positionStart,
+    scheduleSpan,
+    sectionFirstHalf,
+    sectionFull, sectionSecondHalf,
+    typeSingle
+} from "./constants";
+import {capitalizeFirstLetter, hyphenatedToCamelCase} from "./helper-functions";
 import * as animations from "./animations"
 
 export function buildKeyFrameEffect(subscriber, subscription, section = sectionFull) {
@@ -46,8 +55,15 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
 
     !!subscription['duration'] ? frameEffectOptions['duration'] = subscription['duration'] : frameEffectOptions['duration'] = document.defaultAnimationDuration;
     !!subscription['direction'] ? frameEffectOptions['fill'] = subscription['direction'] : frameEffectOptions['fill'] = document.orchestratorDefaultFillDirection;
-    !!subscription['easing'] ? frameEffectOptions['easing'] = subscription['easing'] : frameEffectOptions['easing'] = document.orchestratorDefaultEasing;
-    !!subscription['easing'] ? console.log("-> buildKeyFrameEffect !!subscription['easing'] returned true - actual value: ", subscription['easing']) : console.log("-> buildKeyFrameEffect !!subscription['easing'] returned false using default - actual value: ", subscription['easing'], 'Truth check value: ', !!subscription['easing']);
+    if (!!subscription['easing'] && section === sectionFirstHalf)
+        frameEffectOptions['easing'] = easeIn
+    if (!!subscription['easing'] && section === sectionSecondHalf)
+        frameEffectOptions['easing'] = easeOut
+    if (!!subscription['easing'] && section === sectionFull)
+        frameEffectOptions['easing'] = subscription['easing']
+    if (!subscription['easing'])
+        frameEffectOptions['easing'] = document.orchestratorDefaultEasing;
+
 
     console.log("-> buildKeyFrameEffect frameEffectOptions", frameEffectOptions);
     console.log("-> buildKeyFrameEffect subscription", subscription);
@@ -79,7 +95,7 @@ export function parseOptions (optionsRaw) {
         let pair = optionsData[optionIndex].split('=');
         if (!optionsData[optionIndex].includes('='))
             console.log("-> optionsData invalid options key pair", optionsData);
-        let key = pair[0];
+        let key = hyphenatedToCamelCase(pair[0]);
         let value = pair[1];
         options[key] = value;
     }
