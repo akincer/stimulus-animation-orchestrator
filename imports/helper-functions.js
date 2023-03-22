@@ -59,12 +59,13 @@ export function getCssVariableColor(variableName) {
     // Get the computed value of the CSS variable
     let computedValue = getComputedStyle(document.body).getPropertyValue(variableName).trim();
 
-    console.log("-> computedValue", computedValue);
+    console.log("-> computedValue BEFORE", computedValue);
     if (isRgb(computedValue))
         computedValue = 'rgb(' + computedValue + ')';
 
     if (isRgba(computedValue))
         computedValue = 'rgba(' + computedValue + ')';
+    console.log("-> computedValue AFTER", computedValue);
 
     // Check if the computed value is a color value
     if (/^#[0-9A-F]{6}$/i.test(computedValue) || /^#[0-9A-F]{3}$/i.test(computedValue) || /^rgb?\(.+\)$/i.test(computedValue) || /^rgba?\(.+\)$/i.test(computedValue) || /^hsla?\(.+\)$/i.test(computedValue)) {
