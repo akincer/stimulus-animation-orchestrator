@@ -40,13 +40,15 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
 
 
     }
-    console.log("-> startFrame", startFrame, 'frameFunction', frameFunction);
-    console.log("-> endFrame", endFrame, 'frameFunction', frameFunction);
+    console.log("-> buildKeyFrameEffect startFrame", startFrame, 'frameFunction', frameFunction);
+    console.log("-> buildKeyFrameEffect endFrame", endFrame, 'frameFunction', frameFunction);
 
 
     !!subscription['duration'] ? frameEffectOptions['duration'] = subscription['duration'] : frameEffectOptions['duration'] = document.defaultAnimationDuration;
     !!subscription['direction'] ? frameEffectOptions['fill'] = subscription['direction'] : frameEffectOptions['fill'] = document.orchestratorDefaultFillDirection;
     !!subscription['easing'] ? frameEffectOptions['easing'] = subscription['easing'] : document.orchestratorDefaultEasing;
+
+    console.log("-> buildKeyFrameEffect frameEffectOptions", frameEffectOptions);
 
     return new KeyframeEffect(
         element,
