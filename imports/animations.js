@@ -263,8 +263,10 @@ export function getChangeColorFrame(element, position, section, options = {}) {
     if (position === positionStart) {
         if (section === sectionFull || section === sectionFirstHalf)
             frame[hyphenatedToCamelCase(property)] = startColor;
-        else
+        else {
             frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
+            console.log("-> frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
+        }
 
     }
 
@@ -272,8 +274,10 @@ export function getChangeColorFrame(element, position, section, options = {}) {
         if (section === sectionFull || section === sectionSecondHalf)
             frame[hyphenatedToCamelCase(property)] = endColor;
 
-        if (section === sectionFirstHalf)
+        if (section === sectionFirstHalf) {
             frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
+            console.log("-> frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
+        }
 
     }
 
