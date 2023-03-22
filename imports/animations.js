@@ -265,6 +265,7 @@ export function getChangeColorFrame(element, position, section, options = {}) {
             frame[property] = startColor;
         else
             frame[property] = midpointColor(startColor, endColor);
+        frame['offset'] = 0;
     }
 
     if (position === positionEnd) {
@@ -273,6 +274,7 @@ export function getChangeColorFrame(element, position, section, options = {}) {
 
         if (section === sectionFirstHalf)
             frame[property] = midpointColor(startColor, endColor);
+        frame['offset'] = 1;
     }
 
     console.log("-> getChangeColorFrame frame", frame);
