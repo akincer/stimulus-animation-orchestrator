@@ -246,6 +246,13 @@ export function getChangeColorFrame(element, position, section, options = {}) {
     !!options.property ? property = options.property : property = 'background';
     !!options.startColor ? startColor = options.startColor : startColor = window.getComputedStyle(element).getPropertyValue(property);
 
+    if (!!options.startColor) {
+        console.log("-> getChangeColorFrame options.startColor true, value: ", options.startColor);
+    } else {
+        console.log("-> getChangeColorFrame options.startColor false, calculated value: ", window.getComputedStyle(element).getPropertyValue(property));
+    }
+
+
     console.log("-> getChangeColorFrame options", options);
     console.log("-> getChangeColorFrame startColor", startColor, " endColor", endColor);
 
@@ -274,6 +281,7 @@ export function getChangeColorFrame(element, position, section, options = {}) {
 
     if (position === positionEnd) {
         if (section === sectionFull || section === sectionSecondHalf) {
+
             frame[hyphenatedToCamelCase(property)] = endColor;
             console.log("-> positionEnd sectionFull or sectionSecondHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
         }
