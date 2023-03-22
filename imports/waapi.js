@@ -50,6 +50,7 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
 
 
     console.log("-> buildKeyFrameEffect frameEffectOptions", frameEffectOptions);
+    console.log("-> buildKeyFrameEffect subscription[", subscription[);
 
     return new KeyframeEffect(
         element,
