@@ -2,7 +2,7 @@ import {positionEnd, positionStart, sectionFirstHalf, sectionFull, sectionSecond
 import {
     calculateMidpointColor,
     getCssVariableColor,
-    getUnit,
+    getUnit, hyphenatedToCamelCase,
     isCssVariable,
     midpoint,
     midpointColor
@@ -262,19 +262,19 @@ export function getChangeColorFrame(element, position, section, options = {}) {
 
     if (position === positionStart) {
         if (section === sectionFull || section === sectionFirstHalf)
-            frame[property] = startColor;
+            frame[hyphenatedToCamelCase(property)] = startColor;
         else
-            frame[property] = midpointColor(startColor, endColor);
-        //frame['offset'] = 0;
+            frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
+
     }
 
     if (position === positionEnd) {
         if (section === sectionFull || section === sectionSecondHalf)
-            frame[property] = endColor;
+            frame[hyphenatedToCamelCase(property)] = endColor;
 
         if (section === sectionFirstHalf)
-            frame[property] = midpointColor(startColor, endColor);
-        //frame['offset'] = 1;
+            frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
+
     }
 
     console.log("-> getChangeColorFrame frame", frame);
