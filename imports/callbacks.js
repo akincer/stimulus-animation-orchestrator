@@ -62,7 +62,9 @@ export const turboBeforeRenderCallback = async function (event) {
     for (const subscriber in document.animations['turbo:before-render']) {
         let element = document.getElementById(subscriber);
         let rect = element.getBoundingClientRect();
-        console.log("-> turboBeforeRenderCallback element to animate", element, 'rect', rect);
+        console.log("-> turboBeforeRenderCallback subscriber: ", subscriber);
+        console.log("-> turboBeforeRenderCallback element.id: ", element.id);
+        console.log("-> turboBeforeRenderCallback schedule: ", document.animations['turbo:before-render'][subscriber]['schedule']);
 
         let animationKeyFrameEffect;
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
