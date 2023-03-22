@@ -189,9 +189,7 @@ export const turboRenderCallback = async function (event) {
                 nextPageSubscriber.style.top = rect.top.toString() + 'px';
                 console.log("-> turboRenderCallback turboRenderCallback LEFT: ", rect.left.toString() + 'px', ' TOP: ', rect.top.toString() + 'px');
                 rect = nextPageSubscriber.getBoundingClientRect();
-                console.log("-> BEFORE cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color'));
                 animationControllers[subscriber].cancel();
-                console.log("-> AFTER cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color'));
                 delete document.moveToTarget[subscriber];
             }
 
@@ -201,6 +199,12 @@ export const turboRenderCallback = async function (event) {
                 nextPageSubscriber.style.width = rect.width.toString() + 'px';
                 animationControllers[subscriber].cancel();
                 delete document.resizeWidth[subscriber];
+            }
+
+            if (document.changeColor[subscriber]) {
+                console.log("-> BEFORE cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color'));
+                nextPageSubscriber.style.backgroundColor = window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color');
+                console.log("-> AFTER cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color'));
             }
         }
         delete document.animations['turbo:render'][subscriber];

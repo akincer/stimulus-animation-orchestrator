@@ -69,6 +69,7 @@ class src_default extends Controller {
             document.animations['immediate'] = {};
             document.moveToTarget = {};
             document.resizeWidth = {};
+            document.changeColor = {};
         }
     }
 
