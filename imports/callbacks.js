@@ -123,7 +123,8 @@ export const turboBeforeRenderCallback = async function (event) {
                 nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).opacity.toString();
             }
             if (animation === changeColor) {
-                nextPageSubscriber.style.backgroundColor = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).backgroundColor;
+                console.log("-> window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).getPropertyValue('background-color')", window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).getPropertyValue('background-color'));
+                nextPageSubscriber.style.backgroundColor = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).getPropertyValue('background-color');
             }
         }
         delete document.animations['turbo:before-render'][subscriber];
