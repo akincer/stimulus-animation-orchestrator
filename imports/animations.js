@@ -263,11 +263,11 @@ export function getChangeColorFrame(element, position, section, options = {}) {
     if (position === positionStart) {
         if (section === sectionFull || section === sectionFirstHalf) {
             frame[hyphenatedToCamelCase(property)] = startColor;
-            console.log("-> frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
+            console.log("-> positionStart sectionFull or sectionFirstHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
         }
         else {
             frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
-            console.log("-> frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
+            console.log("-> positionStart sectionSecondHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
         }
 
     }
@@ -275,12 +275,12 @@ export function getChangeColorFrame(element, position, section, options = {}) {
     if (position === positionEnd) {
         if (section === sectionFull || section === sectionSecondHalf) {
             frame[hyphenatedToCamelCase(property)] = endColor;
-            console.log("-> frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
+            console.log("-> positionEnd sectionFull or sectionSecondHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
         }
 
         if (section === sectionFirstHalf) {
             frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
-            console.log("-> frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
+            console.log("-> positionEnd sectionFirstHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
         }
 
     }
