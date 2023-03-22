@@ -288,8 +288,8 @@ export function getChangeColorFrame(element, position, section, options = {}) {
         }
 
         if (section === sectionFirstHalf) {
-            //frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
-            frame[hyphenatedToCamelCase(property)] = startColor;
+            frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
+            //frame[hyphenatedToCamelCase(property)] = startColor;
             console.log("-> positionEnd sectionFirstHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
         }
 
