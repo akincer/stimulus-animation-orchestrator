@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
-import {capitalizeFirstLetter, fetchItem, storeItem} from "../imports/helper-functions";
+import {capitalizeFirstLetter, fetchItem, hyphenatedToCamelCase, storeItem} from "../imports/helper-functions";
 import {
     currentStepNumber,
     flowInstanceId,
@@ -310,7 +310,7 @@ class src_default extends Controller {
 
         for (const keyValuePairIndex in keyValuePairs) {
             let pair = keyValuePairs[keyValuePairIndex].split(subscriptionDelimiter);
-            let key = pair[0];
+            let key = hyphenatedToCamelCase(pair[0]);
             let value = pair[1];
             console.log("-> parseInlineSubscription key", key, 'value', value);
             parsedKeyValuePairs[key] = value;
