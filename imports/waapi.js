@@ -56,9 +56,9 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     !!subscription['duration'] ? frameEffectOptions['duration'] = subscription['duration'] : frameEffectOptions['duration'] = document.defaultAnimationDuration;
     !!subscription['direction'] ? frameEffectOptions['fill'] = subscription['direction'] : frameEffectOptions['fill'] = document.orchestratorDefaultFillDirection;
     if (!!subscription['easing'] && section === sectionFirstHalf)
-        frameEffectOptions['easing'] = easeOut
-    if (!!subscription['easing'] && section === sectionSecondHalf)
         frameEffectOptions['easing'] = easeIn
+    if (!!subscription['easing'] && section === sectionSecondHalf)
+        frameEffectOptions['easing'] = easeOut
     if (!!subscription['easing'] && section === sectionFull)
         frameEffectOptions['easing'] = subscription['easing']
     if (!subscription['easing'])
