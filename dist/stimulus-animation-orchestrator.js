@@ -312,6 +312,7 @@ class src_default extends Controller {
             let pair = keyValuePairs[keyValuePairIndex].split(subscriptionDelimiter);
             let key = pair[0];
             let value = pair[1];
+            console.log("-> parseInlineSubscription key", key, 'value', value);
             parsedKeyValuePairs[key] = value;
         }
 
