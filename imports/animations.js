@@ -293,6 +293,11 @@ export function getChangeColorFrame(element, position, section, options = {}) {
 
     }
 
-    console.log("-> getChangeColorFrame frame", frame);
+    console.log("-> getChangeColorFrame position:", position);
+    console.log("-> getChangeColorFrame section:", section);
+    console.log("-> getChangeColorFrame startColor:", startColor);
+    console.log("-> getChangeColorFrame endColor:", endColor);
+
+    console.log("-> getChangeColorFrame frame:", frame);
     return frame;
 }
