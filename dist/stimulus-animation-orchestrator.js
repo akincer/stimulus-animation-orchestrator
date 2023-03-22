@@ -366,6 +366,7 @@ class src_default extends Controller {
                                 schedule: inlineAnimationSubscription.schedule,
                                 direction: inlineAnimationSubscription.direction,
                                 duration: parseInt(inlineAnimationSubscription.duration),
+                                easing: inlineAnimationSubscription.easing,
                                 format: 'inline'
                             });
                         }
