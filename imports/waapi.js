@@ -47,7 +47,7 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     !!subscription['duration'] ? frameEffectOptions['duration'] = subscription['duration'] : frameEffectOptions['duration'] = document.defaultAnimationDuration;
     !!subscription['direction'] ? frameEffectOptions['fill'] = subscription['direction'] : frameEffectOptions['fill'] = document.orchestratorDefaultFillDirection;
     !!subscription['easing'] ? frameEffectOptions['easing'] = subscription['easing'] : frameEffectOptions['easing'] = document.orchestratorDefaultEasing;
-    !!subscription['easing'] ? console.log("-> !!subscription['easing'] returned true - actual value: ", subscription['easing']) : console.log("-> !!subscription['easing'] returned false using default - actual value: ", subscription['easing']);
+    !!subscription['easing'] ? console.log("-> !!subscription['easing'] returned true - actual value: ", subscription['easing']) : console.log("-> !!subscription['easing'] returned false using default - actual value: ", subscription['easing'], 'Truth check value: ', !!subscription['easing']);
 
     console.log("-> buildKeyFrameEffect frameEffectOptions", frameEffectOptions);
     console.log("-> buildKeyFrameEffect subscription", subscription);
