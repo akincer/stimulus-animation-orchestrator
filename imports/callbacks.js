@@ -63,6 +63,7 @@ export const turboBeforeRenderCallback = async function (event) {
         let element = document.getElementById(subscriber);
         console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
         console.log("-> turboBeforeRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
+        console.log("-> turboBeforeRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
         let rect = element.getBoundingClientRect();
         console.log("-> turboBeforeRenderCallback subscriber: ", subscriber);
         console.log("-> turboBeforeRenderCallback element.id: ", element.id);
@@ -153,6 +154,7 @@ export const turboRenderCallback = async function (event) {
         let element = document.getElementById(subscriber);
         console.log("-> turboRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
         console.log("-> turboRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
+        console.log("-> turboRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
         let rect = element.getBoundingClientRect();
         console.log("-> turboRenderCallback element to animate", element, 'rect', rect);
         let animationKeyFrameEffect;

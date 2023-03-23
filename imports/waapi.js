@@ -53,6 +53,7 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     console.log("-> buildKeyFrameEffect frameEffectOptions: ", frameEffectOptions);
     console.log("-> buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
     console.log("-> buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
+    console.log("-> buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
     console.log("-> buildKeyFrameEffect subscription:", subscription);
 
     return new KeyframeEffect(
