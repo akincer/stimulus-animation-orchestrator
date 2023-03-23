@@ -56,6 +56,10 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     console.log("-> buildKeyFrameEffect frameEffectOptions", frameEffectOptions);
     console.log("-> buildKeyFrameEffect subscription", subscription);
 
+    console.log("-> buildKeyFrameEffect startFrame: ", startFrame);
+    console.log("-> buildKeyFrameEffect endFrame: ", endFrame);
+    console.log("-> buildKeyFrameEffect frameEffectOptions: ", frameEffectOptions);
+
     return new KeyframeEffect(
         element,
         [
