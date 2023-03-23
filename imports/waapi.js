@@ -20,7 +20,7 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     let element = document.getElementById(subscriber);
     let frameFunction;
 
-    frameOptions = parseOptions(options);
+    !!options ? frameOptions = parseOptions(options) : frameOptions = { type: 'single' };
     frameFunction = 'get' + capitalizeFirstLetter(subscription.animation) + 'Frame';
 
     if (frameOptions.type === typeSingle) {

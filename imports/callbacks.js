@@ -96,6 +96,7 @@ export const turboBeforeRenderCallback = async function (event) {
                     animation: document.defaultPreAnimation,
                     schedule: schedulePreNextPageRender,
                     direction: directionForwards,
+                    options: 'type=single',
                     duration: parseInt(document.defaultAnimationDuration),
                     format: 'inline'
                 });
