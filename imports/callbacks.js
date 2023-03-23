@@ -166,9 +166,10 @@ export const turboRenderCallback = async function (event) {
             let animationKeyFrameEffect = buildKeyFrameEffect(element.id,
                 {
                     element: element,
-                    options: document.defaultPostAnimation,
+                    animation: document.defaultPostAnimation,
                     schedule: schedulePostNextPageRender,
                     direction: directionForwards,
+                    options: 'type=single',
                     duration: parseInt(document.defaultAnimationDuration),
                     format: 'inline'
                 });
