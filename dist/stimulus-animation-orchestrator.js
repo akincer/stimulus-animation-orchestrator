@@ -75,8 +75,8 @@ class src_default extends Controller {
 
     getConfig() {
 
-        document.orchestrator = {defaults: {}};
-
+        document.orchestrator = {};
+        document.orchestrator.defaultValues = {};
         if (!("orchestratorDefaultAnimationDuration" in this.element.dataset))
             document.defaultAnimationDuration = 600;
         else
