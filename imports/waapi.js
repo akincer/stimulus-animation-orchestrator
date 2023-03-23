@@ -15,40 +15,28 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     console.log("-> buildKeyFrameEffect subscriber", subscriber, 'subscription', subscription, 'section', section);
     let frames = [], startFrame = {}, endFrame = {};
     let frameEffectOptions = {}, frameOptions = {};
-    let animationDetail = subscription['detail'];
+    let options = subscription['options'];
     let schedule = subscription['schedule'];
     let element = document.getElementById(subscriber);
     let frameFunction;
 
-    let animationSteps = animationDetail.split(',');
-    console.log("->buildKeyFrameEffect animationSteps", animationSteps);
-    for (const stepIndex in animationSteps) {
-        if (animationSteps[stepIndex].includes(optionsDelimiter)) {
-            // Additional configuration parameters
-            frameOptions = parseOptions(animationSteps[stepIndex]);
-            frameFunction = 'get' + capitalizeFirstLetter(subscription.animation) + 'Frame';
-        } else {
-            frameFunction = 'get' + capitalizeFirstLetter(animationSteps[stepIndex]) + 'Frame';
+    frameOptions = parseOptions(options);
+    frameFunction = 'get' + capitalizeFirstLetter(subscription.animation) + 'Frame';
+
+    if (frameOptions.type === typeSingle) {
+        let tempFrame = animations[frameFunction](element, positionStart, section, frameOptions);
+        for (const property in tempFrame) {
+            startFrame[property] ? startFrame[property] += ' ' + tempFrame[property] : startFrame[property] = tempFrame[property];
         }
 
-        console.log("-> frameFunction", frameFunction, ' for element ', element);
-        if (frameOptions.type === typeSingle) {
-            let tempFrame = animations[frameFunction](element, positionStart, section, frameOptions);
-            for (const property in tempFrame) {
-                startFrame[property] ? startFrame[property] += ' ' + tempFrame[property] : startFrame[property] = tempFrame[property];
-            }
-
-            tempFrame = animations[frameFunction](element, positionEnd, section, frameOptions);
-            for (const property in tempFrame) {
-                endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
-            }
-            console.log("-> startFrame", startFrame, "endFrame", endFrame, "element", element);
-            frames.push(startFrame, endFrame);
+        tempFrame = animations[frameFunction](element, positionEnd, section, frameOptions);
+        for (const property in tempFrame) {
+            endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
         }
-
-
-
+        console.log("-> startFrame", startFrame, "endFrame", endFrame, "element", element);
+        frames.push(startFrame, endFrame);
     }
+
     console.log("-> buildKeyFrameEffect startFrame", startFrame, 'frameFunction', frameFunction);
     console.log("-> buildKeyFrameEffect endFrame", endFrame, 'frameFunction', frameFunction);
 

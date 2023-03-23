@@ -93,7 +93,7 @@ export const turboBeforeRenderCallback = async function (event) {
             let animationKeyFrameEffect = buildKeyFrameEffect(element.id,
                 {
                     element: element,
-                    detail: document.defaultPreAnimation,
+                    options: document.defaultPreAnimation,
                     schedule: schedulePreNextPageRender,
                     direction: directionForwards,
                     duration: parseInt(document.defaultAnimationDuration),
@@ -165,7 +165,7 @@ export const turboRenderCallback = async function (event) {
             let animationKeyFrameEffect = buildKeyFrameEffect(element.id,
                 {
                     element: element,
-                    detail: document.defaultPostAnimation,
+                    options: document.defaultPostAnimation,
                     schedule: schedulePostNextPageRender,
                     direction: directionForwards,
                     duration: parseInt(document.defaultAnimationDuration),
