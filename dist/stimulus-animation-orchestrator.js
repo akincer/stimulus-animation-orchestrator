@@ -169,13 +169,13 @@ class src_default extends Controller {
 
     }
 
-    getKeyEffect(subscriber, subscription) {
-        let schedule = subscription['schedule'];
-        let element = subscription['element'];
-        let detail = subscription['detail'];
+    //getKeyEffect(subscriber, subscription) {
+        //let schedule = subscription['schedule'];
+        //let element = subscription['element'];
+        //let detail = subscription['detail'];
 
 
-    }
+    //}
 
     // Plays subscribed animations for the event
     orchestrateSubscribedAnimations(event) {
@@ -216,17 +216,17 @@ class src_default extends Controller {
 
 
 
-    splitAnimationSubscription(subscriber, subscription) {
+    //splitAnimationSubscription(subscriber, subscription) {
         // For spanned animations create two different subscriptions
-        let details = subscription['detail'].split(',');
+        //let details = subscription['detail'].split(',');
 
-        for (const detailsIndex in details) {
-            if (details[detailsIndex].includes('#')) {
+        //for (const detailsIndex in details) {
+            //if (details[detailsIndex].includes('#')) {
                 // Contains additional parameters
-            }
+            //}
 
-        }
-    }
+        //}
+    //}
 
     scheduleAnimation(subscriber, subscriptions) {
 
@@ -368,7 +368,7 @@ class src_default extends Controller {
                             subscribers[candidateSubscriber.id].push({
                                 element: candidateSubscriber,
                                 animation: inlineAnimationSubscription.animation,
-                                detail: inlineAnimationSubscription.detail,
+                                options: inlineAnimationSubscription.options,
                                 schedule: inlineAnimationSubscription.schedule,
                                 direction: inlineAnimationSubscription.direction,
                                 duration: parseInt(inlineAnimationSubscription.duration),
