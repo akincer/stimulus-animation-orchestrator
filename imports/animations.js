@@ -1,4 +1,11 @@
-import {positionEnd, positionStart, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
+import {
+    positionEnd,
+    positionStart,
+    propertiesDelimiter,
+    sectionFirstHalf,
+    sectionFull,
+    sectionSecondHalf
+} from "./constants";
 import {
     calculateMidpointColor,
     getCssVariableColor, getPropertyColor,
@@ -241,67 +248,40 @@ export function getResizeWidthFrame(element, position, section, options = {}) {
 }
 
 export function getChangeColorFrame(element, position, section, options = {}) {
-    let frame = {}, property, startColor, endColor = options.endColor;
+    let frame = {}, properties = options.properties.split(propertiesDelimiter), startColors = [], endColors = [];
 
-    !!options.property ? property = options.property : property = 'background';
-    !!options.startColor ? startColor = options.startColor : startColor = getPropertyColor(element, property);
+    for (const propertiesIndex in properties) {
+        let startColor, endColor, property = properties[propertiesIndex];
 
+        !!options.startColors ? startColors = options.startColors.split(propertiesDelimiter) : startColors.push(getPropertyColor(element, property));
+        !!options.endColors ? endColors = options.endColors.split(propertiesDelimiter) : endColors.push(getPropertyColor(element, property));
 
+        startColor = startColors[propertiesIndex];
+        endColor = endColors[propertiesIndex];
 
-    if (!!options.startColor) {
-        console.log("-> getChangeColorFrame options.startColor true, value: ", options.startColor);
-    } else {
-        console.log("-> getChangeColorFrame options.startColor false, calculated value: ", window.getComputedStyle(element).getPropertyValue(property));
-    }
+        if (isCssVariable(startColor))
+            startColor = getCssVariableColor(startColor);
 
+        if (isCssVariable(endColor))
+            endColor = getCssVariableColor(endColor);
 
-    console.log("-> getChangeColorFrame options", options);
-    console.log("-> getChangeColorFrame startColor", startColor, " endColor", endColor);
-
-    if (isCssVariable(startColor))
-        startColor = getCssVariableColor(startColor);
-
-    if (isCssVariable(endColor))
-        endColor = getCssVariableColor(endColor);
-
-    console.log("-> getChangeColorFrame after getCssVariableColor startColor", startColor);
-    console.log("-> getChangeColorFrame after getCssVariableColor endColor", endColor);
-
-
-
-    if (position === positionStart) {
-        //if (section === sectionFull || section === sectionFirstHalf) {
-        //    frame[hyphenatedToCamelCase(property)] = startColor;
-        //    console.log("-> positionStart sectionFull or sectionFirstHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
-        //}
-        //else {
-        //    frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
-        //    console.log("-> positionStart sectionSecondHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
-        //}
-        frame[hyphenatedToCamelCase(property)] = startColor;
-        console.log("-> positionStart sectionFull or sectionFirstHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
-    }
-
-    if (position === positionEnd) {
-        if (section === sectionFull || section === sectionSecondHalf) {
-
-            frame[hyphenatedToCamelCase(property)] = endColor;
-            console.log("-> positionEnd sectionFull or sectionSecondHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
+        if (position === positionStart) {
+            frame[hyphenatedToCamelCase(property)] = startColor;
         }
 
-        if (section === sectionFirstHalf) {
-            frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
-            //frame[hyphenatedToCamelCase(property)] = startColor;
-            console.log("-> positionEnd sectionFirstHalf frame[hyphenatedToCamelCase(property)]", frame[hyphenatedToCamelCase(property)]);
+        if (position === positionEnd) {
+            if (section === sectionFull || section === sectionSecondHalf)
+                frame[hyphenatedToCamelCase(property)] = endColor;
+            if (section === sectionFirstHalf)
+                frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
         }
 
+        console.log("-> getChangeColorFrame property:", property);
+        console.log("-> getChangeColorFrame position:", position);
+        console.log("-> getChangeColorFrame section:", section);
+        console.log("-> getChangeColorFrame startColor:", startColor);
+        console.log("-> getChangeColorFrame endColor:", endColor);
     }
 
-    console.log("-> getChangeColorFrame position:", position);
-    console.log("-> getChangeColorFrame section:", section);
-    console.log("-> getChangeColorFrame startColor:", startColor);
-    console.log("-> getChangeColorFrame endColor:", endColor);
-
-    console.log("-> getChangeColorFrame frame:", frame);
     return frame;
 }
