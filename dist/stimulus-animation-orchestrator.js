@@ -24,9 +24,6 @@ class src_default extends Controller {
         this.getConfig();
         this.getFormState();
 
-        // Store this on document for reference in callbacks
-        document.orchestrator = this
-
         this.addListener('popstate');
         this.addListener('turbo:click');
         this.addListener('turbo:before-visit');
@@ -77,7 +74,7 @@ class src_default extends Controller {
     getConfig() {
 
         document.orchestrator = {};
-        document.orchestrator.defaultValues = {};
+        document.orchestrator.defaults = {};
         if (!("orchestratorDefaultAnimationDuration" in this.element.dataset))
             document.defaultAnimationDuration = 600;
         else
@@ -104,9 +101,9 @@ class src_default extends Controller {
             document.defaultPostAnimation = this.element.dataset.orchestratorDefaultPostAnimation;
 
         if (!("orchestratorDefaultStartColor" in this.element.dataset))
-            document.orchestrator.defaultValues.color = 'rgb(255,255,255)';
+            document.orchestrator.defaults.color = 'rgb(255,255,255)';
         else
-            document.orchestrator.defaultValues.color = this.element.dataset.orchestratorDefaultStartColor;
+            document.orchestrator.defaults.color = this.element.dataset.orchestratorDefaultStartColor;
 
     }
 

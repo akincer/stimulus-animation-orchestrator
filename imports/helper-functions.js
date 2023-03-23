@@ -220,7 +220,7 @@ export function getPropertyColor(element, property) {
         }
         if (!isRGBA(window.getComputedStyle(currentElement).getPropertyValue(property)) || !isTransparent(window.getComputedStyle(currentElement).getPropertyValue(property)))
             return window.getComputedStyle(currentElement).getPropertyValue(property);
-        return document.orchestrator.defaultValues.color
+        return document.orchestrator.defaults.color
 
     }
 }
