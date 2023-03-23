@@ -1,7 +1,7 @@
 import {positionEnd, positionStart, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
 import {
     calculateMidpointColor,
-    getCssVariableColor,
+    getCssVariableColor, getPropertyColor,
     getUnit, hyphenatedToCamelCase,
     isCssVariable,
     midpoint,
@@ -244,7 +244,9 @@ export function getChangeColorFrame(element, position, section, options = {}) {
     let frame = {}, property, startColor, endColor = options.endColor;
 
     !!options.property ? property = options.property : property = 'background';
-    !!options.startColor ? startColor = options.startColor : startColor = window.getComputedStyle(element).getPropertyValue(property);
+    !!options.startColor ? startColor = options.startColor : startColor = getPropertyColor(element, property);
+
+
 
     if (!!options.startColor) {
         console.log("-> getChangeColorFrame options.startColor true, value: ", options.startColor);

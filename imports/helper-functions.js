@@ -175,3 +175,52 @@ export function midpointColor(color1, color2) {
 export function hyphenatedToCamelCase(str) {
     return str.replace(/-./g, match => match.charAt(1).toUpperCase());
 }
+
+export function isRGBA(str) {
+    const rgbaRegex = /^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*([\d.]+)\)$/i;
+    const match = str.match(rgbaRegex);
+
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const a = parseFloat(match[4]);
+
+        return (
+            r >= 0 && r <= 255 &&
+            g >= 0 && g <= 255 &&
+            b >= 0 && b <= 255 &&
+            a >= 0 && a <= 1
+        );
+    }
+
+    return false;
+}
+
+export function isTransparent(rgbaColor) {
+    const rgbaRegex = /^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*([\d.]+)\)$/i;
+    const match = rgbaColor.match(rgbaRegex);
+
+    if (match) {
+        const alpha = parseFloat(match[4]);
+        return alpha === 0;
+    }
+
+    throw new Error('Invalid RGBA color format');
+}
+
+export function getPropertyColor(element, property) {
+    let currentElement = element;
+
+    if (!isRGBA(window.getComputedStyle(element).getPropertyValue(property)) || !isTransparent(window.getComputedStyle(element).getPropertyValue(property))) {
+        return window.getComputedStyle(element).getPropertyValue(property);
+    } else {
+        while (!!currentElement.parentElement && isRGBA(window.getComputedStyle(currentElement).getPropertyValue(property)) && isTransparent(window.getComputedStyle(currentElement).getPropertyValue(property))) {
+            currentElement = currentElement.parentElement;
+        }
+        if (!isRGBA(window.getComputedStyle(currentElement).getPropertyValue(property)) || !isTransparent(window.getComputedStyle(currentElement).getPropertyValue(property)))
+            return window.getComputedStyle(currentElement).getPropertyValue(property);
+        return document.orchestrator.defaults.color
+
+    }
+}
