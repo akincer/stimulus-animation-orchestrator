@@ -248,6 +248,7 @@ export function getResizeWidthFrame(element, position, section, options = {}) {
 }
 
 export function getChangeColorFrame(element, position, section, options = {}) {
+    console.log("-> getChangeColorFrame options", options);
     let frame = {}, properties = options.properties.split(propertiesDelimiter), startColors = [], endColors = [];
 
     for (const propertiesIndex in properties) {
