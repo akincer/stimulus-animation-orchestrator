@@ -265,6 +265,12 @@ export function getChangeColorFrame(element, position, section, options = {}) {
         if (isCssVariable(endColor))
             endColor = getCssVariableColor(endColor);
 
+        console.log("-> getChangeColorFrame property:", property);
+        console.log("-> getChangeColorFrame position:", position);
+        console.log("-> getChangeColorFrame section:", section);
+        console.log("-> getChangeColorFrame startColor:", startColor);
+        console.log("-> getChangeColorFrame endColor:", endColor);
+
         if (position === positionStart) {
             frame[hyphenatedToCamelCase(property)] = startColor;
         }
@@ -276,11 +282,7 @@ export function getChangeColorFrame(element, position, section, options = {}) {
                 frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
         }
 
-        console.log("-> getChangeColorFrame property:", property);
-        console.log("-> getChangeColorFrame position:", position);
-        console.log("-> getChangeColorFrame section:", section);
-        console.log("-> getChangeColorFrame startColor:", startColor);
-        console.log("-> getChangeColorFrame endColor:", endColor);
+
     }
 
     return frame;
