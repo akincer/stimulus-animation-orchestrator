@@ -43,6 +43,7 @@ class src_default extends Controller {
         this.addListener('turbo:frame-render');
         this.addListener('turbo:fetch-request-error');
 
+        console.log("-> superConnect document.orchestrator", document.orchestrator);
 
     }
 
