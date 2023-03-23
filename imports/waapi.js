@@ -12,7 +12,6 @@ import {capitalizeFirstLetter, hyphenatedToCamelCase} from "./helper-functions";
 import * as animations from "./animations"
 
 export function buildKeyFrameEffect(subscriber, subscription, section = sectionFull) {
-    console.log("-> buildKeyFrameEffect subscriber", subscriber, 'subscription', subscription, 'section', section);
     let frames = [], startFrame = {}, endFrame = {};
     let frameEffectOptions = {}, frameOptions = {};
     let options = subscription['options'];
@@ -33,12 +32,8 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
         for (const property in tempFrame) {
             endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
         }
-        console.log("-> startFrame", startFrame, "endFrame", endFrame, "element", element);
         frames.push(startFrame, endFrame);
     }
-
-    console.log("-> buildKeyFrameEffect startFrame", startFrame, 'frameFunction', frameFunction);
-    console.log("-> buildKeyFrameEffect endFrame", endFrame, 'frameFunction', frameFunction);
 
 
     !!subscription['duration'] ? frameEffectOptions['duration'] = subscription['duration'] : frameEffectOptions['duration'] = document.defaultAnimationDuration;
@@ -53,12 +48,10 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
         frameEffectOptions['easing'] = document.orchestratorDefaultEasing;
 
 
-    console.log("-> buildKeyFrameEffect frameEffectOptions", frameEffectOptions);
-    console.log("-> buildKeyFrameEffect subscription", subscription);
-
     console.log("-> buildKeyFrameEffect startFrame: ", startFrame);
     console.log("-> buildKeyFrameEffect endFrame: ", endFrame);
     console.log("-> buildKeyFrameEffect frameEffectOptions: ", frameEffectOptions);
+    console.log("-> buildKeyFrameEffect subscription:", subscription);
 
     return new KeyframeEffect(
         element,
