@@ -61,6 +61,8 @@ export const turboBeforeRenderCallback = async function (event) {
 
     for (const subscriber in document.animations['turbo:before-render']) {
         let element = document.getElementById(subscriber);
+        console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
+        console.log("-> turboBeforeRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
         let rect = element.getBoundingClientRect();
         console.log("-> turboBeforeRenderCallback subscriber: ", subscriber);
         console.log("-> turboBeforeRenderCallback element.id: ", element.id);
@@ -149,6 +151,8 @@ export const turboRenderCallback = async function (event) {
     console.log("-> turboRenderCallback event", event);
     for (const subscriber in document.animations['turbo:render']) {
         let element = document.getElementById(subscriber);
+        console.log("-> turboRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
+        console.log("-> turboRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
         let rect = element.getBoundingClientRect();
         console.log("-> turboRenderCallback element to animate", element, 'rect', rect);
         let animationKeyFrameEffect;
@@ -209,6 +213,8 @@ export const turboRenderCallback = async function (event) {
             if (document.changeColor[subscriber]) {
                 console.log("-> BEFORE cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color'));
                 nextPageSubscriber.style.backgroundColor = window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color');
+                animationControllers[subscriber].cancel();
+                delete document.changeColor[subscriber];
                 console.log("-> AFTER cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color'));
             }
         }
