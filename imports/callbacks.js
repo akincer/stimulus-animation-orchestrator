@@ -86,6 +86,8 @@ export const turboBeforeRenderCallback = async function (event) {
             console.log("-> turboBeforeRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
             console.log("-> turboBeforeRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
             console.log("----------- buildKeyFrameEffect ---------------------")
+            console.log('-> turboBeforeRenderCallback About to play keyframeEffectDefinition: ', keyframeEffectDefinition);
+            await sleep(3000);
             animationController.play();
             console.log("----------- buildKeyFrameEffect Post play ----------")
             console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
