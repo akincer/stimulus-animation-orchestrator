@@ -24,7 +24,7 @@ export const directionForwards = 'forwards';
 export const typeSingle = 'single';
 export const optionsDelimiter = '||';
 export const subscriptionDelimiter = '->';
-export const propertiesDelimiter = ',';
+export const propertiesDelimiter = ';';
 
 // Animation actions
 export const enterFromBottom = 'enterFromBottom';
