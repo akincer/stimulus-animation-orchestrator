@@ -135,7 +135,6 @@ export const turboBeforeRenderCallback = async function (event) {
                     nextPageSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
                 }
                 if (animation === changeColor) {
-                    console.log("-> window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).getPropertyValue('background-color')", window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).getPropertyValue('background-color'));
                     let options = parseOptions(keyframeEffectDefinition.options);
                     let properties = options.properties.split(propertiesDelimiter);
                     for (const propertiesIndex in properties) {
