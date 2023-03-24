@@ -163,6 +163,10 @@ export const turboRenderCallback = async function (event) {
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
     console.log("-> turboRenderCallback event", event);
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    console.log('-> turboRenderCallback Processing each scheduled animation');
+    await sleep(500);
     for (const subscriber in document.animations[turboRender]) {
 
         let keyframeEffectDefinitions = document.animations[turboRender][subscriber];
@@ -189,6 +193,8 @@ export const turboRenderCallback = async function (event) {
             }
             animationControllers[subscriber].push(animationController);
         }
+        console.log('-> turboRenderCallback Finished processing each scheduled animation');
+        await sleep(500);
 
         //let animationKeyFrameEffect;
         // animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations[turboRender][subscriber], sectionSecondHalf);
@@ -222,7 +228,11 @@ export const turboRenderCallback = async function (event) {
 
     document.restorePending = false;
 
+    console.log('-> turboRenderCallback Before awaiting for animations to finish');
+    await sleep(500);
     await Promise.all(animationPromises);
+    console.log('-> turboRenderCallback After awaiting for animations to finish. Next is setting permanent style values on target element');
+    await sleep(500);
 
     for (const subscriber in document.animations[turboRender]) {
         let nextPageSubscriber = document.getElementById(subscriber);
@@ -255,10 +265,16 @@ export const turboRenderCallback = async function (event) {
             }
         }
 
+        console.log('-> turboRenderCallback Before looping to cancel animations');
+        await sleep(500);
+
         for (const animationControllersIndex in animationControllers[subscriber]) {
             console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
             animationControllers[subscriber][animationControllersIndex].cancel()
         }
+
+        console.log('-> turboRenderCallback After looping to cancel animations');
+        await sleep(500);
         delete document.animations[turboRender][subscriber];
     }
 
