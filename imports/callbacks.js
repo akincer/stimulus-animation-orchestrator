@@ -62,7 +62,7 @@ export const turboBeforeRenderCallback = async function (event) {
     console.log("->turboBeforeRenderCallback document.animations[turboBeforeRender]", document.animations[turboBeforeRender]);
 
     console.log('-> turboBeforeRenderCallback Before loop through and play all animations');
-    await sleep(5500);
+    await sleep(3000);
     for (const subscriber in document.animations[turboBeforeRender]) {
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
         let element = document.getElementById(subscriber);
@@ -101,7 +101,7 @@ export const turboBeforeRenderCallback = async function (event) {
         }
     }
     console.log('-> turboBeforeRenderCallback After loop through and play all animations');
-    await sleep(5500);
+    await sleep(3000);
 
 
 
@@ -127,10 +127,10 @@ export const turboBeforeRenderCallback = async function (event) {
     }
 
     console.log('-> turboBeforeRenderCallback Before await animations to complete');
-    await sleep(5500);
+    await sleep(3000);
     await Promise.all(animationPromises);
     console.log('-> turboBeforeRenderCallback Before await animations to complete. Next up is changing permanent settings on target element');
-    await sleep(5500);
+    await sleep(3000);
 
     for (const subscriber in document.animations[turboBeforeRender]) {
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
@@ -164,16 +164,16 @@ export const turboBeforeRenderCallback = async function (event) {
             }
         }
         console.log('-> turboBeforeRenderCallback After setting permanent values on target element');
-        await sleep(5500);
+        await sleep(3000);
 
         console.log('-> turboBeforeRenderCallback Before Before canceling scheduled animations');
-        await sleep(5500);
+        await sleep(3000);
         for (const animationControllersIndex in animationControllers[subscriber]) {
             console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
             animationControllers[subscriber][animationControllersIndex].cancel()
         }
         console.log('-> turboBeforeRenderCallback After Before canceling scheduled animations');
-        await sleep(5500);
+        await sleep(3000);
 
         delete document.animations['turbo:before-render'][subscriber];
     }
@@ -194,7 +194,7 @@ export const turboRenderCallback = async function (event) {
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     console.log('-> turboRenderCallback Processing each scheduled animation');
-    await sleep(5500);
+    await sleep(3000);
     for (const subscriber in document.animations[turboRender]) {
 
         let keyframeEffectDefinitions = document.animations[turboRender][subscriber];
@@ -222,7 +222,7 @@ export const turboRenderCallback = async function (event) {
             animationControllers[subscriber].push(animationController);
         }
         console.log('-> turboRenderCallback Finished processing each scheduled animation');
-        await sleep(5500);
+        await sleep(3000);
 
         //let animationKeyFrameEffect;
         // animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations[turboRender][subscriber], sectionSecondHalf);
@@ -257,10 +257,10 @@ export const turboRenderCallback = async function (event) {
     document.restorePending = false;
 
     console.log('-> turboRenderCallback Before awaiting for animations to finish');
-    await sleep(5500);
+    await sleep(3000);
     await Promise.all(animationPromises);
     console.log('-> turboRenderCallback After awaiting for animations to finish. Next is setting permanent style values on target element');
-    await sleep(5500);
+    await sleep(3000);
 
     for (const subscriber in document.animations[turboRender]) {
         let nextPageSubscriber = document.getElementById(subscriber);
@@ -294,7 +294,7 @@ export const turboRenderCallback = async function (event) {
         }
 
         console.log('-> turboRenderCallback Before looping to cancel animations');
-        await sleep(5500);
+        await sleep(3000);
 
         for (const animationControllersIndex in animationControllers[subscriber]) {
             console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
@@ -302,7 +302,7 @@ export const turboRenderCallback = async function (event) {
         }
 
         console.log('-> turboRenderCallback After looping to cancel animations');
-        await sleep(5500);
+        await sleep(3000);
         delete document.animations[turboRender][subscriber];
     }
 
