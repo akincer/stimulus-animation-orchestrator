@@ -100,9 +100,10 @@ export const turboBeforeRenderCallback = async function (event) {
             animationControllers[subscriber].push(animationController);
         }
     }
-
-    console.log('-> turboBeforeRenderCallback Before loop through and play all animations');
+    console.log('-> turboBeforeRenderCallback After loop through and play all animations');
     await sleep(500);
+
+
 
     if (!skipDefaultAnimation() && !document.preRenderDefaultAnimationExecuted) {
         console.log("-> turboBeforeRenderCallback *** Playing default animation ***");
@@ -125,7 +126,11 @@ export const turboBeforeRenderCallback = async function (event) {
         document.preRenderDefaultAnimationExecuted = true;
     }
 
+    console.log('-> turboBeforeRenderCallback Before await animations to complete');
+    await sleep(500);
     await Promise.all(animationPromises);
+    console.log('-> turboBeforeRenderCallback Before await animations to complete. Next up is changing permanent settings on target element');
+    await sleep(500);
 
     for (const subscriber in document.animations[turboBeforeRender]) {
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
@@ -158,11 +163,17 @@ export const turboBeforeRenderCallback = async function (event) {
                 }
             }
         }
+        console.log('-> turboBeforeRenderCallback After setting permanent values on target element');
+        await sleep(500);
 
+        console.log('-> turboBeforeRenderCallback Before Before canceling scheduled animations');
+        await sleep(500);
         for (const animationControllersIndex in animationControllers[subscriber]) {
             console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
             animationControllers[subscriber][animationControllersIndex].cancel()
         }
+        console.log('-> turboBeforeRenderCallback After Before canceling scheduled animations');
+        await sleep(500);
 
         delete document.animations['turbo:before-render'][subscriber];
     }
