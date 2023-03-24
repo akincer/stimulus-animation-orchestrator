@@ -53,12 +53,16 @@ export const turboBeforeCacheCallback = function (event) {
 export const turboBeforeRenderCallback = async function (event) {
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
+    let animationControllers = {};
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     // Pause rendering
     event.preventDefault();
 
     console.log("->turboBeforeRenderCallback document.animations[turboBeforeRender]", document.animations[turboBeforeRender]);
 
+    console.log('-> turboBeforeRenderCallback Before loop through and play all animations');
+    await sleep(500);
     for (const subscriber in document.animations[turboBeforeRender]) {
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
         let element = document.getElementById(subscriber);
@@ -90,8 +94,15 @@ export const turboBeforeRenderCallback = async function (event) {
             console.log("----------- buildKeyFrameEffect --------------------")
 
             animationPromises.push(animationController.finished);
+            if (!animationControllers[subscriber]) {
+                animationControllers[subscriber] = []
+            }
+            animationControllers[subscriber].push(animationController);
         }
     }
+
+    console.log('-> turboBeforeRenderCallback Before loop through and play all animations');
+    await sleep(500);
 
     if (!skipDefaultAnimation() && !document.preRenderDefaultAnimationExecuted) {
         console.log("-> turboBeforeRenderCallback *** Playing default animation ***");
@@ -147,6 +158,12 @@ export const turboBeforeRenderCallback = async function (event) {
                 }
             }
         }
+
+        for (const animationControllersIndex in animationControllers[subscriber]) {
+            console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
+            animationControllers[subscriber][animationControllersIndex].cancel()
+        }
+
         delete document.animations['turbo:before-render'][subscriber];
     }
 
