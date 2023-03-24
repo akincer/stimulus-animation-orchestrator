@@ -54,6 +54,7 @@ export const turboBeforeRenderCallback = async function (event) {
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
+    let debugDelay = 0;
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     // Pause rendering
@@ -62,7 +63,7 @@ export const turboBeforeRenderCallback = async function (event) {
     console.log("->turboBeforeRenderCallback document.animations[turboBeforeRender]", document.animations[turboBeforeRender]);
 
     console.log('-> turboBeforeRenderCallback Before loop through and play all animations');
-    await sleep(3000);
+    await sleep(debugDelay);
     for (const subscriber in document.animations[turboBeforeRender]) {
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
         let element = document.getElementById(subscriber);
@@ -87,7 +88,7 @@ export const turboBeforeRenderCallback = async function (event) {
             console.log("-> turboBeforeRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
             console.log("----------- buildKeyFrameEffect ---------------------")
             console.log('-> turboBeforeRenderCallback About to play keyframeEffectDefinition: ', keyframeEffectDefinition);
-            await sleep(3000);
+            await sleep(debugDelay);
             animationController.play();
             console.log("----------- buildKeyFrameEffect Post play ----------")
             console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
@@ -103,7 +104,7 @@ export const turboBeforeRenderCallback = async function (event) {
         }
     }
     console.log('-> turboBeforeRenderCallback After loop through and play all animations');
-    await sleep(3000);
+    await sleep(debugDelay);
 
 
 
@@ -129,10 +130,10 @@ export const turboBeforeRenderCallback = async function (event) {
     }
 
     console.log('-> turboBeforeRenderCallback Before await animations to complete');
-    await sleep(3000);
+    await sleep(debugDelay);
     await Promise.all(animationPromises);
     console.log('-> turboBeforeRenderCallback Before await animations to complete. Next up is changing permanent settings on target element');
-    await sleep(3000);
+    await sleep(debugDelay);
 
     for (const subscriber in document.animations[turboBeforeRender]) {
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
@@ -148,17 +149,17 @@ export const turboBeforeRenderCallback = async function (event) {
                     //nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
                     //nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
                     console.log('-> turboBeforeRenderCallback Set permanent left and top for nextPageSubscriberkeyframeEffectDefinition: ', keyframeEffectDefinition);
-                    await sleep(3000);
+                    await sleep(debugDelay);
                 }
                 if (animation === resizeWidth) {
                     //nextPageSubscriber.style.width = boxAfter.width.toString() + 'px';
                     console.log('-> turboBeforeRenderCallback Set permanent width for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
-                    await sleep(3000);
+                    await sleep(debugDelay);
                 }
                 if (animation === fadeIn || animation == fadeOut) {
                     //nextPageSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
                     console.log('-> turboBeforeRenderCallback Set permanent opacity for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
-                    await sleep(3000);
+                    await sleep(debugDelay);
                 }
                 if (animation === changeColor) {
                     let options = parseOptions(keyframeEffectDefinition.options);
@@ -169,21 +170,21 @@ export const turboBeforeRenderCallback = async function (event) {
                         //nextPageSubscriber.style[hyphenatedToCamelCase(property)] = window.getComputedStyle(element).getPropertyValue(property);
                     }
                     console.log('-> turboBeforeRenderCallback Set permanent color for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
-                    await sleep(3000);
+                    await sleep(debugDelay);
                 }
             }
         }
         console.log('-> turboBeforeRenderCallback After setting permanent values on target element');
-        await sleep(3000);
+        await sleep(debugDelay);
 
         console.log('-> turboBeforeRenderCallback Before Before canceling scheduled animations');
-        await sleep(3000);
+        await sleep(debugDelay);
         for (const animationControllersIndex in animationControllers[subscriber]) {
             console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
             //animationControllers[subscriber][animationControllersIndex].cancel()
         }
         console.log('-> turboBeforeRenderCallback After Before canceling scheduled animations');
-        await sleep(3000);
+        await sleep(debugDelay);
 
         delete document.animations['turbo:before-render'][subscriber];
     }
@@ -202,9 +203,10 @@ export const turboRenderCallback = async function (event) {
     let animationControllers = {};
     console.log("-> turboRenderCallback event", event);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
+    let debugDelay = 0;
 
     console.log('-> turboRenderCallback Processing each scheduled animation');
-    await sleep(3000);
+    await sleep(debugDelay);
     for (const subscriber in document.animations[turboRender]) {
 
         let keyframeEffectDefinitions = document.animations[turboRender][subscriber];
@@ -220,7 +222,7 @@ export const turboRenderCallback = async function (event) {
             console.log("-> turboRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
             console.log("----------- buildKeyFrameEffect ---------------------")
             console.log('-> turboRenderCallback About to play keyframeEffectDefinition: ', keyframeEffectDefinition);
-            await sleep(3000);
+            await sleep(debugDelay);
             animationController.play();
             console.log("----------- buildKeyFrameEffect Post play ----------")
             console.log("-> turboRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
@@ -234,7 +236,7 @@ export const turboRenderCallback = async function (event) {
             animationControllers[subscriber].push(animationController);
         }
         console.log('-> turboRenderCallback Finished processing each scheduled animation');
-        await sleep(3000);
+        await sleep(debugDelay);
 
         //let animationKeyFrameEffect;
         // animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations[turboRender][subscriber], sectionSecondHalf);
@@ -269,10 +271,10 @@ export const turboRenderCallback = async function (event) {
     document.restorePending = false;
 
     console.log('-> turboRenderCallback Before awaiting for animations to finish');
-    await sleep(3000);
+    await sleep(debugDelay);
     await Promise.all(animationPromises);
     console.log('-> turboRenderCallback After awaiting for animations to finish. Next is setting permanent style values on target element');
-    await sleep(3000);
+    await sleep(debugDelay);
 
     for (const subscriber in document.animations[turboRender]) {
         let nextPageSubscriber = document.getElementById(subscriber);
@@ -306,7 +308,7 @@ export const turboRenderCallback = async function (event) {
         }
 
         console.log('-> turboRenderCallback Before looping to cancel animations');
-        await sleep(3000);
+        await sleep(debugDelay);
 
         for (const animationControllersIndex in animationControllers[subscriber]) {
             console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
@@ -314,7 +316,7 @@ export const turboRenderCallback = async function (event) {
         }
 
         console.log('-> turboRenderCallback After looping to cancel animations');
-        await sleep(3000);
+        await sleep(debugDelay);
         delete document.animations[turboRender][subscriber];
     }
 
