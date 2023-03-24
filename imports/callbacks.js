@@ -57,7 +57,7 @@ export const turboBeforeRenderCallback = async function (event) {
     // Pause rendering
     event.preventDefault();
 
-    console.log("->turboBeforeRenderCallback document.animations['turbo:before-render']", document.animations['turbo:before-render']);
+    console.log("->turboBeforeRenderCallback document.animations[turboBeforeRender]", document.animations[turboBeforeRender]);
 
     for (const subscriber in document.animations[turboBeforeRender]) {
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
@@ -123,6 +123,8 @@ export const turboBeforeRenderCallback = async function (event) {
             const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
             let animation = keyframeEffectDefinition.animation, element = keyframeEffectDefinition.element;
             let boxAfter = keyframeEffectDefinition.element.getBoundingClientRect();
+            console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody -  keyframeEffectDefinition:", keyframeEffectDefinition);
+            console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody -  element:", element);
             if (schedule === scheduleSpan && nextPageSubscriber) {
                 if (animation === moveToTarget) {
                     nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
@@ -139,6 +141,7 @@ export const turboBeforeRenderCallback = async function (event) {
                     let properties = options.properties.split(propertiesDelimiter);
                     for (const propertiesIndex in properties) {
                         let property = properties[propertiesIndex];
+                        console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody (setting properties on nextPageSubscriber) -  property:", property);
                         nextPageSubscriber.style[hyphenatedToCamelCase(property)] = window.getComputedStyle(element).getPropertyValue(property);
                     }
                 }
