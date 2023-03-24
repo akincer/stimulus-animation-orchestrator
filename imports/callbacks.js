@@ -170,7 +170,7 @@ export const turboBeforeRenderCallback = async function (event) {
         await sleep(3000);
         for (const animationControllersIndex in animationControllers[subscriber]) {
             console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
-            animationControllers[subscriber][animationControllersIndex].cancel()
+            //animationControllers[subscriber][animationControllersIndex].cancel()
         }
         console.log('-> turboBeforeRenderCallback After Before canceling scheduled animations');
         await sleep(3000);
@@ -298,7 +298,7 @@ export const turboRenderCallback = async function (event) {
 
         for (const animationControllersIndex in animationControllers[subscriber]) {
             console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
-            animationControllers[subscriber][animationControllersIndex].cancel()
+            //animationControllers[subscriber][animationControllersIndex].cancel()
         }
 
         console.log('-> turboRenderCallback After looping to cancel animations');
