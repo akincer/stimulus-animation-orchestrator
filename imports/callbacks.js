@@ -147,12 +147,18 @@ export const turboBeforeRenderCallback = async function (event) {
                 if (animation === moveToTarget) {
                     nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
                     nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
+                    console.log('-> turboBeforeRenderCallback Set permanent left and top for nextPageSubscriberkeyframeEffectDefinition: ', keyframeEffectDefinition);
+                    await sleep(3000);
                 }
                 if (animation === resizeWidth) {
                     nextPageSubscriber.style.width = boxAfter.width.toString() + 'px';
+                    console.log('-> turboBeforeRenderCallback Set permanent width for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
+                    await sleep(3000);
                 }
                 if (animation === fadeIn || animation == fadeOut) {
                     nextPageSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
+                    console.log('-> turboBeforeRenderCallback Set permanent opacity for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
+                    await sleep(3000);
                 }
                 if (animation === changeColor) {
                     let options = parseOptions(keyframeEffectDefinition.options);
@@ -162,6 +168,8 @@ export const turboBeforeRenderCallback = async function (event) {
                         console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody (setting properties on nextPageSubscriber) -  property:", property);
                         nextPageSubscriber.style[hyphenatedToCamelCase(property)] = window.getComputedStyle(element).getPropertyValue(property);
                     }
+                    console.log('-> turboBeforeRenderCallback Set permanent color for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
+                    await sleep(3000);
                 }
             }
         }
@@ -211,6 +219,8 @@ export const turboRenderCallback = async function (event) {
             console.log("-> turboRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
             console.log("-> turboRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
             console.log("----------- buildKeyFrameEffect ---------------------")
+            console.log('-> turboRenderCallback About to play keyframeEffectDefinition: ', keyframeEffectDefinition);
+            await sleep(3000);
             animationController.play();
             console.log("----------- buildKeyFrameEffect Post play ----------")
             console.log("-> turboRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
