@@ -117,12 +117,12 @@ export const turboBeforeRenderCallback = async function (event) {
     await Promise.all(animationPromises);
 
     for (const subscriber in document.animations[turboBeforeRender]) {
-        let boxAfter = document.animations[turboBeforeRender][subscriber].element.getBoundingClientRect();
         let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
 
         for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
             const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
             let animation = keyframeEffectDefinition.animation, element = keyframeEffectDefinition.element;
+            let boxAfter = keyframeEffectDefinition.element.getBoundingClientRect();
             if (schedule === scheduleSpan && nextPageSubscriber) {
                 if (animation === moveToTarget) {
                     nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
