@@ -257,6 +257,9 @@ export function getChangeColorFrame(element, position, section, options = {}) {
         !!options.startColors ? startColors = options.startColors.split(propertiesDelimiter) : startColors.push(getPropertyColor(element, property));
         !!options.endColors ? endColors = options.endColors.split(propertiesDelimiter) : endColors.push(getPropertyColor(element, property));
 
+        console.log("-> options.endColors", options.endColors);
+        console.log("-> options.endColors.split(propertiesDelimiter)", options.endColors.split(propertiesDelimiter));
+
         startColor = startColors[propertiesIndex];
         endColor = endColors[propertiesIndex];
 
