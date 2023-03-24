@@ -256,6 +256,7 @@ export const turboRenderCallback = async function (event) {
         }
 
         for (const animationControllersIndex in animationControllers[subscriber]) {
+            console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
             animationControllers[subscriber][animationControllersIndex].cancel()
         }
         delete document.animations[turboRender][subscriber];
