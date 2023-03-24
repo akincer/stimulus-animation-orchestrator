@@ -1,15 +1,15 @@
-import {fetchItem, storeItem} from "./helper-functions";
+import {fetchItem, hyphenatedToCamelCase, storeItem} from "./helper-functions";
 import {
     changeColor,
-    directionForwards, fadeIn, fadeOut, moveToTarget, resizeWidth,
+    directionForwards, fadeIn, fadeOut, moveToTarget, propertiesDelimiter, resizeWidth, schedule,
     scheduleComplete,
     schedulePostNextPageRender, schedulePreNextPageRender,
     scheduleSpan,
     sectionFirstHalf,
     sectionFull,
-    sectionSecondHalf
+    sectionSecondHalf, turboBeforeRender, turboRender
 } from "./constants";
-import {buildKeyFrameEffect, skipDefaultAnimation} from "./waapi";
+import {buildKeyFrameEffect, parseOptions, skipDefaultAnimation} from "./waapi";
 
 export const popStateCallback = function (event) {
     console.log("-> popStateCallback event", event);
@@ -59,34 +59,38 @@ export const turboBeforeRenderCallback = async function (event) {
 
     console.log("->turboBeforeRenderCallback document.animations['turbo:before-render']", document.animations['turbo:before-render']);
 
-    for (const subscriber in document.animations['turbo:before-render']) {
+    for (const subscriber in document.animations[turboBeforeRender]) {
+        let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
         let element = document.getElementById(subscriber);
-        console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
-        console.log("-> turboBeforeRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
-        console.log("-> turboBeforeRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
-        let rect = element.getBoundingClientRect();
-        console.log("-> turboBeforeRenderCallback subscriber: ", subscriber);
-        console.log("-> turboBeforeRenderCallback element.id: ", element.id);
-        console.log("-> turboBeforeRenderCallback schedule: ", document.animations['turbo:before-render'][subscriber]['schedule']);
 
-        let animationKeyFrameEffect;
-        let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
-        let schedule = document.animations['turbo:before-render'][subscriber]['schedule'];
+        for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
+            let keyframeEffect;
+            const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
 
-        if (schedule === scheduleComplete || schedule === schedulePreNextPageRender || (schedule === scheduleSpan && !nextPageSubscriber)) {
-            animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFull);
+            if (schedule === scheduleComplete || schedule === schedulePreNextPageRender || (schedule === scheduleSpan && !nextPageSubscriber)) {
+                keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionFull);
+                //animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFull);
+            }
+
+            if (schedule === scheduleSpan && nextPageSubscriber) {
+                keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionFirstHalf);
+                // animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFirstHalf);
+            }
+            const animationController = new Animation(keyframeEffect, document.timeline);
+            console.log("----------- buildKeyFrameEffect Pre play -----------")
+            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
+            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
+            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
+            console.log("----------- buildKeyFrameEffect ---------------------")
+            animationController.play();
+            console.log("----------- buildKeyFrameEffect Post play ----------")
+            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
+            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
+            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
+            console.log("----------- buildKeyFrameEffect --------------------")
+
+            animationPromises.push(animationController.finished);
         }
-
-        if (schedule === scheduleSpan && nextPageSubscriber) {
-            animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFirstHalf);
-        }
-
-        console.log("-> turboBeforeRenderCallback animationKeyFrameEffect", animationKeyFrameEffect);
-
-        const animationController = new Animation(animationKeyFrameEffect, document.timeline);
-        animationController.play();
-        animationPromises.push(animationController.finished);
-        //delete document.animations['turbo:before-render'][subscriber];
     }
 
     if (!skipDefaultAnimation() && !document.preRenderDefaultAnimationExecuted) {
@@ -112,26 +116,33 @@ export const turboBeforeRenderCallback = async function (event) {
 
     await Promise.all(animationPromises);
 
-    for (const subscriber in document.animations['turbo:before-render']) {
-        let boxAfter = document.animations['turbo:before-render'][subscriber].element.getBoundingClientRect();
-        let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
-        let animation = document.animations['turbo:before-render'][subscriber].animation;
-        if (document.animations['turbo:before-render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
-            console.log("-> turboBeforeRenderCallback CHANGING WIDTH, OPACITY, LEFT AND TOP FOR nextPageSubscriber", nextPageSubscriber);
-            console.log("-> turboBeforeRenderCallback document.animations['turbo:before-render'][subscriber]", document.animations['turbo:before-render'][subscriber]);
-            if (animation === moveToTarget) {
-                nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
-                nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
-            }
-            if (animation === resizeWidth) {
-                nextPageSubscriber.style.width = boxAfter.width.toString() + 'px';
-            }
-            if (animation === fadeIn || animation == fadeOut) {
-                nextPageSubscriber.style.opacity = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).opacity.toString();
-            }
-            if (animation === changeColor) {
-                console.log("-> window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).getPropertyValue('background-color')", window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).getPropertyValue('background-color'));
-                nextPageSubscriber.style.backgroundColor = window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).getPropertyValue('background-color');
+    for (const subscriber in document.animations[turboBeforeRender]) {
+        let boxAfter = document.animations[turboBeforeRender][subscriber].element.getBoundingClientRect();
+        let nextPageSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
+
+        for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
+            const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
+            let animation = keyframeEffectDefinition.animation, element = keyframeEffectDefinition.element;
+            if (schedule === scheduleSpan && nextPageSubscriber) {
+                if (animation === moveToTarget) {
+                    nextPageSubscriber.style.left = boxAfter.left.toString() + 'px';
+                    nextPageSubscriber.style.top = boxAfter.top.toString() + 'px';
+                }
+                if (animation === resizeWidth) {
+                    nextPageSubscriber.style.width = boxAfter.width.toString() + 'px';
+                }
+                if (animation === fadeIn || animation == fadeOut) {
+                    nextPageSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
+                }
+                if (animation === changeColor) {
+                    console.log("-> window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).getPropertyValue('background-color')", window.getComputedStyle(document.animations['turbo:before-render'][subscriber].element).getPropertyValue('background-color'));
+                    let options = parseOptions(keyframeEffectDefinition.options);
+                    let properties = options.properties.split(propertiesDelimiter);
+                    for (const propertiesIndex in properties) {
+                        let property = properties[propertiesIndex];
+                        nextPageSubscriber.style[hyphenatedToCamelCase(property)] = window.getComputedStyle(element).getPropertyValue(property);
+                    }
+                }
             }
         }
         delete document.animations['turbo:before-render'][subscriber];
@@ -150,26 +161,49 @@ export const turboRenderCallback = async function (event) {
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
     console.log("-> turboRenderCallback event", event);
-    for (const subscriber in document.animations['turbo:render']) {
+    for (const subscriber in document.animations[turboRender]) {
+
+        let keyframeEffectDefinitions = document.animations[turboRender][subscriber];
         let element = document.getElementById(subscriber);
-        console.log("-> turboRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
-        console.log("-> turboRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
-        console.log("-> turboRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
         let rect = element.getBoundingClientRect();
-        console.log("-> turboRenderCallback element to animate", element, 'rect', rect);
-        let animationKeyFrameEffect;
-        animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:render'][subscriber], sectionSecondHalf);
-        const animationController = new Animation(animationKeyFrameEffect, document.timeline);
-        animationController.play();
-        animationPromises.push(animationController.finished);
-        animationControllers[subscriber] = animationController;
+        for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
+            const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex];
+            const keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionSecondHalf);
+            const animationController = new Animation(keyframeEffect, document.timeline);
+            console.log("----------- buildKeyFrameEffect Pre play -----------")
+            console.log("-> turboRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
+            console.log("-> turboRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
+            console.log("-> turboRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
+            console.log("----------- buildKeyFrameEffect ---------------------")
+            animationController.play();
+            console.log("----------- buildKeyFrameEffect Post play ----------")
+            console.log("-> turboRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
+            console.log("-> turboRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
+            console.log("-> turboRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
+            console.log("----------- buildKeyFrameEffect --------------------")
+            animationPromises.push(animationController.finished);
+            if (!animationControllers[subscriber]) {
+                animationControllers[subscriber] = []
+            }
+            animationControllers[subscriber].push(animationController);
+        }
+
+        //let animationKeyFrameEffect;
+        // animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations[turboRender][subscriber], sectionSecondHalf);
+        //const animationController = new Animation(animationKeyFrameEffect, document.timeline);
+        //animationController.play();
+        //animationPromises.push(animationController.finished);
+        //if (!animationControllers[subscriber]) {
+        //    animationControllers[subscriber] = []
+        //}
+        //animationControllers[subscriber].push(animationController);
     }
 
     if (!skipDefaultAnimation() && !document.restorePending) {
         console.log("-> turboRenderCallback *** Playing default animation ***");
         for (const defaultSubscriberIndex in defaultSubscribers) {
             let element = defaultSubscribers[defaultSubscriberIndex]
-            let animationKeyFrameEffect = buildKeyFrameEffect(element.id,
+            let keyframeEffect = buildKeyFrameEffect(element.id,
                 {
                     element: element,
                     animation: document.defaultPostAnimation,
@@ -179,48 +213,50 @@ export const turboRenderCallback = async function (event) {
                     duration: parseInt(document.defaultAnimationDuration),
                     format: 'inline'
                 });
-            const animationController = new Animation(animationKeyFrameEffect, document.timeline);
+            const animationController = new Animation(keyframeEffect, document.timeline);
             animationController.play();
-
-
         }
     }
+
     document.restorePending = false;
 
     await Promise.all(animationPromises);
-    for (const subscriber in document.animations['turbo:render']) {
-        //let boxAfter = document.animations['turbo:render'][subscriber].element.getBoundingClientRect();
+
+    for (const subscriber in document.animations[turboRender]) {
         let nextPageSubscriber = document.getElementById(subscriber);
-        let boxAfter = nextPageSubscriber.getBoundingClientRect();
-        if (document.animations['turbo:render'][subscriber]['schedule'] === scheduleSpan && nextPageSubscriber) {
-            if (document.moveToTarget[subscriber]) {
-                let rect = nextPageSubscriber.getBoundingClientRect();
-                console.log("-> turboRenderCallback CHANGING LEFT AND TOP FOR nextPageSubscriber", nextPageSubscriber);
-                nextPageSubscriber.style.left = rect.left.toString() + 'px';
-                nextPageSubscriber.style.top = rect.top.toString() + 'px';
-                console.log("-> turboRenderCallback turboRenderCallback LEFT: ", rect.left.toString() + 'px', ' TOP: ', rect.top.toString() + 'px');
-                rect = nextPageSubscriber.getBoundingClientRect();
-                animationControllers[subscriber].cancel();
-                delete document.moveToTarget[subscriber];
-            }
+        let keyframeEffects = document.animations[turboRender][subscriber];
 
-            if (document.resizeWidth[subscriber]) {
-                let rect = nextPageSubscriber.getBoundingClientRect();
-                console.log("-> turboRenderCallback CHANGING WIDTH FOR nextPageSubscriber", nextPageSubscriber);
-                nextPageSubscriber.style.width = rect.width.toString() + 'px';
-                animationControllers[subscriber].cancel();
-                delete document.resizeWidth[subscriber];
-            }
+        for (const keyframeEffectsIndex in keyframeEffects) {
+            const keyframeEffect = keyframeEffects[keyframeEffectsIndex];
 
-            if (document.changeColor[subscriber]) {
-                console.log("-> BEFORE cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color'));
-                nextPageSubscriber.style.backgroundColor = window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color');
-                animationControllers[subscriber].cancel();
-                delete document.changeColor[subscriber];
-                console.log("-> AFTER cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color'));
+            if (keyframeEffect[schedule] === scheduleSpan && nextPageSubscriber) {
+                if (document.moveToTarget[subscriber]) {
+                    let rect = nextPageSubscriber.getBoundingClientRect();
+                    nextPageSubscriber.style.left = rect.left.toString() + 'px';
+                    nextPageSubscriber.style.top = rect.top.toString() + 'px';
+                    delete document.moveToTarget[subscriber];
+                }
+
+                if (document.resizeWidth[subscriber]) {
+                    let rect = nextPageSubscriber.getBoundingClientRect();
+                    console.log("-> turboRenderCallback CHANGING WIDTH FOR nextPageSubscriber", nextPageSubscriber);
+                    nextPageSubscriber.style.width = rect.width.toString() + 'px';
+                    delete document.resizeWidth[subscriber];
+                }
+
+                if (document.changeColor[subscriber]) {
+                    console.log("-> BEFORE cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color'));
+                    nextPageSubscriber.style.backgroundColor = window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color');
+                    delete document.changeColor[subscriber];
+                    console.log("-> AFTER cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color'));
+                }
             }
         }
-        delete document.animations['turbo:render'][subscriber];
+
+        for (const animationControllersIndex in animationControllers[subscriber]) {
+            animationControllers[subscriber][animationControllersIndex].cancel()
+        }
+        delete document.animations[turboRender][subscriber];
     }
 
     delete document.inlineSubscribers;

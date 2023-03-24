@@ -60,3 +60,9 @@ export const easeInOut = 'ease-in-out';
 export const easeIn = 'ease-in';
 export const easeOut = 'ease-out';
 export const ease = 'ease';
+
+// Scheduling
+export const schedule = 'schedule';
+export const turboBeforeRender = 'turbo:before-render';
+export const turboRender = 'turbo:render';
+export const immediate = 'immediate';

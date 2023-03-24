@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 import {capitalizeFirstLetter, fetchItem, hyphenatedToCamelCase, storeItem} from "../imports/helper-functions";
 import {
     currentStepNumber,
-    flowInstanceId,
+    flowInstanceId, immediate,
     inlineAnimationSubscriptions,
     jsonAnimationSubscriptions,
     navigationSource,
@@ -12,7 +12,7 @@ import {
     scheduleImmediate,
     scheduleNow, schedulePostNextPageRender, schedulePreNextPageRender,
     scheduleSpan, scheduleSpanPages,
-    sectionFull, subscriptionDelimiter
+    sectionFull, subscriptionDelimiter, turboBeforeRender, turboRender
 } from "../imports/constants";
 import * as orchestratorCallbacks from "../imports/callbacks";
 import * as orchestratorHelpers from "../imports/helper-functions";
@@ -235,28 +235,46 @@ class src_default extends Controller {
             let schedule = subscription['schedule'];
             let element = subscription['element'];
 
+
             if (schedule === scheduleImmediate || schedule === scheduleNow) {
-                document.animations['immediate'][subscriber] = subscription
+
+                if (!document.animations[immediate][subscriber])
+                    document.animations[immediate][subscriber] = []
+                document.animations[immediate][subscriber].push(subscription);
+
                 console.log("-> scheduleAnimation scheduleImmediate subscription", subscription);
             }
 
             //if (schedule === scheduleSpanPages && getComputedStyle(element).position === 'absolute') {
             if (schedule === scheduleSpanPages) {
-                // Calculate the middle of each animation and create a subscription for each side of the middle
-                document.animations['turbo:before-render'][subscriber] = subscription
-                document.animations['turbo:render'][subscriber] = subscription
+
+                if (!document.animations[turboRender][subscriber])
+                    document.animations[turboRender][subscriber] = []
+                document.animations[turboRender][subscriber].push(subscription);
+
+                if (!document.animations[turboBeforeRender][subscriber])
+                    document.animations[turboBeforeRender][subscriber] = []
+                document.animations[turboBeforeRender][subscriber].push(subscription);
+
                 console.log("-> scheduleAnimation scheduleSpanPages subscription", subscription);
             }
 
             //if (schedule === schedulePreNextPageRender || (schedule === scheduleSpanPages && getComputedStyle(element).position !== 'absolute')) {
             if (schedule === schedulePreNextPageRender || schedule === scheduleComplete) {
-                // If the element is not positioned absolute span will yield unpredictable results so fallback is to let the animation complete before render
-                document.animations['turbo:before-render'][subscriber] = subscription
+
+                if (!document.animations[turboBeforeRender][subscriber])
+                    document.animations[turboBeforeRender][subscriber] = []
+                document.animations[turboBeforeRender][subscriber].push(subscription);
+
                 console.log("-> scheduleAnimation schedulePreNextPageRender subscription", subscription);
             }
 
             if (schedule === schedulePostNextPageRender) {
-                document.animations['turbo:render'][subscriber] = subscription
+
+                if (!document.animations[turboRender][subscriber])
+                    document.animations[turboRender][subscriber] = []
+                document.animations[turboRender][subscriber].push(subscription);
+
                 console.log("-> scheduleAnimation schedulePostNextPageRender subscription", subscription);
             }
         }
