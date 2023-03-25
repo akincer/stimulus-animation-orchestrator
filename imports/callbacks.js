@@ -69,23 +69,9 @@ export const turboBeforeRenderCallback = async function (event) {
     let debugDelay = 0;
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-    let progressLine1 = document.getElementById('progressLine1');
-    let progressLine1colorFill = document.getElementById('progressLine1-colorFill');
-    let iconSpacerStep2 = document.getElementById('iconSpacerStep2');
-
-    console.log("-> animationDebug turboBeforeRenderCallback START progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
-    console.log("-> animationDebug turboBeforeRenderCallback START progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
-    console.log("-> animationDebug turboBeforeRenderCallback START progressLine1", progressLine1);
-    console.log("-> animationDebug turboBeforeRenderCallback START progressLine1colorFill", progressLine1colorFill);
-    console.log("-> animationDebug turboBeforeRenderCallback START iconSpacerStep2", iconSpacerStep2);
-
     // Pause rendering
     event.preventDefault();
 
-    console.log("->turboBeforeRenderCallback document.animations[turboBeforeRender]", document.animations[turboBeforeRender]);
-
-    console.log('-> turboBeforeRenderCallback Before loop through and play all animations');
-    await sleep(debugDelay);
     for (const subscriber in document.animations[turboBeforeRender]) {
         let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
         let preRenderSubscriber = document.getElementById(subscriber);
@@ -103,27 +89,15 @@ export const turboBeforeRenderCallback = async function (event) {
 
             if (schedule === scheduleComplete || schedule === schedulePreNextPageRender || (schedule === scheduleSpan && !postRenderSubscriber)) {
                 keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionFull);
-                //animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFull);
             }
 
             if (schedule === scheduleSpan && postRenderSubscriber) {
                 keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionFirstHalf);
-                // animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFirstHalf);
             }
             const animationController = new Animation(keyframeEffect, document.timeline);
-            console.log("----------- buildKeyFrameEffect Pre play -----------")
-            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(preRenderSubscriber).getPropertyValue('background-color'));
-            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(preRenderSubscriber).getPropertyValue('border-color'));
-            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect color", window.getComputedStyle(preRenderSubscriber).getPropertyValue('color'));
-            console.log("----------- buildKeyFrameEffect ---------------------")
-            console.log('-> turboBeforeRenderCallback About to play keyframeEffectDefinition: ', keyframeEffectDefinition);
-            await sleep(debugDelay);
+
             animationController.play();
-            console.log("----------- buildKeyFrameEffect Post play ----------")
-            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(preRenderSubscriber).getPropertyValue('background-color'));
-            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(preRenderSubscriber).getPropertyValue('border-color'));
-            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect color", window.getComputedStyle(preRenderSubscriber).getPropertyValue('color'));
-            console.log("----------- buildKeyFrameEffect --------------------")
+
 
             animationPromises.push(animationController.finished);
             if (!animationControllers[subscriber]) {
@@ -132,10 +106,6 @@ export const turboBeforeRenderCallback = async function (event) {
             animationControllers[subscriber].push(animationController);
         }
     }
-    console.log('-> turboBeforeRenderCallback After loop through and play all animations');
-    await sleep(debugDelay);
-
-
 
     if (!skipDefaultAnimation() && !document.preRenderDefaultAnimationExecuted) {
         console.log("-> turboBeforeRenderCallback *** Playing default animation ***");
@@ -158,108 +128,49 @@ export const turboBeforeRenderCallback = async function (event) {
         document.preRenderDefaultAnimationExecuted = true;
     }
 
-    console.log('-> turboBeforeRenderCallback Before await animations to complete');
-    await sleep(debugDelay);
     await Promise.all(animationPromises);
-    console.log('-> turboBeforeRenderCallback Before await animations to complete. Next up is changing permanent settings on target element');
-    await sleep(debugDelay);
 
     for (const subscriber in document.animations[turboBeforeRender]) {
         let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
         let preRenderSubscriber = document.getElementById(subscriber);
-        console.log("-> turboBeforeRenderCallback document", document);
-        console.log("-> turboBeforeRenderCallback subscriber", subscriber);
-        console.log("-> turboBeforeRenderCallback postRenderSubscriber", postRenderSubscriber);
-        console.log("-> turboBeforeRenderCallback preRenderSubscriber", preRenderSubscriber);
 
         for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
             const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
             let animation = keyframeEffectDefinition.animation, element = keyframeEffectDefinition.element;
             let boxAfter = keyframeEffectDefinition.element.getBoundingClientRect();
-            console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody -  keyframeEffectDefinition:", keyframeEffectDefinition);
-            console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody -  element:", element);
+
             if (schedule === scheduleSpan && postRenderSubscriber) {
 
-                // Replace the postRenderSubscriber with the animated preRenderSubscriber
-                let newPostRenderSubscriber = preRenderSubscriber.cloneNode(true);
-                let animations = newPostRenderSubscriber.getAnimations();
-                for (const animationsIndex in animations) {
-                    console.log("-> animationDebug turboBeforeRenderCallback animation on cloned element", animations[animationsIndex]);
-                    animations[animationsIndex].cancel();
-                }
                 postRenderSubscriber.parentNode.replaceChild(preRenderSubscriber.cloneNode(true), postRenderSubscriber);
                 postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`)
 
-                // use preRenderSubscriber and postRenderSubscriber
                 if (animation === moveToTarget) {
                     postRenderSubscriber.style.left = boxAfter.left.toString() + 'px';
                     postRenderSubscriber.style.top = boxAfter.top.toString() + 'px';
-                    console.log('-> turboBeforeRenderCallback Set permanent left and top for nextPageSubscriberkeyframeEffectDefinition: ', keyframeEffectDefinition);
-                    await sleep(debugDelay);
                 }
                 if (animation === resizeWidth) {
                     let options = parseOptions(keyframeEffectDefinition.options);
                     postRenderSubscriber.style.width = midpoint(options.startWidth, options.endWidth);
-                    console.log('-> turboBeforeRenderCallback Set permanent width for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
-                    await sleep(debugDelay);
                 }
                 if (animation === fadeIn || animation == fadeOut) {
                     postRenderSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
-                    console.log('-> turboBeforeRenderCallback Set permanent opacity for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
-                    await sleep(debugDelay);
                 }
                 if (animation === changeColor) {
                     let options = parseOptions(keyframeEffectDefinition.options);
                     let properties = options.properties.split(propertiesDelimiter);
                     for (const propertiesIndex in properties) {
                         let property = properties[propertiesIndex];
-                        console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody (setting properties on nextPageSubscriber) -  property:", property);
                         postRenderSubscriber.style[hyphenatedToCamelCase(property)] = window.getComputedStyle(element).getPropertyValue(property);
                     }
-                    console.log('-> turboBeforeRenderCallback Set permanent color for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
-                    await sleep(debugDelay);
                 }
             }
         }
-        console.log('-> turboBeforeRenderCallback After setting permanent values on target element');
-        await sleep(debugDelay);
-
-        //console.log('-> turboBeforeRenderCallback Before Before canceling scheduled animations');
-        //await sleep(debugDelay);
-        //for (const animationControllersIndex in animationControllers[subscriber]) {
-            //console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
-            //animationControllers[subscriber][animationControllersIndex].cancel()
-        //}
-        //console.log('-> turboBeforeRenderCallback After Before canceling scheduled animations');
-        //await sleep(debugDelay);
 
         delete document.animations['turbo:before-render'][subscriber];
     }
 
-    progressLine1 = document.getElementById('progressLine1');
-    progressLine1colorFill = document.getElementById('progressLine1-colorFill');
-    iconSpacerStep2 = document.getElementById('iconSpacerStep2');
-    console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
-    console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
-    console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME RENDERING progressLine1", progressLine1);
-    console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME RENDERING progressLine1colorFill", progressLine1colorFill);
-    console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME RENDERING iconSpacerStep2", iconSpacerStep2);
-    await sleep(debugDelay);
-
     // Resume rendering
     event.detail.resume();
-    console.log('-> turboBeforeRenderCallback Rendering resumed');
-    await sleep(debugDelay);
-
-    progressLine1 = document.getElementById('progressLine1');
-    progressLine1colorFill = document.getElementById('progressLine1-colorFill');
-    iconSpacerStep2 = document.getElementById('iconSpacerStep2');
-    console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
-    console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
-    console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME RENDERING progressLine1", progressLine1);
-    console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME RENDERING progressLine1colorFill", progressLine1colorFill);
-    console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME RENDERING iconSpacerStep2", iconSpacerStep2);
-    await sleep(debugDelay);
 }
 
 export const turboBeforeStreamRenderCallback = function (event) {
@@ -270,35 +181,15 @@ export const turboRenderCallback = async function (event) {
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
-    console.log("-> turboRenderCallback event", event);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     let debugDelay = 0;
 
-    let progressLine1 = document.getElementById('progressLine1');
-    let progressLine1colorFill = document.getElementById('progressLine1-colorFill');
-    let iconSpacerStep2 = document.getElementById('iconSpacerStep2');
-    console.log("-> animationDebug turboRenderCallback START progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
-    console.log("-> animationDebug turboRenderCallback START progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
-    console.log("-> animationDebug turboRenderCallback START progressLine1", progressLine1);
-    console.log("-> animationDebug turboRenderCallback START progressLine1colorFill", progressLine1colorFill);
-    console.log("-> animationDebug turboRenderCallback START iconSpacerStep2", iconSpacerStep2);
 
 
     console.log('-> turboRenderCallback Processing each scheduled animation');
     await sleep(debugDelay);
     for (const subscriber in document.animations[turboRender]) {
 
-        if (subscriber === 'progressLine1' || subscriber === 'progressLine1-colorFill' || subscriber === 'iconSpacerStep2') {
-            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATIONS subscriber", subscriber);
-            progressLine1 = document.getElementById('progressLine1');
-            progressLine1colorFill = document.getElementById('progressLine1-colorFill');
-            iconSpacerStep2 = document.getElementById('iconSpacerStep2');
-            console.log("-> animationDebug turboRenderCallback BEFORE RENDER ANIMATION progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
-            console.log("-> animationDebug turboRenderCallback BEFORE RENDER ANIMATION progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
-            console.log("-> animationDebug turboRenderCallback BEFORE RENDER ANIMATION progressLine1", progressLine1);
-            console.log("-> animationDebug turboRenderCallback BEFORE RENDER ANIMATION progressLine1colorFill", progressLine1colorFill);
-            console.log("-> animationDebug turboRenderCallback BEFORE RENDER ANIMATION iconSpacerStep2", iconSpacerStep2);
-        }
         let keyframeEffectDefinitions = document.animations[turboRender][subscriber];
         let element = document.getElementById(subscriber);
         let rect = element.getBoundingClientRect();
@@ -306,49 +197,13 @@ export const turboRenderCallback = async function (event) {
             const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex];
             const keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionSecondHalf);
             const animationController = new Animation(keyframeEffect, document.timeline);
-            console.log("----------- buildKeyFrameEffect Pre play -----------")
-            console.log("-> turboRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
-            console.log("-> turboRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
-            console.log("-> turboRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
-            console.log("----------- buildKeyFrameEffect ---------------------")
-            console.log('-> turboRenderCallback About to play keyframeEffectDefinition: ', keyframeEffectDefinition);
-            await sleep(debugDelay);
             animationController.play();
-            console.log("----------- buildKeyFrameEffect Post play ----------")
-            console.log("-> turboRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
-            console.log("-> turboRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
-            console.log("-> turboRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
-            console.log("----------- buildKeyFrameEffect --------------------")
             animationPromises.push(animationController.finished);
             if (!animationControllers[subscriber]) {
                 animationControllers[subscriber] = []
             }
             animationControllers[subscriber].push(animationController);
         }
-        console.log('-> turboRenderCallback Finished processing each scheduled animation');
-        await sleep(debugDelay);
-
-        if (subscriber === 'progressLine1' || subscriber === 'progressLine1-colorFill' || subscriber === 'iconSpacerStep2') {
-            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATIONS subscriber", subscriber);
-            progressLine1 = document.getElementById('progressLine1');
-            progressLine1colorFill = document.getElementById('progressLine1-colorFill');
-            iconSpacerStep2 = document.getElementById('iconSpacerStep2');
-            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATION progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
-            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATION progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
-            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATION progressLine1", progressLine1);
-            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATION progressLine1colorFill", progressLine1colorFill);
-            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATION iconSpacerStep2", iconSpacerStep2);
-        }
-
-        //let animationKeyFrameEffect;
-        // animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations[turboRender][subscriber], sectionSecondHalf);
-        //const animationController = new Animation(animationKeyFrameEffect, document.timeline);
-        //animationController.play();
-        //animationPromises.push(animationController.finished);
-        //if (!animationControllers[subscriber]) {
-        //    animationControllers[subscriber] = []
-        //}
-        //animationControllers[subscriber].push(animationController);
     }
 
     if (!skipDefaultAnimation() && !document.restorePending) {
@@ -372,11 +227,7 @@ export const turboRenderCallback = async function (event) {
 
     document.restorePending = false;
 
-    console.log('-> turboRenderCallback Before awaiting for animations to finish');
-    await sleep(debugDelay);
     await Promise.all(animationPromises);
-    console.log('-> turboRenderCallback After awaiting for animations to finish. Next is setting permanent style values on target element');
-    await sleep(debugDelay);
 
     for (const subscriber in document.animations[turboRender]) {
         let postRenderSubscriber = document.getElementById(subscriber);
