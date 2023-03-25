@@ -232,6 +232,7 @@ export const turboBeforeRenderCallback = async function (event) {
     console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME RENDERING progressLine1", progressLine1);
     console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME RENDERING progressLine1colorFill", progressLine1colorFill);
     console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME RENDERING iconSpacerStep2", iconSpacerStep2);
+    await sleep(debugDelay);
 
     // Resume rendering
     event.detail.resume();
@@ -244,6 +245,7 @@ export const turboBeforeRenderCallback = async function (event) {
     console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME RENDERING progressLine1", progressLine1);
     console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME RENDERING progressLine1colorFill", progressLine1colorFill);
     console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME RENDERING iconSpacerStep2", iconSpacerStep2);
+    await sleep(debugDelay);
 }
 
 export const turboBeforeStreamRenderCallback = function (event) {
