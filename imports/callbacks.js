@@ -66,7 +66,7 @@ export const turboBeforeRenderCallback = async function (event) {
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
-    let debugDelay = 3000;
+    let debugDelay = 0;
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     let progressLine1 = document.getElementById('progressLine1');
@@ -272,7 +272,7 @@ export const turboRenderCallback = async function (event) {
     let animationControllers = {};
     console.log("-> turboRenderCallback event", event);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
-    let debugDelay = 3000;
+    let debugDelay = 0;
 
     let progressLine1 = document.getElementById('progressLine1');
     let progressLine1colorFill = document.getElementById('progressLine1-colorFill');
@@ -282,8 +282,7 @@ export const turboRenderCallback = async function (event) {
     console.log("-> animationDebug turboRenderCallback START progressLine1", progressLine1);
     console.log("-> animationDebug turboRenderCallback START progressLine1colorFill", progressLine1colorFill);
     console.log("-> animationDebug turboRenderCallback START iconSpacerStep2", iconSpacerStep2);
-    if (window.getComputedStyle(progressLine1).getPropertyValue('width') === '685px')
-        throw new Error('breaking execution to examine elements');
+
 
     console.log('-> turboRenderCallback Processing each scheduled animation');
     await sleep(debugDelay);
