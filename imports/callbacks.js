@@ -181,6 +181,11 @@ export const turboBeforeRenderCallback = async function (event) {
             if (schedule === scheduleSpan && postRenderSubscriber) {
 
                 // Replace the postRenderSubscriber with the animated preRenderSubscriber
+                let newPostRenderSubscriber = preRenderSubscriber.cloneNode(true);
+                let animations = newPostRenderSubscriber.getAnimations();
+                for (const animationsIndex in animations) {
+                    animations[animationsIndex].cancel();
+                }
                 postRenderSubscriber.parentNode.replaceChild(preRenderSubscriber.cloneNode(true), postRenderSubscriber);
                 postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`)
 
