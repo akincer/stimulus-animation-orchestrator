@@ -72,6 +72,9 @@ export const turboBeforeRenderCallback = async function (event) {
     let progressLine1 = document.getElementById('progressLine1');
     let progressLine1colorFill = document.getElementById('progressLine1-colorFill');
     let iconSpacerStep2 = document.getElementById('iconSpacerStep2');
+
+    console.log("-> animationDebug turboBeforeRenderCallback START progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
+    console.log("-> animationDebug turboBeforeRenderCallback START progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
     console.log("-> animationDebug turboBeforeRenderCallback START progressLine1", progressLine1);
     console.log("-> animationDebug turboBeforeRenderCallback START progressLine1colorFill", progressLine1colorFill);
     console.log("-> animationDebug turboBeforeRenderCallback START iconSpacerStep2", iconSpacerStep2);
@@ -229,6 +232,8 @@ export const turboBeforeRenderCallback = async function (event) {
     progressLine1 = document.getElementById('progressLine1');
     progressLine1colorFill = document.getElementById('progressLine1-colorFill');
     iconSpacerStep2 = document.getElementById('iconSpacerStep2');
+    console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
+    console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
     console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME RENDERING progressLine1", progressLine1);
     console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME RENDERING progressLine1colorFill", progressLine1colorFill);
     console.log("-> animationDebug turboBeforeRenderCallback PRE-RESUME RENDERING iconSpacerStep2", iconSpacerStep2);
@@ -242,6 +247,8 @@ export const turboBeforeRenderCallback = async function (event) {
     progressLine1 = document.getElementById('progressLine1');
     progressLine1colorFill = document.getElementById('progressLine1-colorFill');
     iconSpacerStep2 = document.getElementById('iconSpacerStep2');
+    console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
+    console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
     console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME RENDERING progressLine1", progressLine1);
     console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME RENDERING progressLine1colorFill", progressLine1colorFill);
     console.log("-> animationDebug turboBeforeRenderCallback POST-RESUME RENDERING iconSpacerStep2", iconSpacerStep2);
@@ -263,6 +270,8 @@ export const turboRenderCallback = async function (event) {
     let progressLine1 = document.getElementById('progressLine1');
     let progressLine1colorFill = document.getElementById('progressLine1-colorFill');
     let iconSpacerStep2 = document.getElementById('iconSpacerStep2');
+    console.log("-> animationDebug turboRenderCallback START progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
+    console.log("-> animationDebug turboRenderCallback START progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
     console.log("-> animationDebug turboRenderCallback START progressLine1", progressLine1);
     console.log("-> animationDebug turboRenderCallback START progressLine1colorFill", progressLine1colorFill);
     console.log("-> animationDebug turboRenderCallback START iconSpacerStep2", iconSpacerStep2);
