@@ -184,6 +184,7 @@ export const turboBeforeRenderCallback = async function (event) {
                 let newPostRenderSubscriber = preRenderSubscriber.cloneNode(true);
                 let animations = newPostRenderSubscriber.getAnimations();
                 for (const animationsIndex in animations) {
+                    console.log("-> animationDebug turboBeforeRenderCallback animation on cloned element", animations[animationsIndex]);
                     animations[animationsIndex].cancel();
                 }
                 postRenderSubscriber.parentNode.replaceChild(preRenderSubscriber.cloneNode(true), postRenderSubscriber);
