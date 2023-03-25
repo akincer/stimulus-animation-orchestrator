@@ -281,6 +281,8 @@ export const turboRenderCallback = async function (event) {
     console.log("-> animationDebug turboRenderCallback START progressLine1", progressLine1);
     console.log("-> animationDebug turboRenderCallback START progressLine1colorFill", progressLine1colorFill);
     console.log("-> animationDebug turboRenderCallback START iconSpacerStep2", iconSpacerStep2);
+    if (window.getComputedStyle(progressLine1).getPropertyValue('width') === '685px')
+        throw new Error('breaking execution to examine elements');
 
     console.log('-> turboRenderCallback Processing each scheduled animation');
     await sleep(debugDelay);
