@@ -77,7 +77,7 @@ export const turboBeforeRenderCallback = async function (event) {
     console.log('-> turboBeforeRenderCallback Before loop through and play all animations');
     await sleep(debugDelay);
     for (const subscriber in document.animations[turboBeforeRender]) {
-        let preRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
+        let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
         let element = document.getElementById(subscriber);
 
         for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
@@ -87,16 +87,16 @@ export const turboBeforeRenderCallback = async function (event) {
             if (options.toggleClasses) {
                 let toggleClassList = options.toggleClasses.split(optionsDelimiter);
                 for (const toggleClassListIndex in toggleClassList){
-                    toggleClass(preRenderSubscriber, toggleClassList[toggleClassListIndex], off);
+                    toggleClass(postRenderSubscriber, toggleClassList[toggleClassListIndex], off);
                 }
             }
 
-            if (schedule === scheduleComplete || schedule === schedulePreNextPageRender || (schedule === scheduleSpan && !preRenderSubscriber)) {
+            if (schedule === scheduleComplete || schedule === schedulePreNextPageRender || (schedule === scheduleSpan && !postRenderSubscriber)) {
                 keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionFull);
                 //animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFull);
             }
 
-            if (schedule === scheduleSpan && preRenderSubscriber) {
+            if (schedule === scheduleSpan && postRenderSubscriber) {
                 keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionFirstHalf);
                 // animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations['turbo:before-render'][subscriber], sectionFirstHalf);
             }
@@ -155,7 +155,7 @@ export const turboBeforeRenderCallback = async function (event) {
     await sleep(debugDelay);
 
     for (const subscriber in document.animations[turboBeforeRender]) {
-        let preRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
+        let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
 
         for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
             const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
@@ -163,23 +163,23 @@ export const turboBeforeRenderCallback = async function (event) {
             let boxAfter = keyframeEffectDefinition.element.getBoundingClientRect();
             console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody -  keyframeEffectDefinition:", keyframeEffectDefinition);
             console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody -  element:", element);
-            if (schedule === scheduleSpan && preRenderSubscriber) {
+            if (schedule === scheduleSpan && postRenderSubscriber) {
 
 
                 // use preRenderSubscriber and postRenderSubscriber
                 if (animation === moveToTarget) {
-                    preRenderSubscriber.style.left = boxAfter.left.toString() + 'px';
-                    preRenderSubscriber.style.top = boxAfter.top.toString() + 'px';
+                    postRenderSubscriber.style.left = boxAfter.left.toString() + 'px';
+                    postRenderSubscriber.style.top = boxAfter.top.toString() + 'px';
                     console.log('-> turboBeforeRenderCallback Set permanent left and top for nextPageSubscriberkeyframeEffectDefinition: ', keyframeEffectDefinition);
                     await sleep(debugDelay);
                 }
                 if (animation === resizeWidth) {
-                    preRenderSubscriber.style.width = boxAfter.width.toString() + 'px';
+                    postRenderSubscriber.style.width = boxAfter.width.toString() + 'px';
                     console.log('-> turboBeforeRenderCallback Set permanent width for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
                     await sleep(debugDelay);
                 }
                 if (animation === fadeIn || animation == fadeOut) {
-                    preRenderSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
+                    postRenderSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
                     console.log('-> turboBeforeRenderCallback Set permanent opacity for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
                     await sleep(debugDelay);
                 }
@@ -189,7 +189,7 @@ export const turboBeforeRenderCallback = async function (event) {
                     for (const propertiesIndex in properties) {
                         let property = properties[propertiesIndex];
                         console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody (setting properties on nextPageSubscriber) -  property:", property);
-                        preRenderSubscriber.style[hyphenatedToCamelCase(property)] = window.getComputedStyle(element).getPropertyValue(property);
+                        postRenderSubscriber.style[hyphenatedToCamelCase(property)] = window.getComputedStyle(element).getPropertyValue(property);
                     }
                     console.log('-> turboBeforeRenderCallback Set permanent color for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
                     await sleep(debugDelay);
@@ -199,14 +199,14 @@ export const turboBeforeRenderCallback = async function (event) {
         console.log('-> turboBeforeRenderCallback After setting permanent values on target element');
         await sleep(debugDelay);
 
-        console.log('-> turboBeforeRenderCallback Before Before canceling scheduled animations');
-        await sleep(debugDelay);
-        for (const animationControllersIndex in animationControllers[subscriber]) {
-            console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
-            animationControllers[subscriber][animationControllersIndex].cancel()
-        }
-        console.log('-> turboBeforeRenderCallback After Before canceling scheduled animations');
-        await sleep(debugDelay);
+        //console.log('-> turboBeforeRenderCallback Before Before canceling scheduled animations');
+        //await sleep(debugDelay);
+        //for (const animationControllersIndex in animationControllers[subscriber]) {
+            //console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
+            //animationControllers[subscriber][animationControllersIndex].cancel()
+        //}
+        //console.log('-> turboBeforeRenderCallback After Before canceling scheduled animations');
+        //await sleep(debugDelay);
 
         delete document.animations['turbo:before-render'][subscriber];
     }
@@ -334,20 +334,20 @@ export const turboRenderCallback = async function (event) {
 
 
         for (const animationControllersIndex in animationControllers[subscriber]) {
-            console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
+            //console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
             animationControllers[subscriber][animationControllersIndex].cancel()
-            let keyframeEffectDefinitions = document.animations[turboRender][subscriber];
-            let postRenderSubscriber = document.getElementById(subscriber);
-            for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
-                const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex];
-                let options = parseOptions(keyframeEffectDefinition.options);
-                if (options.toggleClasses) {
-                    let toggleClassList = options.toggleClasses.split(optionsDelimiter);
-                    for (const toggleClassListIndex in toggleClassList){
-                        toggleClass(postRenderSubscriber, toggleClassList[toggleClassListIndex], on);
-                    }
-                }
-            }
+            //let keyframeEffectDefinitions = document.animations[turboRender][subscriber];
+            //let postRenderSubscriber = document.getElementById(subscriber);
+            //for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
+            //    const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex];
+            //    let options = parseOptions(keyframeEffectDefinition.options);
+            //    if (options.toggleClasses) {
+            //        let toggleClassList = options.toggleClasses.split(optionsDelimiter);
+            //        for (const toggleClassListIndex in toggleClassList){
+            //           toggleClass(postRenderSubscriber, toggleClassList[toggleClassListIndex], on);
+            //       }
+            //   }
+            //}
         }
 
         console.log('-> turboRenderCallback After looping to cancel animations');
