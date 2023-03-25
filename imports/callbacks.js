@@ -85,7 +85,7 @@ export const turboBeforeRenderCallback = async function (event) {
     await sleep(debugDelay);
     for (const subscriber in document.animations[turboBeforeRender]) {
         let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
-        let element = document.getElementById(subscriber);
+        let preRenderSubscriber = document.getElementById(subscriber);
 
         for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
             let keyframeEffect, options;
@@ -94,7 +94,7 @@ export const turboBeforeRenderCallback = async function (event) {
             if (options.toggleOffClasses) {
                 let toggleClassList = options.toggleOffClasses.split(optionsDelimiter);
                 for (const toggleClassListIndex in toggleClassList){
-                    toggleClass(postRenderSubscriber, toggleClassList[toggleClassListIndex], off);
+                    toggleClass(preRenderSubscriber, toggleClassList[toggleClassListIndex], off);
                 }
             }
 
@@ -109,17 +109,17 @@ export const turboBeforeRenderCallback = async function (event) {
             }
             const animationController = new Animation(keyframeEffect, document.timeline);
             console.log("----------- buildKeyFrameEffect Pre play -----------")
-            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
-            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
-            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
+            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(preRenderSubscriber).getPropertyValue('background-color'));
+            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(preRenderSubscriber).getPropertyValue('border-color'));
+            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect color", window.getComputedStyle(preRenderSubscriber).getPropertyValue('color'));
             console.log("----------- buildKeyFrameEffect ---------------------")
             console.log('-> turboBeforeRenderCallback About to play keyframeEffectDefinition: ', keyframeEffectDefinition);
             await sleep(debugDelay);
             animationController.play();
             console.log("----------- buildKeyFrameEffect Post play ----------")
-            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
-            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
-            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
+            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect background-color", window.getComputedStyle(preRenderSubscriber).getPropertyValue('background-color'));
+            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect border-color", window.getComputedStyle(preRenderSubscriber).getPropertyValue('border-color'));
+            console.log("-> turboBeforeRenderCallback buildKeyFrameEffect color", window.getComputedStyle(preRenderSubscriber).getPropertyValue('color'));
             console.log("----------- buildKeyFrameEffect --------------------")
 
             animationPromises.push(animationController.finished);
