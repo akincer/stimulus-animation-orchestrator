@@ -280,6 +280,17 @@ export const turboRenderCallback = async function (event) {
     await sleep(debugDelay);
     for (const subscriber in document.animations[turboRender]) {
 
+        if (subscriber === 'progressLine1' || subscriber === 'progressLine1-colorFill' || subscriber === 'iconSpacerStep2') {
+            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATIONS subscriber", subscriber);
+            progressLine1 = document.getElementById('progressLine1');
+            progressLine1colorFill = document.getElementById('progressLine1-colorFill');
+            iconSpacerStep2 = document.getElementById('iconSpacerStep2');
+            console.log("-> animationDebug turboRenderCallback BEFORE RENDER ANIMATION progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
+            console.log("-> animationDebug turboRenderCallback BEFORE RENDER ANIMATION progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
+            console.log("-> animationDebug turboRenderCallback BEFORE RENDER ANIMATION progressLine1", progressLine1);
+            console.log("-> animationDebug turboRenderCallback BEFORE RENDER ANIMATION progressLine1colorFill", progressLine1colorFill);
+            console.log("-> animationDebug turboRenderCallback BEFORE RENDER ANIMATION iconSpacerStep2", iconSpacerStep2);
+        }
         let keyframeEffectDefinitions = document.animations[turboRender][subscriber];
         let element = document.getElementById(subscriber);
         let rect = element.getBoundingClientRect();
@@ -309,14 +320,17 @@ export const turboRenderCallback = async function (event) {
         console.log('-> turboRenderCallback Finished processing each scheduled animation');
         await sleep(debugDelay);
 
-        progressLine1 = document.getElementById('progressLine1');
-        progressLine1colorFill = document.getElementById('progressLine1-colorFill');
-        iconSpacerStep2 = document.getElementById('iconSpacerStep2');
-        console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATIONS progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
-        console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATIONS progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
-        console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATIONS progressLine1", progressLine1);
-        console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATIONS progressLine1colorFill", progressLine1colorFill);
-        console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATIONS iconSpacerStep2", iconSpacerStep2);
+        if (subscriber === 'progressLine1' || subscriber === 'progressLine1-colorFill' || subscriber === 'iconSpacerStep2') {
+            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATIONS subscriber", subscriber);
+            progressLine1 = document.getElementById('progressLine1');
+            progressLine1colorFill = document.getElementById('progressLine1-colorFill');
+            iconSpacerStep2 = document.getElementById('iconSpacerStep2');
+            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATION progressLine1 WIDTH", window.getComputedStyle(progressLine1).getPropertyValue('width'));
+            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATION progressLine1colorFill WIDTH", window.getComputedStyle(progressLine1colorFill).getPropertyValue('width'));
+            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATION progressLine1", progressLine1);
+            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATION progressLine1colorFill", progressLine1colorFill);
+            console.log("-> animationDebug turboRenderCallback AFTER RENDER ANIMATION iconSpacerStep2", iconSpacerStep2);
+        }
 
         //let animationKeyFrameEffect;
         // animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations[turboRender][subscriber], sectionSecondHalf);
