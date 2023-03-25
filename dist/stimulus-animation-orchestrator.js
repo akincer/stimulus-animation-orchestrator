@@ -16,7 +16,7 @@ import {
 } from "../imports/constants";
 import * as orchestratorCallbacks from "../imports/callbacks";
 import * as orchestratorHelpers from "../imports/helper-functions";
-import {buildKeyFrameEffect} from "../imports/waapi";
+import {buildKeyFrameEffect, parseOptions} from "../imports/waapi";
 
 class src_default extends Controller {
     connect() {
@@ -169,15 +169,6 @@ class src_default extends Controller {
 
     }
 
-    //getKeyEffect(subscriber, subscription) {
-        //let schedule = subscription['schedule'];
-        //let element = subscription['element'];
-        //let detail = subscription['detail'];
-
-
-    //}
-
-    // Plays subscribed animations for the event
     orchestrateSubscribedAnimations(event) {
         let eventSource, eventType = event.type;
 
@@ -206,10 +197,18 @@ class src_default extends Controller {
         console.log("-> orchestrateSubscribedAnimations document.animations['turbo:before-render']", document.animations['turbo:before-render']);
 
         // Play immediate animations
-        for (const subscriber in document.animations['immediate']) {
-            let animationKeyFrameEffect = buildKeyFrameEffect(subscriber, document.animations.immediate[subscriber]);
-            const animationController = new Animation(animationKeyFrameEffect, document.timeline);
-            animationController.play();
+
+        for (const subscriber in document.animations[immediate]) {
+            let keyframeEffectDefinitions = document.animations[immediate][subscriber]
+            for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
+                let keyframeEffect, options;
+                const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
+                !!keyframeEffectDefinition.options ? options = parseOptions(keyframeEffectDefinition.options) : options = {};
+                keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition);
+                const animationController = new Animation(keyframeEffect, document.timeline);
+                animationController.play();
+            }
+
             delete document.animations.immediate[subscriber];
         }
     }
