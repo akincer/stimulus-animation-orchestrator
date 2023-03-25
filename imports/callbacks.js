@@ -156,7 +156,7 @@ export const turboBeforeRenderCallback = async function (event) {
 
     for (const subscriber in document.animations[turboBeforeRender]) {
         let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
-        let preRenderSubscriber = document.getElementById(postRenderSubscriber.id);
+        let preRenderSubscriber = document.getElementById(subscriber);
         console.log("-> turboBeforeRenderCallback postRenderSubscriber", postRenderSubscriber);
         console.log("-> turboBeforeRenderCallback preRenderSubscriber", preRenderSubscriber);
 
