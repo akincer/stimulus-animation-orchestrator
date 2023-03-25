@@ -1,4 +1,4 @@
-import {fetchItem, hyphenatedToCamelCase, storeItem, toggleClass} from "./helper-functions";
+import {fetchItem, hyphenatedToCamelCase, midpoint, storeItem, toggleClass} from "./helper-functions";
 import {
     changeColor,
     directionForwards,
@@ -198,7 +198,8 @@ export const turboBeforeRenderCallback = async function (event) {
                     await sleep(debugDelay);
                 }
                 if (animation === resizeWidth) {
-                    postRenderSubscriber.style.width = boxAfter.width.toString() + 'px';
+                    let options = parseOptions(keyframeEffectDefinition.options);
+                    postRenderSubscriber.style.width = midpoint(options.startWidth, options.endWidth);
                     console.log('-> turboBeforeRenderCallback Set permanent width for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
                     await sleep(debugDelay);
                 }
