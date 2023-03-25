@@ -219,10 +219,24 @@ export const turboBeforeRenderCallback = async function (event) {
         delete document.animations['turbo:before-render'][subscriber];
     }
 
+    let progressLine1 = document.getElementById('progressLine1');
+    let progressLine1colorFill = document.getElementById('progressLine1-colorFill');
+    let iconSpacerStep2 = document.getElementById('iconSpacerStep2');
+    console.log("-> animationDebug turboBeforeRenderCallback progressLine1", progressLine1);
+    console.log("-> animationDebug turboBeforeRenderCallback progressLine1colorFill", progressLine1colorFill);
+    console.log("-> animationDebug turboBeforeRenderCallback iconSpacerStep2", iconSpacerStep2);
+
     // Resume rendering
     event.detail.resume();
     console.log('-> turboBeforeRenderCallback Rendering resumed');
     await sleep(debugDelay);
+
+    progressLine1 = document.getElementById('progressLine1');
+    progressLine1colorFill = document.getElementById('progressLine1-colorFill');
+    iconSpacerStep2 = document.getElementById('iconSpacerStep2');
+    console.log("-> animationDebug turboBeforeRenderCallback progressLine1", progressLine1);
+    console.log("-> animationDebug turboBeforeRenderCallback progressLine1colorFill", progressLine1colorFill);
+    console.log("-> animationDebug turboBeforeRenderCallback iconSpacerStep2", iconSpacerStep2);
 }
 
 export const turboBeforeStreamRenderCallback = function (event) {
@@ -236,6 +250,13 @@ export const turboRenderCallback = async function (event) {
     console.log("-> turboRenderCallback event", event);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     let debugDelay = 3000;
+
+    let progressLine1 = document.getElementById('progressLine1');
+    let progressLine1colorFill = document.getElementById('progressLine1-colorFill');
+    let iconSpacerStep2 = document.getElementById('iconSpacerStep2');
+    console.log("-> animationDebug turboRenderCallback progressLine1", progressLine1);
+    console.log("-> animationDebug turboRenderCallback progressLine1colorFill", progressLine1colorFill);
+    console.log("-> animationDebug turboRenderCallback iconSpacerStep2", iconSpacerStep2);
 
     console.log('-> turboRenderCallback Processing each scheduled animation');
     await sleep(debugDelay);
