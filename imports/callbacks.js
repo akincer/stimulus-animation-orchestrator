@@ -84,9 +84,11 @@ export const turboBeforeRenderCallback = async function (event) {
             let keyframeEffect;
             const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
             let options = parseOptions(keyframeEffectDefinition.options);
-            let toggleClassList = options.toggleClasses.split(optionsDelimiter);
-            for (const toggleClassListIndex in toggleClassList){
-                toggleClass(element, toggleClassList[toggleClassListIndex], off);
+            if (options.toggleClasses) {
+                let toggleClassList = options.toggleClasses.split(optionsDelimiter);
+                for (const toggleClassListIndex in toggleClassList){
+                    toggleClass(preRenderSubscriber, toggleClassList[toggleClassListIndex], off);
+                }
             }
 
             if (schedule === scheduleComplete || schedule === schedulePreNextPageRender || (schedule === scheduleSpan && !preRenderSubscriber)) {
@@ -339,9 +341,11 @@ export const turboRenderCallback = async function (event) {
             for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
                 const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex];
                 let options = parseOptions(keyframeEffectDefinition.options);
-                let toggleClassList = options.toggleClasses.split(optionsDelimiter);
-                for (const toggleClassListIndex in toggleClassList){
-                    toggleClass(postRenderSubscriber, toggleClassList[toggleClassListIndex], on);
+                if (options.toggleClasses) {
+                    let toggleClassList = options.toggleClasses.split(optionsDelimiter);
+                    for (const toggleClassListIndex in toggleClassList){
+                        toggleClass(postRenderSubscriber, toggleClassList[toggleClassListIndex], on);
+                    }
                 }
             }
         }
