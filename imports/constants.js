@@ -25,6 +25,8 @@ export const typeSingle = 'single';
 export const optionsDelimiter = '||';
 export const subscriptionDelimiter = '->';
 export const propertiesDelimiter = ';';
+export const off = 'off';
+export const on = 'on';
 
 // Animation actions
 export const enterFromBottom = 'enterFromBottom';

@@ -1,4 +1,4 @@
-import {positionEnd, positionStart, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
+import {off, positionEnd, positionStart, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
 
 export function storeItem(itemName, itemData)
 {
@@ -223,4 +223,8 @@ export function getPropertyColor(element, property) {
         return document.orchestrator.defaults.color
 
     }
+}
+
+export function toggleClass(element, cssClass, state) {
+    state === off ? element.classList.remove(cssClass) : element.classList.add(cssClass);
 }
