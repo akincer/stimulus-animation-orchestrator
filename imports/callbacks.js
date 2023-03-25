@@ -156,6 +156,7 @@ export const turboBeforeRenderCallback = async function (event) {
 
     for (const subscriber in document.animations[turboBeforeRender]) {
         let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
+        let preRenderSubscriber = document.getElementById(postRenderSubscriber.id);
 
         for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
             const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
@@ -165,34 +166,36 @@ export const turboBeforeRenderCallback = async function (event) {
             console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody -  element:", element);
             if (schedule === scheduleSpan && postRenderSubscriber) {
 
+                // Replace the postRenderSubscriber with the animated preRenderSubscriber
+                postRenderSubscriber.parentNode.replaceChild(preRenderSubscriber, postRenderSubscriber);
 
                 // use preRenderSubscriber and postRenderSubscriber
                 if (animation === moveToTarget) {
-                    postRenderSubscriber.style.left = boxAfter.left.toString() + 'px';
-                    postRenderSubscriber.style.top = boxAfter.top.toString() + 'px';
-                    console.log('-> turboBeforeRenderCallback Set permanent left and top for nextPageSubscriberkeyframeEffectDefinition: ', keyframeEffectDefinition);
-                    await sleep(debugDelay);
+                    //postRenderSubscriber.style.left = boxAfter.left.toString() + 'px';
+                    //postRenderSubscriber.style.top = boxAfter.top.toString() + 'px';
+                    //console.log('-> turboBeforeRenderCallback Set permanent left and top for nextPageSubscriberkeyframeEffectDefinition: ', keyframeEffectDefinition);
+                    //await sleep(debugDelay);
                 }
                 if (animation === resizeWidth) {
-                    postRenderSubscriber.style.width = boxAfter.width.toString() + 'px';
-                    console.log('-> turboBeforeRenderCallback Set permanent width for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
-                    await sleep(debugDelay);
+                    //postRenderSubscriber.style.width = boxAfter.width.toString() + 'px';
+                    //console.log('-> turboBeforeRenderCallback Set permanent width for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
+                    //await sleep(debugDelay);
                 }
                 if (animation === fadeIn || animation == fadeOut) {
-                    postRenderSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
-                    console.log('-> turboBeforeRenderCallback Set permanent opacity for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
-                    await sleep(debugDelay);
+                    //postRenderSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
+                    //console.log('-> turboBeforeRenderCallback Set permanent opacity for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
+                    //await sleep(debugDelay);
                 }
                 if (animation === changeColor) {
-                    let options = parseOptions(keyframeEffectDefinition.options);
-                    let properties = options.properties.split(propertiesDelimiter);
-                    for (const propertiesIndex in properties) {
-                        let property = properties[propertiesIndex];
-                        console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody (setting properties on nextPageSubscriber) -  property:", property);
-                        postRenderSubscriber.style[hyphenatedToCamelCase(property)] = window.getComputedStyle(element).getPropertyValue(property);
-                    }
-                    console.log('-> turboBeforeRenderCallback Set permanent color for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
-                    await sleep(debugDelay);
+                    //let options = parseOptions(keyframeEffectDefinition.options);
+                    //let properties = options.properties.split(propertiesDelimiter);
+                    //for (const propertiesIndex in properties) {
+                    //    let property = properties[propertiesIndex];
+                    //    console.log("-> Animation Troubleshooting: turboBeforeRenderCallback - looping through to set values on element in newBody (setting properties on nextPageSubscriber) -  property:", property);
+                    //    postRenderSubscriber.style[hyphenatedToCamelCase(property)] = window.getComputedStyle(element).getPropertyValue(property);
+                    //}
+                    //console.log('-> turboBeforeRenderCallback Set permanent color for nextPageSubscriber keyframeEffectDefinition: ', keyframeEffectDefinition);
+                    //await sleep(debugDelay);
                 }
             }
         }
