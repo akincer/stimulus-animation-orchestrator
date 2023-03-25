@@ -221,6 +221,8 @@ export const turboBeforeRenderCallback = async function (event) {
 
     // Resume rendering
     event.detail.resume();
+    console.log('-> turboBeforeRenderCallback Rendering resumed');
+    await sleep(debugDelay);
 }
 
 export const turboBeforeStreamRenderCallback = function (event) {
@@ -315,35 +317,35 @@ export const turboRenderCallback = async function (event) {
 
             if (keyframeEffect[schedule] === scheduleSpan && postRenderSubscriber) {
                 if (document.moveToTarget[subscriber]) {
-                    let rect = postRenderSubscriber.getBoundingClientRect();
-                    postRenderSubscriber.style.left = rect.left.toString() + 'px';
-                    postRenderSubscriber.style.top = rect.top.toString() + 'px';
-                    delete document.moveToTarget[subscriber];
+                    //let rect = postRenderSubscriber.getBoundingClientRect();
+                    //postRenderSubscriber.style.left = rect.left.toString() + 'px';
+                    //postRenderSubscriber.style.top = rect.top.toString() + 'px';
+                    //delete document.moveToTarget[subscriber];
                 }
 
                 if (document.resizeWidth[subscriber]) {
-                    let rect = postRenderSubscriber.getBoundingClientRect();
-                    console.log("-> turboRenderCallback CHANGING WIDTH FOR nextPageSubscriber", postRenderSubscriber);
-                    postRenderSubscriber.style.width = rect.width.toString() + 'px';
-                    delete document.resizeWidth[subscriber];
+                    //let rect = postRenderSubscriber.getBoundingClientRect();
+                    //console.log("-> turboRenderCallback CHANGING WIDTH FOR nextPageSubscriber", postRenderSubscriber);
+                    //postRenderSubscriber.style.width = rect.width.toString() + 'px';
+                    //delete document.resizeWidth[subscriber];
                 }
 
                 if (document.changeColor[subscriber]) {
-                    console.log("-> BEFORE cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(postRenderSubscriber).getPropertyValue('background-color'));
-                    postRenderSubscriber.style.backgroundColor = window.getComputedStyle(postRenderSubscriber).getPropertyValue('background-color');
-                    delete document.changeColor[subscriber];
-                    console.log("-> AFTER cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(postRenderSubscriber).getPropertyValue('background-color'));
+                    //console.log("-> BEFORE cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(postRenderSubscriber).getPropertyValue('background-color'));
+                    //postRenderSubscriber.style.backgroundColor = window.getComputedStyle(postRenderSubscriber).getPropertyValue('background-color');
+                    //delete document.changeColor[subscriber];
+                    //console.log("-> AFTER cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(postRenderSubscriber).getPropertyValue('background-color'));
                 }
             }
         }
 
-        console.log('-> turboRenderCallback Before looping to cancel animations');
-        await sleep(debugDelay);
+        //console.log('-> turboRenderCallback Before looping to cancel animations');
+        //await sleep(debugDelay);
 
 
         for (const animationControllersIndex in animationControllers[subscriber]) {
             //console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
-            animationControllers[subscriber][animationControllersIndex].cancel()
+            //animationControllers[subscriber][animationControllersIndex].cancel()
             //let keyframeEffectDefinitions = document.animations[turboRender][subscriber];
             //let postRenderSubscriber = document.getElementById(subscriber);
             //for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
@@ -358,8 +360,8 @@ export const turboRenderCallback = async function (event) {
             //}
         }
 
-        console.log('-> turboRenderCallback After looping to cancel animations');
-        await sleep(debugDelay);
+        //console.log('-> turboRenderCallback After looping to cancel animations');
+        //await sleep(debugDelay);
         delete document.animations[turboRender][subscriber];
     }
 
