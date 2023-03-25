@@ -91,8 +91,8 @@ export const turboBeforeRenderCallback = async function (event) {
             let keyframeEffect, options;
             const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
             !!keyframeEffectDefinition.options ? options = parseOptions(keyframeEffectDefinition.options) : options = {};
-            if (options.toggleClasses) {
-                let toggleClassList = options.toggleClasses.split(optionsDelimiter);
+            if (options.toggleOffClasses) {
+                let toggleClassList = options.toggleOffClasses.split(optionsDelimiter);
                 for (const toggleClassListIndex in toggleClassList){
                     toggleClass(postRenderSubscriber, toggleClassList[toggleClassListIndex], off);
                 }
