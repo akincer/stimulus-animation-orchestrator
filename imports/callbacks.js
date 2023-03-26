@@ -192,6 +192,8 @@ export const turboBeforeRenderCallback = async function (event) {
             if (postRenderSubscriber) {
                 postRenderPrep(subscriber, event.detail.newBody);
             }
+            else
+                console.log("-> turboBeforeRenderCallback postRenderSubscriber not found in newBody - postRenderSubscriber:", postRenderSubscriber);
         }
 
 
