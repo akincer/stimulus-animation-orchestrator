@@ -279,10 +279,17 @@ export function getMakeColorTransparentFrame(element, position, section, options
         if (isCssVariable(endColor))
             endColor = getCssVariableColor(endColor);
 
-        if (!isRGBA(startColor))
-            startColor = rgbToRgba(convertToRGB(startColor), 1);
+        if (!isRGBA(startColor)){
+            startColor = convertToRGB(startColor);
+            startColor = `rgb(${startColor.red}, ${startColor.green}, ${startColor.blue})`;
+            startColor = rgbToRgba(startColor, 1);
+        }
 
-        endColor = rgbToRgba(convertToRGB(endColor), 0);
+
+        endColor = convertToRGB(endColor);
+        endColor = `rgb(${endColor.red}, ${endColor.green}, ${endColor.blue})`;
+        endColor = rgbToRgba(endColor, 0);
+
 
         if (position === positionStart) {
             frame[hyphenatedToCamelCase(property)] = startColor;
