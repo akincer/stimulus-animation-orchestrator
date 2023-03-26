@@ -112,10 +112,10 @@ export const turboBeforeRenderCallback = async function (event) {
     if (!skipDefaultAnimation() && !document.preRenderDefaultAnimationExecuted) {
         console.log("-> turboBeforeRenderCallback *** Playing default animation ***");
         for (const defaultSubscriberIndex in defaultSubscribers) {
-            let element = defaultSubscribers[defaultSubscriberIndex];
-            let animationKeyFrameEffect = buildKeyFrameEffect(element.id,
+            let defaultSubscriber = defaultSubscribers[defaultSubscriberIndex];
+            let animationKeyFrameEffect = buildKeyFrameEffect(defaultSubscriber.id,
                 {
-                    element: element,
+                    element: defaultSubscriber,
                     animation: document.defaultPreAnimation,
                     schedule: schedulePreNextPageRender,
                     direction: directionForwards,
@@ -125,6 +125,7 @@ export const turboBeforeRenderCallback = async function (event) {
                 });
             const animationController = new Animation(animationKeyFrameEffect, document.timeline);
             animationController.play();
+            preRenderPrep(defaultSubscriber, event.detail.newBody);
             animationPromises.push(animationController.finished);
         }
         document.preRenderDefaultAnimationExecuted = true;
