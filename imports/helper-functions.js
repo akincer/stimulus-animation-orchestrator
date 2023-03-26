@@ -243,3 +243,15 @@ export function rgbToRgba(rgbColor, alpha = 1) {
 
     throw new Error('Invalid RGB color format');
 }
+
+export function getAlpha(rgbaColor) {
+    const rgbaRegex = /^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d*(?:\.\d+)?|1)\)$/i;
+    const match = rgbaColor.match(rgbaRegex);
+
+    if (match) {
+        const alpha = parseFloat(match[4]);
+        return alpha;
+    }
+
+    throw new Error('Invalid RGBA color format');
+}

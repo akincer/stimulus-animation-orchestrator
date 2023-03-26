@@ -7,7 +7,7 @@ import {
     sectionSecondHalf
 } from "./constants";
 import {
-    calculateMidpointColor, convertToRGB,
+    calculateMidpointColor, convertToRGB, getAlpha,
     getCssVariableColor, getPropertyColor,
     getUnit, hyphenatedToCamelCase,
     isCssVariable, isRGBA,
@@ -266,7 +266,7 @@ export function getMakeColorTransparentFrame(element, position, section, options
     console.log("-> getMakeColorTransparentFrame options", options);
     let frame = {}, properties = options.properties.split(propertiesDelimiter), startColors = [], endColors = [];
     for (const propertiesIndex in properties) {
-        let startColor, endColor, property = properties[propertiesIndex];
+        let startColor, endColor, midColor, startAlpha, midAlpha, property = properties[propertiesIndex];
 
         !!options.startColors ? startColors = options.startColors.split(propertiesDelimiter) : startColors.push(getPropertyColor(element, property));
         !!options.endColors ? endColors = options.endColors.split(propertiesDelimiter) : endColors.push(getPropertyColor(element, property));
@@ -286,15 +286,20 @@ export function getMakeColorTransparentFrame(element, position, section, options
             startColor = rgbToRgba(startColor, 1);
         }
 
+        startAlpha = getAlpha(startColor);
+        midAlpha = startAlpha/2;
 
         endColor = convertToRGB(endColor);
         endColor = `rgb(${endColor.red}, ${endColor.green}, ${endColor.blue})`;
         endColor = rgbToRgba(endColor, 0);
 
+        midColor = midpointColor(startColor, endColor);
+        midColor = rgbToRgba(midColor, midAlpha);
+
 
         if (position === positionStart) {
             if (section === sectionFirstHalf)
-                frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
+                frame[hyphenatedToCamelCase(property)] = midColor;
             else
                 frame[hyphenatedToCamelCase(property)] = startColor;
         }
@@ -303,7 +308,7 @@ export function getMakeColorTransparentFrame(element, position, section, options
             if (section === sectionFull || section === sectionSecondHalf)
                 frame[hyphenatedToCamelCase(property)] = endColor;
             if (section === sectionFirstHalf)
-                frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
+                frame[hyphenatedToCamelCase(property)] = midColor;
         }
 
     }
