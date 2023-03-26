@@ -305,6 +305,8 @@ export function getMakeColorTransparentFrame(element, position, section, options
 
     }
 
+    console.log("-> getMakeColorTransparentFrame position", position);
+    console.log("-> getMakeColorTransparentFrame section", section);
     console.log("-> getMakeColorTransparentFrame frame", frame);
 
     return frame;
