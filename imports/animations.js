@@ -7,12 +7,12 @@ import {
     sectionSecondHalf
 } from "./constants";
 import {
-    calculateMidpointColor,
+    calculateMidpointColor, convertToRGB,
     getCssVariableColor, getPropertyColor,
     getUnit, hyphenatedToCamelCase,
-    isCssVariable,
+    isCssVariable, isRGBA,
     midpoint,
-    midpointColor
+    midpointColor, rgbToRgba
 } from "./helper-functions";
 
 export function getExitToLeftFrame(element, position, section, options = {}) {
@@ -193,33 +193,6 @@ export function getMoveToTargetFrame(element, position, section, options = {}) {
     return frame;
 }
 
-export function getFillColorFromLeftFrame(element, position, section, options = {}) {
-    let frame = {};
-
-    if (position === positionStart) {
-        frame['background'] = "linear-gradient(to right, blue 0%, gray 0%)";
-        frame['background-position'] = "left";
-        frame['transform'] = "scale(0)"
-    }
-
-    if (position === positionEnd) {
-        if (section === sectionFull || section === sectionSecondHalf) {
-            frame['background'] = "linear-gradient(to right, blue 1000%, gray 100%)";
-            frame['background-position'] = "left";
-            frame['transform'] = "scale(1)"
-        }
-
-
-        if (section === sectionFirstHalf) {
-            frame['background'] = "linear-gradient(to right, blue 50%, gray 50%)";
-            frame['background-position'] = "left";
-            frame['transform'] = "scale(0.5)"
-        }
-    }
-
-    return frame;
-}
-
 export function getResizeWidthFrame(element, position, section, options = {}) {
     let frame = {};
     let rect = element.getBoundingClientRect();
@@ -283,6 +256,44 @@ export function getChangeColorFrame(element, position, section, options = {}) {
                 frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
         }
 
+
+    }
+
+    return frame;
+}
+
+export function getMakeColorTransparent(element, position, section, options = {}) {
+    let frame = {}, properties = options.properties.split(propertiesDelimiter), startColors = [], endColors = [];
+    for (const propertiesIndex in properties) {
+        let startColor, endColor, property = properties[propertiesIndex];
+
+        !!options.startColors ? startColors = options.startColors.split(propertiesDelimiter) : startColors.push(getPropertyColor(element, property));
+        !!options.endColors ? endColors = options.endColors.split(propertiesDelimiter) : endColors.push(getPropertyColor(element, property));
+
+        startColor = startColors[propertiesIndex];
+        endColor = endColors[propertiesIndex];
+
+        if (isCssVariable(startColor))
+            startColor = getCssVariableColor(startColor);
+
+        if (isCssVariable(endColor))
+            endColor = getCssVariableColor(endColor);
+
+        if (!isRGBA(startColor))
+            startColor = rgbToRgba(convertToRGB(startColor), 1);
+
+        endColor = rgbToRgba(convertToRGB(endColor), 0);
+
+        if (position === positionStart) {
+            frame[hyphenatedToCamelCase(property)] = startColor;
+        }
+
+        if (position === positionEnd) {
+            if (section === sectionFull || section === sectionSecondHalf)
+                frame[hyphenatedToCamelCase(property)] = endColor;
+            if (section === sectionFirstHalf)
+                frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
+        }
 
     }
 

@@ -228,3 +228,18 @@ export function getPropertyColor(element, property) {
 export function toggleClass(element, cssClass, state) {
     state === off ? element.classList.remove(cssClass) : element.classList.add(cssClass);
 }
+
+export function rgbToRgba(rgbColor, alpha = 1) {
+    const rgbRegex = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i;
+    const match = rgbColor.match(rgbRegex);
+
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    throw new Error('Invalid RGB color format');
+}
