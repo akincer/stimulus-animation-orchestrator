@@ -88,6 +88,11 @@ export const turboBeforeRenderCallback = async function (event) {
                 document.animations[turboBeforeRender][defaultSubscriber.id] = []
             document.animations[turboBeforeRender][defaultSubscriber.id].push(subscription)
         }
+    } else {
+        if (skipDefaultAnimation())
+            console.log("-> prepwork skipDefaultAnimation evaluated to true so skipping default animations");
+        if (!!document.preRenderDefaultAnimationExecuted)
+            console.log("-> prepwork !document.preRenderDefaultAnimationExecuted evaluated to false so skipping default animations");
     }
 
     for (const subscriber in document.animations[turboBeforeRender]) {
