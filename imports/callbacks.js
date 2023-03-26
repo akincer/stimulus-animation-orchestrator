@@ -95,6 +95,7 @@ export const turboBeforeRenderCallback = async function (event) {
                 keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionFirstHalf);
             }
             const animationController = new Animation(keyframeEffect, document.timeline);
+            console.log("-> turboBeforeRenderCallback keyframeEffect", keyframeEffect);
 
             animationController.play();
 
