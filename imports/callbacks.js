@@ -71,6 +71,28 @@ export const turboBeforeRenderCallback = async function (event) {
     // Pause rendering
     event.preventDefault();
 
+    // Schedule default rendering
+    if (false) {
+    if (!skipDefaultAnimation() && !document.preRenderDefaultAnimationExecuted) {
+        for (const defaultSubscriberIndex in defaultSubscribers) {
+            let defaultSubscriber = defaultSubscribers[defaultSubscriberIndex];
+            let animationKeyFrameEffect = buildKeyFrameEffect(defaultSubscriber.id,
+                {
+                    element: defaultSubscriber,
+                    animation: document.defaultPreAnimation,
+                    schedule: schedulePreNextPageRender,
+                    direction: directionForwards,
+                    options: 'type=single',
+                    duration: parseInt(document.defaultAnimationDuration),
+                    format: 'inline'
+                });
+            const animationController = new Animation(animationKeyFrameEffect, document.timeline);
+            animationController.play();
+            preRenderPrep(defaultSubscriber, event.detail.newBody);
+            animationPromises.push(animationController.finished);
+        }
+    }}
+
     for (const subscriber in document.animations[turboBeforeRender]) {
         let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
         let preRenderSubscriber = document.getElementById(subscriber);
@@ -78,6 +100,7 @@ export const turboBeforeRenderCallback = async function (event) {
         for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
             let keyframeEffect, options;
             const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
+            console.log("-> turboBeforeRenderCallback keyframeEffectDefinition", keyframeEffectDefinition);
             !!keyframeEffectDefinition.options ? options = parseOptions(keyframeEffectDefinition.options) : options = {};
             if (options.toggleOffClasses) {
                 let toggleClassList = options.toggleOffClasses.split(optionsDelimiter);
