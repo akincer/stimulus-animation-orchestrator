@@ -214,6 +214,24 @@ export const turboRenderCallback = async function (event) {
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     let debugDelay = 0;
 
+    // Schedule default renderings
+    if (!skipDefaultAnimation() && !document.preRenderDefaultAnimationExecuted) {
+        for (const defaultSubscriberIndex in defaultSubscribers) {
+            let defaultSubscriber = defaultSubscribers[defaultSubscriberIndex];
+            let subscription = {
+                element: defaultSubscriber,
+                animation: document.defaultPostAnimation,
+                schedule: schedulePostNextPageRender,
+                direction: directionForwards,
+                options: 'type=single',
+                duration: parseInt(document.defaultAnimationDuration),
+                format: 'inline'
+            };
+            if (!document.animations[turboRender][defaultSubscriber.id])
+                document.animations[turboRender][defaultSubscriber.id] = []
+            document.animations[turboRender][defaultSubscriber.id].push(subscription)
+        }
+    }
 
 
     console.log('-> turboRenderCallback Processing each scheduled animation');
@@ -234,6 +252,7 @@ export const turboRenderCallback = async function (event) {
         }
     }
 
+    if (false)
     if (!skipDefaultAnimation() && !document.restorePending) {
         console.log("-> turboRenderCallback *** Playing default animation ***");
         for (const defaultSubscriberIndex in defaultSubscribers) {
