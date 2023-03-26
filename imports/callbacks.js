@@ -65,7 +65,7 @@ export const turboBeforeRenderCallback = async function (event) {
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
-    let debugDelay = 0;
+    let debugDelay = 3000;
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     // Pause rendering
@@ -131,9 +131,12 @@ export const turboBeforeRenderCallback = async function (event) {
                 keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionFirstHalf);
             }
             const animationController = new Animation(keyframeEffect, document.timeline);
-            console.log("-> turboBeforeRenderCallback keyframeEffect", keyframeEffect);
 
+            console.log("-> turboBeforeRenderCallback animationDebug Playing animation for subscriber", subscriber);
+            console.log("-> turboBeforeRenderCallback animationDebug animation", keyframeEffectDefinition.animation);
+            console.log("-> turboBeforeRenderCallback animationDebug subscription", keyframeEffectDefinition);
             animationController.play();
+            await sleep(debugDelay);
             preRenderPrep(subscriber, event.detail.newBody);
 
 
@@ -231,7 +234,7 @@ export const turboRenderCallback = async function (event) {
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
     const sleep = ms => new Promise(r => setTimeout(r, ms));
-    let debugDelay = 0;
+    let debugDelay = 3000;
 
     // Schedule default renderings
     if (false)
@@ -255,7 +258,7 @@ export const turboRenderCallback = async function (event) {
 
 
     console.log('-> turboRenderCallback Processing each scheduled animation');
-    await sleep(debugDelay);
+
     for (const subscriber in document.animations[turboRender]) {
 
         let subscriptions = document.animations[turboRender][subscriber];
@@ -263,7 +266,11 @@ export const turboRenderCallback = async function (event) {
             const subscription = subscriptions[subscriptionsDefinitionsIndex];
             const keyframeEffect = buildKeyFrameEffect(subscriber, subscription, sectionSecondHalf);
             const animationController = new Animation(keyframeEffect, document.timeline);
+            console.log("-> turboBeforeRenderCallback animationDebug Playing animation for subscriber", subscriber);
+            console.log("-> turboBeforeRenderCallback animationDebug animation", subscription.animation);
+            console.log("-> turboBeforeRenderCallback animationDebug subscription", subscription);
             animationController.play();
+            await sleep(debugDelay);
             animationPromises.push(animationController.finished);
             if (!animationControllers[subscriber]) {
                 animationControllers[subscriber] = []
