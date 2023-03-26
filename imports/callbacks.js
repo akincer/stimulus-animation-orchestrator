@@ -142,8 +142,8 @@ export const turboBeforeRenderCallback = async function (event) {
 
             if (schedule === scheduleSpan && postRenderSubscriber) {
 
-                postRenderSubscriber.parentNode.replaceChild(preRenderSubscriber.cloneNode(true), postRenderSubscriber);
-                postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`)
+                //postRenderSubscriber.parentNode.replaceChild(preRenderSubscriber.cloneNode(true), postRenderSubscriber);
+                //postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`)
 
                 if (animation === moveToTarget) {
                     postRenderSubscriber.style.left = boxAfter.left.toString() + 'px';
