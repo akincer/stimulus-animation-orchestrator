@@ -3,7 +3,7 @@ import {
     changeColor,
     directionForwards,
     fadeIn,
-    fadeOut,
+    fadeOut, makeColorTransparent,
     moveToTarget,
     off,
     on,
@@ -199,7 +199,7 @@ export const turboBeforeRenderCallback = async function (event) {
                 if (animation === fadeIn || animation == fadeOut) {
                     postRenderSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
                 }
-                if (animation === changeColor) {
+                if (animation === changeColor || animation === makeColorTransparent) {
                     let options = parseOptions(keyframeEffectDefinition.options);
                     let properties = options.properties.split(propertiesDelimiter);
                     for (const propertiesIndex in properties) {

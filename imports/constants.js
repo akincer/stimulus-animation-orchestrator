@@ -1,4 +1,6 @@
 // Forms
+import {getMakeColorTransparentFrame} from "./animations";
+
 export const currentStepNumber = 'currentStepNumber';
 export const flowInstanceId = 'flowInstanceId';
 
@@ -58,6 +60,7 @@ export const moveToTarget = 'moveToTarget';
 export const resizeWidth = 'resizeWidth';
 export const fadeIn = 'fadeIn';
 export const fadeOut = 'fadeOut';
+export const makeColorTransparent = 'makeColorTransparent';
 export const easeInOut = 'ease-in-out';
 export const easeIn = 'ease-in';
 export const easeOut = 'ease-out';
