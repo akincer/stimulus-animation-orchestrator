@@ -20,7 +20,7 @@ import {
     turboBeforeRender,
     turboRender
 } from "./constants";
-import {buildKeyFrameEffect, parseOptions, postRenderPrep, skipDefaultAnimation} from "./waapi";
+import {buildKeyFrameEffect, parseOptions, postRenderPrep, preRenderPrep, skipDefaultAnimation} from "./waapi";
 
 export const popStateCallback = function (event) {
     console.log("-> popStateCallback event", event);
@@ -97,6 +97,8 @@ export const turboBeforeRenderCallback = async function (event) {
             console.log("-> turboBeforeRenderCallback keyframeEffect", keyframeEffect);
 
             animationController.play();
+            preRenderPrep(subscriber, event.detail.newBody);
+
 
 
             animationPromises.push(animationController.finished);
@@ -165,7 +167,7 @@ export const turboBeforeRenderCallback = async function (event) {
                 }
             }
 
-            if (schedule === schedulePostNextPageRender && postRenderSubscriber) {
+            if (postRenderSubscriber) {
                 postRenderPrep(subscriber, event.detail.newBody);
             }
         }

@@ -96,13 +96,24 @@ export function parseOptions (optionsRaw) {
 }
 
 export function postRenderPrep(subscriber, newBody) {
-    let preRenderSubscriber = document.getElementById(subscriber);
+
     let postRenderSubscriber = newBody.querySelector(`#${subscriber}`)
     let subscriptions = document.animations[turboRender][subscriber];
     for (const subscriptionsIndex in subscriptions) {
         const subscription = subscriptions[subscriptionsIndex];
         let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
         if (typeof prepFunctions[prepFunction] !== 'undefined')
-            prepFunctions[prepFunction](preRenderSubscriber, postRenderSubscriber, subscription);
+            prepFunctions[prepFunction](postRenderSubscriber, subscription);
+    }
+}
+
+export function preRenderPrep(subscriber) {
+    let preRenderSubscriber = document.getElementById(subscriber);
+    let subscriptions = document.animations[turboRender][subscriber];
+    for (const subscriptionsIndex in subscriptions) {
+        const subscription = subscriptions[subscriptionsIndex];
+        let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
+        if (typeof prepFunctions[prepFunction] !== 'undefined')
+            prepFunctions[prepFunction](preRenderSubscriber, subscription);
     }
 }
