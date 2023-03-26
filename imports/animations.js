@@ -263,6 +263,7 @@ export function getChangeColorFrame(element, position, section, options = {}) {
 }
 
 export function getMakeColorTransparentFrame(element, position, section, options = {}) {
+    console.log("-> getMakeColorTransparentFrame options", options);
     let frame = {}, properties = options.properties.split(propertiesDelimiter), startColors = [], endColors = [];
     for (const propertiesIndex in properties) {
         let startColor, endColor, property = properties[propertiesIndex];
@@ -303,6 +304,8 @@ export function getMakeColorTransparentFrame(element, position, section, options
         }
 
     }
+
+    console.log("-> getMakeColorTransparentFrame frame", frame);
 
     return frame;
 }
