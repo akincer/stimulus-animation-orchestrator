@@ -10,7 +10,6 @@ import {
     optionsDelimiter,
     propertiesDelimiter,
     resizeWidth,
-    schedule,
     scheduleComplete,
     schedulePostNextPageRender,
     schedulePreNextPageRender,
@@ -21,7 +20,7 @@ import {
     turboBeforeRender,
     turboRender
 } from "./constants";
-import {buildKeyFrameEffect, parseOptions, skipDefaultAnimation} from "./waapi";
+import {buildKeyFrameEffect, parseOptions, postRenderPrep, skipDefaultAnimation} from "./waapi";
 
 export const popStateCallback = function (event) {
     console.log("-> popStateCallback event", event);
@@ -165,7 +164,13 @@ export const turboBeforeRenderCallback = async function (event) {
                     }
                 }
             }
+
+            if (schedule === schedulePostNextPageRender && postRenderSubscriber) {
+                postRenderPrep(subscriber, event.detail.newBody);
+            }
         }
+
+
 
         delete document.animations['turbo:before-render'][subscriber];
     }
@@ -191,12 +196,10 @@ export const turboRenderCallback = async function (event) {
     await sleep(debugDelay);
     for (const subscriber in document.animations[turboRender]) {
 
-        let keyframeEffectDefinitions = document.animations[turboRender][subscriber];
-        let element = document.getElementById(subscriber);
-        let rect = element.getBoundingClientRect();
-        for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
-            const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex];
-            const keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionSecondHalf);
+        let subscriptions = document.animations[turboRender][subscriber];
+        for (const subscriptionsDefinitionsIndex in subscriptions) {
+            const subscription = subscriptions[subscriptionsDefinitionsIndex];
+            const keyframeEffect = buildKeyFrameEffect(subscriber, subscription, sectionSecondHalf);
             const animationController = new Animation(keyframeEffect, document.timeline);
             animationController.play();
             animationPromises.push(animationController.finished);
@@ -237,7 +240,7 @@ export const turboRenderCallback = async function (event) {
         for (const keyframeEffectsIndex in keyframeEffects) {
             const keyframeEffect = keyframeEffects[keyframeEffectsIndex];
 
-            if (keyframeEffect[schedule] === scheduleSpan && postRenderSubscriber) {
+            if (keyframeEffect.schedule === scheduleSpan && postRenderSubscriber) {
                 if (document.moveToTarget[subscriber]) {
                     //let rect = postRenderSubscriber.getBoundingClientRect();
                     //postRenderSubscriber.style.left = rect.left.toString() + 'px';

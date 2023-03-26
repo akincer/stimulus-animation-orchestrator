@@ -231,8 +231,8 @@ class src_default extends Controller {
 
         for (const subscriptionIndex in subscriptions) {
             let subscription = subscriptions[subscriptionIndex];
-            let schedule = subscription['schedule'];
-            let element = subscription['element'];
+            let schedule = subscription.schedule;
+            let element = subscription.element;
 
 
             if (schedule === scheduleImmediate || schedule === scheduleNow) {
