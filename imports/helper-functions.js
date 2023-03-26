@@ -230,6 +230,7 @@ export function toggleClass(element, cssClass, state) {
 }
 
 export function rgbToRgba(rgbColor, alpha = 1) {
+    console.log("-> rgbToRgba rgbColor", rgbColor);
     const rgbRegex = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i;
     const match = rgbColor.match(rgbRegex);
 
