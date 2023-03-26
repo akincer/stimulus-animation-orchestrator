@@ -91,7 +91,7 @@ export const turboBeforeRenderCallback = async function (event) {
         }
         for (const subscriber in document.animations[turboBeforeRender]) {
             console.log("-> prepwork after default animations subscribers added document.animations[turboBeforeRender][subscriber]", document.animations[turboBeforeRender][subscriber]);
-
+        }
     }
 
     for (const subscriber in document.animations[turboBeforeRender]) {
