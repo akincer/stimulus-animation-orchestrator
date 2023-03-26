@@ -104,6 +104,8 @@ export function postRenderPrep(subscriber, newBody) {
         let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
         if (typeof prepFunctions[prepFunction] !== 'undefined')
             prepFunctions[prepFunction](postRenderSubscriber, subscription);
+        else
+            console.log("-> prepFunction not found - prepfunction:", prepFunction);
     }
 }
 
@@ -115,5 +117,7 @@ export function preRenderPrep(subscriber) {
         let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
         if (typeof prepFunctions[prepFunction] !== 'undefined')
             prepFunctions[prepFunction](preRenderSubscriber, subscription);
+        else
+            console.log("-> prepFunction not found - prepfunction:", prepFunction);
     }
 }
