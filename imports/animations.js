@@ -299,9 +299,9 @@ export function getMakeColorTransparentFrame(element, position, section, options
 
         if (position === positionStart) {
             if (section === sectionFirstHalf)
-                frame[hyphenatedToCamelCase(property)] = midColor;
-            else
                 frame[hyphenatedToCamelCase(property)] = startColor;
+            else
+                frame[hyphenatedToCamelCase(property)] = midColor;
         }
 
         if (position === positionEnd) {
