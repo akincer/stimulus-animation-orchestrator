@@ -96,9 +96,11 @@ export function parseOptions (optionsRaw) {
 }
 
 export function postRenderPrep(subscriber, newBody) {
-
     let postRenderSubscriber = newBody.querySelector(`#${subscriber}`)
     let subscriptions = document.animations[turboRender][subscriber];
+    console.log("-> prepwork postRenderPrep subscriber", subscriber);
+    console.log("-> prepwork postRenderPrep postRenderSubscriber", postRenderSubscriber);
+    console.log("-> prepwork postRenderPrep subscriptions for subscriber", subscriptions);
     for (const subscriptionsIndex in subscriptions) {
         const subscription = subscriptions[subscriptionsIndex];
         let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
@@ -112,6 +114,9 @@ export function postRenderPrep(subscriber, newBody) {
 export function preRenderPrep(subscriber) {
     let preRenderSubscriber = document.getElementById(subscriber);
     let subscriptions = document.animations[turboRender][subscriber];
+    console.log("-> prepwork preRenderPrep subscriber", subscriber);
+    console.log("-> prepwork preRenderPrep preRenderSubscriber", preRenderSubscriber);
+    console.log("-> prepwork preRenderPrep subscriptions for subscriber", subscriptions);
     for (const subscriptionsIndex in subscriptions) {
         const subscription = subscriptions[subscriptionsIndex];
         let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
