@@ -84,7 +84,9 @@ export const turboBeforeRenderCallback = async function (event) {
                 duration: parseInt(document.defaultAnimationDuration),
                 format: 'inline'
             };
-            document.animations[turboBeforeRender][defaultSubscriber.id] = subscription
+            if (!document.animations[turboBeforeRender][defaultSubscriber.id])
+                document.animations[turboBeforeRender][defaultSubscriber.id] = []
+            document.animations[turboBeforeRender][defaultSubscriber.id].push(subscription)
         }
     }
 
