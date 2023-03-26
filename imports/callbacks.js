@@ -76,7 +76,7 @@ export const turboBeforeRenderCallback = async function (event) {
         console.log("-> prepwork scheduling defaultSubscribers:", defaultSubscribers);
         for (const defaultSubscriberIndex in defaultSubscribers) {
             let defaultSubscriber = defaultSubscribers[defaultSubscriberIndex];
-            let subscription = {
+            let preSubscription = {
                 element: defaultSubscriber,
                 animation: document.defaultPreAnimation,
                 schedule: schedulePreNextPageRender,
@@ -87,7 +87,20 @@ export const turboBeforeRenderCallback = async function (event) {
             };
             if (!document.animations[turboBeforeRender][defaultSubscriber.id])
                 document.animations[turboBeforeRender][defaultSubscriber.id] = []
-            document.animations[turboBeforeRender][defaultSubscriber.id].push(subscription)
+            document.animations[turboBeforeRender][defaultSubscriber.id].push(preSubscription)
+
+            let postSubscription = {
+                element: defaultSubscriber,
+                animation: document.defaultPostAnimation,
+                schedule: schedulePostNextPageRender,
+                direction: directionForwards,
+                options: 'type=single',
+                duration: parseInt(document.defaultAnimationDuration),
+                format: 'inline'
+            };
+            if (!document.animations[turboRender][defaultSubscriber.id])
+                document.animations[turboRender][defaultSubscriber.id] = []
+            document.animations[turboRender][defaultSubscriber.id].push(postSubscription)
         }
         for (const subscriber in document.animations[turboBeforeRender]) {
             console.log("-> prepwork after default animations subscribers added document.animations[turboBeforeRender][subscriber]", document.animations[turboBeforeRender][subscriber]);
@@ -221,6 +234,7 @@ export const turboRenderCallback = async function (event) {
     let debugDelay = 0;
 
     // Schedule default renderings
+    if (false)
     if (!skipDefaultAnimation() && !document.preRenderDefaultAnimationExecuted) {
         for (const defaultSubscriberIndex in defaultSubscribers) {
             let defaultSubscriber = defaultSubscribers[defaultSubscriberIndex];
