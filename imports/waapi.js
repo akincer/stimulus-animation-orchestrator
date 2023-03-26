@@ -5,7 +5,7 @@ import {
     positionStart,
     scheduleSpan,
     sectionFirstHalf,
-    sectionFull, sectionSecondHalf, turboRender,
+    sectionFull, sectionSecondHalf, turboBeforeRender, turboRender,
     typeSingle
 } from "./constants";
 import {capitalizeFirstLetter, hyphenatedToCamelCase} from "./helper-functions";
@@ -101,6 +101,7 @@ export function postRenderPrep(subscriber, newBody) {
     console.log("-> prepwork postRenderPrep subscriber", subscriber);
     console.log("-> prepwork postRenderPrep postRenderSubscriber", postRenderSubscriber);
     console.log("-> prepwork postRenderPrep subscriptions for subscriber", subscriptions);
+    console.log("-> prepwork postRenderPrep document.animations[turboRender]", document.animations[turboRender]);
     for (const subscriptionsIndex in subscriptions) {
         const subscription = subscriptions[subscriptionsIndex];
         let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
@@ -113,10 +114,11 @@ export function postRenderPrep(subscriber, newBody) {
 
 export function preRenderPrep(subscriber) {
     let preRenderSubscriber = document.getElementById(subscriber);
-    let subscriptions = document.animations[turboRender][subscriber];
+    let subscriptions = document.animations[turboBeforeRender][subscriber];
     console.log("-> prepwork preRenderPrep subscriber", subscriber);
     console.log("-> prepwork preRenderPrep preRenderSubscriber", preRenderSubscriber);
     console.log("-> prepwork preRenderPrep subscriptions for subscriber", subscriptions);
+    console.log("-> prepwork preRenderPrep document.animations[turboBeforeRender]", document.animations[turboBeforeRender]);
     for (const subscriptionsIndex in subscriptions) {
         const subscription = subscriptions[subscriptionsIndex];
         let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
