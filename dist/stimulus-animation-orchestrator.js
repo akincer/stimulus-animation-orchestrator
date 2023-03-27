@@ -96,9 +96,9 @@ class src_default extends Controller {
             document.defaultPreAnimation = this.element.dataset.orchestratorDefaultPreAnimation;
 
         if (!("orchestratorDefaultPostAnimation" in this.element.dataset))
-            document.defaultPostAnimation = 'fadeIn';
+            document.orchestrator.defaults.postAnimation = 'fadeIn';
         else
-            document.defaultPostAnimation = this.element.dataset.orchestratorDefaultPostAnimation;
+            document.orchestrator.defaults.postAnimation = this.element.dataset.orchestratorDefaultPostAnimation;
 
         if (!("orchestratorDefaultStartColor" in this.element.dataset))
             document.orchestrator.defaults.color = 'rgb(255,255,255)';

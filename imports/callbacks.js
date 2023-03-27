@@ -91,7 +91,7 @@ export const turboBeforeRenderCallback = async function (event) {
 
             let postSubscription = {
                 element: defaultSubscriber,
-                animation: document.defaultPostAnimation,
+                animation: document.orchestrator.defaults.postAnimation,
                 schedule: schedulePostNextPageRender,
                 direction: directionForwards,
                 options: 'type=single',
@@ -221,7 +221,7 @@ export const turboRenderCallback = async function (event) {
             let defaultSubscriber = defaultSubscribers[defaultSubscriberIndex];
             let subscription = {
                 element: defaultSubscriber,
-                animation: document.defaultPostAnimation,
+                animation: document.orchestrator.defaults.postAnimation,
                 schedule: schedulePostNextPageRender,
                 direction: directionForwards,
                 options: 'type=single',
@@ -254,26 +254,6 @@ export const turboRenderCallback = async function (event) {
                 animationControllers[subscriber] = []
             }
             animationControllers[subscriber].push(animationController);
-        }
-    }
-
-    if (false)
-    if (!skipDefaultAnimation() && !document.restorePending) {
-        console.log("-> turboRenderCallback *** Playing default animation ***");
-        for (const defaultSubscriberIndex in defaultSubscribers) {
-            let element = defaultSubscribers[defaultSubscriberIndex]
-            let keyframeEffect = buildKeyFrameEffect(element.id,
-                {
-                    element: element,
-                    animation: document.defaultPostAnimation,
-                    schedule: schedulePostNextPageRender,
-                    direction: directionForwards,
-                    options: 'type=single',
-                    duration: parseInt(document.defaultAnimationDuration),
-                    format: 'inline'
-                });
-            const animationController = new Animation(keyframeEffect, document.timeline);
-            animationController.play();
         }
     }
 
