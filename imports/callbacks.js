@@ -93,6 +93,10 @@ export const turboBeforeRenderCallback = async function (event) {
     if (typeof event.detail.action !== 'undefined') {
         console.log("-> eventDebug turboBeforeRenderCallback event.detail.action", event.detail.action);
     }
+    if (document.restorePending) {
+        document.restorePending = false;
+        return;
+    }
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
@@ -256,6 +260,12 @@ export const turboRenderCallback = async function (event) {
     if (typeof event.detail.action !== 'undefined') {
         console.log("-> eventDebug turboRenderCallback event.detail.action", event.detail.action);
     }
+
+    if (document.restorePending) {
+        document.restorePending = false;
+        return;
+    }
+
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
@@ -284,7 +294,7 @@ export const turboRenderCallback = async function (event) {
         }
     }
 
-    document.restorePending = false;
+
 
     await Promise.all(animationPromises);
 
@@ -346,6 +356,7 @@ export const turboRenderCallback = async function (event) {
     }
 
     delete document.inlineSubscribers;
+
 }
 
 export const turboLoadCallback = function (event) {
