@@ -157,10 +157,10 @@ class src_default extends Controller {
         callbackFlag = `${callbackName}Added`;
         eventListenerTarget = this.getListenerTarget(eventListener);
 
-        if (eventListenerTarget[callbackFlag] !== true) {
+        if (document.orchestrator.listeners[callbackFlag] !== true) {
             console.log("-> addListener callbackName", callbackName);
             eventListenerTarget.addEventListener(eventListener, eventListenerCallback instanceof Function ? eventListenerCallback : orchestratorCallbacks[callbackName])
-            eventListenerTarget[callbackFlag] = true
+            document.orchestrator.listeners[callbackFlag] = true
         }
 
     }
