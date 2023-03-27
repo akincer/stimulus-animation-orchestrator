@@ -99,7 +99,7 @@ export const turboBeforeRenderCallback = async function (event) {
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
-    let debugDelay = 3000;
+    let debugDelay = 0;
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     if (document.restorePending) {
@@ -269,7 +269,7 @@ export const turboRenderCallback = async function (event) {
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
     const sleep = ms => new Promise(r => setTimeout(r, ms));
-    let debugDelay = 3000;
+    let debugDelay = 0;
 
     if (document.restorePending) {
         console.log("-> eventDebug turboRenderCallback document.restorePending TRUE");
