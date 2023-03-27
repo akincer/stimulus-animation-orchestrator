@@ -17,6 +17,7 @@ import {
 import * as orchestratorCallbacks from "../imports/callbacks";
 import * as orchestratorHelpers from "../imports/helper-functions";
 import {buildKeyFrameEffect, parseOptions} from "../imports/waapi";
+import {popStateCallback} from "../imports/callbacks";
 
 class src_default extends Controller {
     connect() {
@@ -162,7 +163,13 @@ class src_default extends Controller {
 
         if (document.orchestrator.listeners[callbackFlag] !== true) {
             console.log("-> addListener callbackName", callbackName);
-            eventListenerTarget.addEventListener(eventListener, eventListenerCallback instanceof Function ? eventListenerCallback : orchestratorCallbacks[callbackName])
+            if (callbackName === 'popstateCallback')
+                eventListenerTarget.addEventListener(eventListener, popStateCallback);
+            else if (callbackName === 'customPopstateCallback')
+                eventListenerTarget.addEventListener(eventListener, eventListenerCallback);
+            else
+                eventListenerTarget.addEventListener(eventListener, orchestratorCallbacks[callbackName]);
+            //eventListenerTarget.addEventListener(eventListener, eventListenerCallback instanceof Function ? eventListenerCallback : orchestratorCallbacks[callbackName])
             document.orchestrator.listeners[callbackFlag] = true
         }
 
