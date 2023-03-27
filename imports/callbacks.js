@@ -208,17 +208,17 @@ export const turboBeforeRenderCallback = async function (event) {
                 if (animation === moveToTarget) {
                     postRenderSubscriber.style.left = boxAfter.left.toString() + 'px';
                     postRenderSubscriber.style.top = boxAfter.top.toString() + 'px';
-                    preRenderSubscriber.style.left = boxAfter.left.toString() + 'px';
-                    preRenderSubscriber.style.top = boxAfter.top.toString() + 'px';
+                    //preRenderSubscriber.style.left = boxAfter.left.toString() + 'px';
+                    //preRenderSubscriber.style.top = boxAfter.top.toString() + 'px';
                 }
                 if (animation === resizeWidth) {
                     let options = parseOptions(keyframeEffectDefinition.options);
                     postRenderSubscriber.style.width = midpoint(options.startWidth, options.endWidth);
-                    preRenderSubscriber.style.width = midpoint(options.startWidth, options.endWidth);
+                    //preRenderSubscriber.style.width = midpoint(options.startWidth, options.endWidth);
                 }
                 if (animation === fadeIn || animation == fadeOut) {
                     postRenderSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
-                    preRenderSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
+                    //preRenderSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
                 }
                 if (animation === changeColor || animation === makeColorTransparent) {
                     let options = parseOptions(keyframeEffectDefinition.options);
@@ -226,7 +226,7 @@ export const turboBeforeRenderCallback = async function (event) {
                     for (const propertiesIndex in properties) {
                         let property = properties[propertiesIndex];
                         postRenderSubscriber.style[hyphenatedToCamelCase(property)] = window.getComputedStyle(element).getPropertyValue(property);
-                        preRenderSubscriber.style[hyphenatedToCamelCase(property)] = window.getComputedStyle(element).getPropertyValue(property);
+                        //preRenderSubscriber.style[hyphenatedToCamelCase(property)] = window.getComputedStyle(element).getPropertyValue(property);
                     }
                 }
             }
