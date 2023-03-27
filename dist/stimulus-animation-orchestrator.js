@@ -48,7 +48,6 @@ class src_default extends Controller {
         // Initialize event animations
         if (!document.animations) {
             document.animations = {};
-            document.listeners = {};
             document.animations['popstate'] = {};
             document.animations['turbo:click'] = {};
             document.animations['turbo:before-visit'] = {};
@@ -147,6 +146,9 @@ class src_default extends Controller {
 
     addListener(eventListener, eventListenerCallback = null) {
         let callbackName, callbackFlag, eventListenerTarget;
+
+        if (typeof document.orchestrator.listeners === 'undefined')
+            document.orchestrator.listeners = {}
 
         callbackName = this.getCallbackName(eventListener);
 
