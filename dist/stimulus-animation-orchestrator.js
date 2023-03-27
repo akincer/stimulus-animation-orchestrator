@@ -117,10 +117,6 @@ class src_default extends Controller {
         }
     }
 
-    testLoad(event) {
-        console.log("-> testLoad event", event);
-    }
-
     getListenerTarget(eventListener) {
         if (eventListener === 'popstate')
             return window;
@@ -180,24 +176,15 @@ class src_default extends Controller {
         let inlineSubscribers = this.getSubscribers(eventSource, eventType, inlineAnimationSubscriptions);
         document.inlineSubscribers = inlineSubscribers;
 
-        console.log("-> inlineSubscribers", inlineSubscribers);
-
         // TODO: handle json subscription definitions
         //let jsonSubscribers = this.getSubscribers(eventSource, eventType, jsonAnimationSubscriptions);
 
         for (const subscriber in inlineSubscribers)
         {
-            console.log("-> inlineSubscribers[subscriber]", inlineSubscribers[subscriber]);
-
-            // Schedule animation
             this.scheduleAnimation(subscriber, inlineSubscribers[subscriber])
         }
 
-        console.log("-> orchestrateSubscribedAnimations document.animations['turbo:render']", document.animations['turbo:render']);
-        console.log("-> orchestrateSubscribedAnimations document.animations['turbo:before-render']", document.animations['turbo:before-render']);
-
         // Play immediate animations
-
         for (const subscriber in document.animations[immediate]) {
             let keyframeEffectDefinitions = document.animations[immediate][subscriber]
             for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
@@ -213,20 +200,6 @@ class src_default extends Controller {
         }
     }
 
-
-
-    //splitAnimationSubscription(subscriber, subscription) {
-        // For spanned animations create two different subscriptions
-        //let details = subscription['detail'].split(',');
-
-        //for (const detailsIndex in details) {
-            //if (details[detailsIndex].includes('#')) {
-                // Contains additional parameters
-            //}
-
-        //}
-    //}
-
     scheduleAnimation(subscriber, subscriptions) {
 
         for (const subscriptionIndex in subscriptions) {
@@ -234,19 +207,13 @@ class src_default extends Controller {
             let schedule = subscription.schedule;
             let element = subscription.element;
 
-
             if (schedule === scheduleImmediate || schedule === scheduleNow) {
-
                 if (!document.animations[immediate][subscriber])
                     document.animations[immediate][subscriber] = []
                 document.animations[immediate][subscriber].push(subscription);
-
-                console.log("-> scheduleAnimation scheduleImmediate subscription", subscription);
             }
 
-            //if (schedule === scheduleSpanPages && getComputedStyle(element).position === 'absolute') {
-            if (schedule === scheduleSpanPages) {
-
+            if (schedule === scheduleSpan) {
                 if (!document.animations[turboRender][subscriber])
                     document.animations[turboRender][subscriber] = []
                 document.animations[turboRender][subscriber].push(subscription);
@@ -254,78 +221,21 @@ class src_default extends Controller {
                 if (!document.animations[turboBeforeRender][subscriber])
                     document.animations[turboBeforeRender][subscriber] = []
                 document.animations[turboBeforeRender][subscriber].push(subscription);
-
-                console.log("-> scheduleAnimation scheduleSpanPages subscription", subscription);
             }
 
-            //if (schedule === schedulePreNextPageRender || (schedule === scheduleSpanPages && getComputedStyle(element).position !== 'absolute')) {
             if (schedule === schedulePreNextPageRender || schedule === scheduleComplete) {
-
                 if (!document.animations[turboBeforeRender][subscriber])
                     document.animations[turboBeforeRender][subscriber] = []
                 document.animations[turboBeforeRender][subscriber].push(subscription);
-
-                console.log("-> scheduleAnimation schedulePreNextPageRender subscription", subscription);
             }
 
             if (schedule === schedulePostNextPageRender) {
-
                 if (!document.animations[turboRender][subscriber])
                     document.animations[turboRender][subscriber] = []
                 document.animations[turboRender][subscriber].push(subscription);
-
-                console.log("-> scheduleAnimation schedulePostNextPageRender subscription", subscription);
             }
         }
     }
-
-    /*
-    buildKeyFrameEffect(subscriber, subscription, section = sectionFull) {
-        let startFrame = {};
-        let endFrame = {};
-        let frameOptions = {};
-        let animationDetail = subscription['detail'];
-        let schedule = subscription['schedule'];
-        let element = subscription['element'];
-        let frameFunction;
-
-        let animationSteps = animationDetail.split(',');
-        console.log("->buildKeyFrameEffect animationSteps", animationSteps);
-        for (const stepIndex in animationSteps) {
-            let options = [];
-            if (animationSteps[stepIndex].includes('#')) {
-                // Additional configuration parameters
-            }
-
-            frameFunction = 'get' + capitalizeFirstLetter(animationSteps[stepIndex]) + 'Frame';
-            console.log("-> frameFunction", frameFunction);
-            let tempFrame = orchestratorHelpers[frameFunction](element, positionStart, section, options);
-            for (const property in tempFrame) {
-                startFrame[property] ? startFrame[property] += ' ' + tempFrame[property] : startFrame[property] = tempFrame[property];
-            }
-
-            tempFrame = orchestratorHelpers[frameFunction](element, positionEnd, section, options);
-            for (const property in tempFrame) {
-                endFrame[property] ? endFrame[property] += ' ' + tempFrame[property] : endFrame[property] = tempFrame[property];
-            }
-        }
-        console.log("-> startFrame", startFrame);
-        console.log("-> endFrame", endFrame);
-
-        frameOptions['duration'] = subscription['duration'];
-        frameOptions['fill'] = subscription['direction'];
-
-        return new KeyframeEffect(
-            element,
-            [
-                startFrame,
-                endFrame
-            ],
-            frameOptions
-        );
-    }
-
-     */
 
     parseInlineSubscription(subscriptionText) {
         let parsedKeyValuePairs = {};
@@ -335,11 +245,9 @@ class src_default extends Controller {
             let pair = keyValuePairs[keyValuePairIndex].split(subscriptionDelimiter);
             let key = hyphenatedToCamelCase(pair[0]);
             let value = pair[1];
-            console.log("-> parseInlineSubscription key", key, 'value', value);
             parsedKeyValuePairs[key] = value;
         }
 
-        console.log("-> parseInlineSubscription parsedKeyValuePairs", parsedKeyValuePairs);
         return parsedKeyValuePairs;
     }
 
@@ -379,7 +287,6 @@ class src_default extends Controller {
                     else
                         animationSubscriptions = animationSubscriptionsDefinition.split(' ')
                     for (const subscriptionIndex in animationSubscriptions) {
-                        //inlineAnimationSubscription = animationSubscriptions[subscriptionIndex].split(':');
                         inlineAnimationSubscription = this.parseInlineSubscription(animationSubscriptions[subscriptionIndex]);
                         if (inlineAnimationSubscription.source === eventSource && inlineAnimationSubscription.event === eventType) {
                             subscribers[candidateSubscriber.id].push({
