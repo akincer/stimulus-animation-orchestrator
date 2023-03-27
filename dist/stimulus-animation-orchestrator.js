@@ -48,6 +48,7 @@ class src_default extends Controller {
         // Initialize event animations
         if (!document.animations) {
             document.animations = {};
+            document.listeners = {};
             document.animations['popstate'] = {};
             document.animations['turbo:click'] = {};
             document.animations['turbo:before-visit'] = {};
