@@ -239,9 +239,9 @@ export const turboBeforeRenderCallback = async function (event) {
         }
 
 
-        for (const animationControllersIndex in animationControllers[subscriber]) {
-            animationControllers[subscriber][animationControllersIndex].cancel()
-        }
+        //for (const animationControllersIndex in animationControllers[subscriber]) {
+        //    animationControllers[subscriber][animationControllersIndex].cancel()
+        //}
 
         delete document.animations['turbo:before-render'][subscriber];
     }
