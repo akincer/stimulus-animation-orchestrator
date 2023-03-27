@@ -49,20 +49,9 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
         frameEffectOptions.easing = document.orchestratorDefaultEasing;
 
 
-    console.log("-> buildKeyFrameEffect startFrame: ", startFrame);
-    console.log("-> buildKeyFrameEffect endFrame: ", endFrame);
-    console.log("-> buildKeyFrameEffect frameEffectOptions: ", frameEffectOptions);
-    console.log("-> buildKeyFrameEffect background-color", window.getComputedStyle(element).getPropertyValue('background-color'));
-    console.log("-> buildKeyFrameEffect border-color", window.getComputedStyle(element).getPropertyValue('border-color'));
-    console.log("-> buildKeyFrameEffect color", window.getComputedStyle(element).getPropertyValue('color'));
-    console.log("-> buildKeyFrameEffect subscription:", subscription);
-
     return new KeyframeEffect(
         element,
-        [
-            startFrame,
-            endFrame
-        ],
+        frames,
         frameEffectOptions
     );
 }
@@ -91,40 +80,30 @@ export function parseOptions (optionsRaw) {
     if (!options['type'])
         options['type'] = typeSingle
 
-    console.log("-> parseOptions parsed options", options);
     return options;
 }
 
 export function postRenderPrep(subscriber, newBody) {
     let postRenderSubscriber = newBody.querySelector(`#${subscriber}`)
     let subscriptions = document.animations[turboRender][subscriber];
-    console.log("-> prepwork postRenderPrep subscriber", subscriber);
-    console.log("-> prepwork postRenderPrep postRenderSubscriber", postRenderSubscriber);
-    console.log("-> prepwork postRenderPrep subscriptions for subscriber", subscriptions);
-    console.log("-> prepwork postRenderPrep document.animations[turboRender]", document.animations[turboRender]);
+
     for (const subscriptionsIndex in subscriptions) {
         const subscription = subscriptions[subscriptionsIndex];
         let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
         if (typeof prepFunctions[prepFunction] !== 'undefined')
             prepFunctions[prepFunction](postRenderSubscriber, subscription);
-        else
-            console.log("-> prepFunction not found - prepfunction:", prepFunction);
     }
 }
 
 export function preRenderPrep(subscriber) {
     let preRenderSubscriber = document.getElementById(subscriber);
     let subscriptions = document.animations[turboBeforeRender][subscriber];
-    console.log("-> prepwork preRenderPrep subscriber", subscriber);
-    console.log("-> prepwork preRenderPrep preRenderSubscriber", preRenderSubscriber);
-    console.log("-> prepwork preRenderPrep subscriptions for subscriber", subscriptions);
-    console.log("-> prepwork preRenderPrep document.animations[turboBeforeRender]", document.animations[turboBeforeRender]);
+
     for (const subscriptionsIndex in subscriptions) {
         const subscription = subscriptions[subscriptionsIndex];
         let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
         if (typeof prepFunctions[prepFunction] !== 'undefined')
             prepFunctions[prepFunction](preRenderSubscriber, subscription);
-        else
-            console.log("-> prepFunction not found - prepfunction:", prepFunction);
     }
 }
+
