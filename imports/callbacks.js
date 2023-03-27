@@ -24,21 +24,21 @@ import {buildKeyFrameEffect, parseOptions, postRenderPrep, preRenderPrep, skipDe
 
 export const popStateCallback = function (event) {
     console.log("-> eventDebug popStateCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug popStateCallback event.detail.action", event.detail.action);
     }
 }
 
 export const turboClickCallback = function (event) {
     console.log("-> eventDebug turboClickCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboClickCallback event.detail.action", event.detail.action);
     }
 }
 
 export const turboBeforeVisitCallback = function (event) {
     console.log("-> eventDebug turboBeforeVisitCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboBeforeVisitCallback event.detail.action", event.detail.action);
     }
 }
@@ -46,7 +46,7 @@ export const turboBeforeVisitCallback = function (event) {
 export const turboVisitCallback = function (event) {
     console.log("-> eventDebug turboVisitCallback event", event);
     document.preRenderDefaultAnimationExecuted = false
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboVisitCallback event.detail.action", event.detail.action);
     }
     if (event.detail.action === 'restore')
@@ -55,42 +55,42 @@ export const turboVisitCallback = function (event) {
 
 export const turboSubmitStartCallback = function (event) {
     console.log("-> eventDebug turboSubmitStartCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboSubmitStartCallback event.detail.action", event.detail.action);
     }
 }
 
 export const turboBeforeFetchRequestCallback = function (event) {
     console.log("-> eventDebug turboBeforeFetchRequestCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboBeforeFetchRequestCallback event.detail.action", event.detail.action);
     }
 }
 
 export const turboBeforeFetchResponseCallback = function (event) {
     console.log("-> eventDebug turboBeforeFetchResponseCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboBeforeFetchResponseCallback event.detail.action", event.detail.action);
     }
 }
 
 export const turboSubmitEndCallback = function (event) {
     console.log("-> eventDebug turboSubmitEndCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboSubmitEndCallback event.detail.action", event.detail.action);
     }
 }
 
 export const turboBeforeCacheCallback = function (event) {
     console.log("-> eventDebug turboBeforeCacheCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboBeforeCacheCallback event.detail.action", event.detail.action);
     }
 }
 
 export const turboBeforeRenderCallback = async function (event) {
     console.log("-> eventDebug turboBeforeRenderCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboBeforeRenderCallback event.detail.action", event.detail.action);
     }
     if (document.restorePending) {
@@ -250,14 +250,14 @@ export const turboBeforeRenderCallback = async function (event) {
 
 export const turboBeforeStreamRenderCallback = function (event) {
     console.log("-> eventDebug turboBeforeStreamRenderCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboBeforeStreamRenderCallback event.detail.action", event.detail.action);
     }
 }
 
 export const turboRenderCallback = async function (event) {
     console.log("-> eventDebug turboRenderCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboRenderCallback event.detail.action", event.detail.action);
     }
 
@@ -361,28 +361,28 @@ export const turboRenderCallback = async function (event) {
 
 export const turboLoadCallback = function (event) {
     console.log("-> eventDebug turboLoadCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboLoadCallback event.detail.action", event.detail.action);
     }
 }
 
 export const turboFrameRenderCallback = function (event) {
     console.log("-> eventDebug turboFrameRenderCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboFrameRenderCallback event.detail.action", event.detail.action);
     }
 }
 
 export const turboFrameLoadCallback = function (event) {
     console.log("-> eventDebug turboFrameLoadCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboFrameLoadCallback event.detail.action", event.detail.action);
     }
 }
 
 export const turboFetchRequestErrorCallback = function (event) {
     console.log("-> eventDebug turboFetchRequestErrorCallback event", event);
-    if (typeof event.detail.action !== 'undefined') {
+    if (typeof event.detail !== 'undefined') {
         console.log("-> eventDebug turboFetchRequestErrorCallback event.detail.action", event.detail.action);
     }
 }
