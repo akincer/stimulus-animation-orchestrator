@@ -49,8 +49,10 @@ export const turboVisitCallback = function (event) {
     if (!!event.detail && !!event.detail.action) {
         console.log("-> eventDebug turboVisitCallback event.detail.action", event.detail.action);
     }
-    if (event.detail.action === 'replace')
+    if (event.detail.action === 'restore')
         document.restorePending = true
+    if (event.detail.action === 'replace')
+        document.replacePending = true
 }
 
 export const turboSubmitStartCallback = function (event) {
@@ -93,15 +95,17 @@ export const turboBeforeRenderCallback = async function (event) {
     if (!!event.detail && !!event.detail.action) {
         console.log("-> eventDebug turboBeforeRenderCallback event.detail.action", event.detail.action);
     }
-    if (document.restorePending) {
-        document.restorePending = false;
-        return;
-    }
+
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
-    let debugDelay = 0;
+    let debugDelay = 3000;
     const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    if (document.restorePending) {
+        console.log("-> eventDebug turboBeforeRenderCallback document.restorePending TRUE");
+        await sleep(debugDelay);
+    }
 
     // Pause rendering
     event.preventDefault();
@@ -261,16 +265,16 @@ export const turboRenderCallback = async function (event) {
         console.log("-> eventDebug turboRenderCallback event.detail.action", event.detail.action);
     }
 
-    if (document.restorePending) {
-        document.restorePending = false;
-        return;
-    }
-
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
     const sleep = ms => new Promise(r => setTimeout(r, ms));
-    let debugDelay = 0;
+    let debugDelay = 3000;
+
+    if (document.restorePending) {
+        console.log("-> eventDebug turboRenderCallback document.restorePending TRUE");
+        await sleep(debugDelay);
+    }
 
     console.log('-> turboRenderCallback Processing each scheduled animation');
 
