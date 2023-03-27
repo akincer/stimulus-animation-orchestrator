@@ -49,7 +49,7 @@ export const turboVisitCallback = function (event) {
     if (!!event.detail && !!event.detail.action) {
         console.log("-> eventDebug turboVisitCallback event.detail.action", event.detail.action);
     }
-    if (event.detail.action === 'restore')
+    if (event.detail.action === 'replace')
         document.restorePending = true
 }
 
