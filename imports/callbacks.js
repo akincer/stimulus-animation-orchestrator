@@ -91,21 +91,11 @@ export const turboBeforeCacheCallback = function (event) {
 }
 
 export const turboBeforeRenderCallback = async function (event) {
-    console.log("-> eventDebug turboBeforeRenderCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboBeforeRenderCallback event.detail.action", event.detail.action);
-    }
-
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
     let debugDelay = 0;
     const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-    if (document.restorePending) {
-        console.log("-> eventDebug turboBeforeRenderCallback document.restorePending TRUE");
-        await sleep(debugDelay);
-    }
 
     // Pause rendering
     event.preventDefault();
@@ -117,11 +107,11 @@ export const turboBeforeRenderCallback = async function (event) {
             let defaultSubscriber = defaultSubscribers[defaultSubscriberIndex];
             let preSubscription = {
                 element: defaultSubscriber,
-                animation: document.defaultPreAnimation,
+                animation: document.orchestrator.defaults.preAnimation,
                 schedule: schedulePreNextPageRender,
                 direction: directionForwards,
                 options: 'type=single',
-                duration: parseInt(document.defaultAnimationDuration),
+                duration: parseInt(document.orchestrator.defaults.duration),
                 format: 'inline'
             };
             if (!document.animations[turboBeforeRender][defaultSubscriber.id])
@@ -134,7 +124,7 @@ export const turboBeforeRenderCallback = async function (event) {
                 schedule: schedulePostNextPageRender,
                 direction: directionForwards,
                 options: 'type=single',
-                duration: parseInt(document.defaultAnimationDuration),
+                duration: parseInt(document.orchestrator.defaults.duration),
                 format: 'inline'
             };
             if (!document.animations[turboRender][defaultSubscriber.id])
@@ -216,7 +206,7 @@ export const turboBeforeRenderCallback = async function (event) {
                     postRenderSubscriber.style.width = midpoint(options.startWidth, options.endWidth);
                     //preRenderSubscriber.style.width = midpoint(options.startWidth, options.endWidth);
                 }
-                if (animation === fadeIn || animation == fadeOut) {
+                if (animation === fadeIn || animation === fadeOut) {
                     postRenderSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
                     //preRenderSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
                 }
@@ -260,23 +250,13 @@ export const turboBeforeStreamRenderCallback = function (event) {
 }
 
 export const turboRenderCallback = async function (event) {
-    console.log("-> eventDebug turboRenderCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboRenderCallback event.detail.action", event.detail.action);
-    }
-
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     let debugDelay = 0;
 
-    if (document.restorePending) {
-        console.log("-> eventDebug turboRenderCallback document.restorePending TRUE");
-        await sleep(debugDelay);
-    }
 
-    console.log('-> turboRenderCallback Processing each scheduled animation');
 
     for (const subscriber in document.animations[turboRender]) {
 
@@ -298,7 +278,7 @@ export const turboRenderCallback = async function (event) {
         }
     }
 
-
+    document.restorePending = false;
 
     await Promise.all(animationPromises);
 

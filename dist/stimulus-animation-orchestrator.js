@@ -77,24 +77,24 @@ class src_default extends Controller {
         document.orchestrator = {defaults: {}};
 
         if (!("orchestratorDefaultAnimationDuration" in this.element.dataset))
-            document.defaultAnimationDuration = 600;
+            document.orchestrator.defaults.duration = 600;
         else
-            document.defaultAnimationDuration = parseInt(this.element.dataset.orchestratorDefaultAnimationDuration);
+            document.orchestrator.defaults.duration = parseInt(this.element.dataset.orchestratorDefaultAnimationDuration);
 
         if (!("orchestratorDefaultFillDirection" in this.element.dataset))
-            document.orchestratorDefaultFillDirection = 'forwards';
+            document.orchestrator.defaults.fillDirection = 'forwards';
         else
-            document.orchestratorDefaultFillDirection = parseInt(this.element.dataset.orchestratorDefaultFillDirection);
+            document.orchestrator.defaults.fillDirection = parseInt(this.element.dataset.orchestratorDefaultFillDirection);
 
         if (!("orchestratorDefaultEasing" in this.element.dataset))
-            document.orchestratorDefaultEasing = 'linear';
+            document.orchestrator.defaults.easing = 'linear';
         else
-            document.orchestratorDefaultEasing = parseInt(this.element.dataset.orchestratorDefaultEasing);
+            document.orchestrator.defaults.easing = parseInt(this.element.dataset.orchestratorDefaultEasing);
 
         if (!("orchestratorDefaultPreAnimation" in this.element.dataset))
-            document.defaultPreAnimation = 'fadeOut';
+            document.orchestrator.defaults.preAnimation = 'fadeOut';
         else
-            document.defaultPreAnimation = this.element.dataset.orchestratorDefaultPreAnimation;
+            document.orchestrator.defaults.preAnimation = this.element.dataset.orchestratorDefaultPreAnimation;
 
         if (!("orchestratorDefaultPostAnimation" in this.element.dataset))
             document.orchestrator.defaults.postAnimation = 'fadeIn';
