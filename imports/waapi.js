@@ -71,8 +71,6 @@ export function parseOptions (optionsRaw) {
     let options = {}, optionsData = optionsRaw.split(optionsDelimiter);
     for (const optionIndex in optionsData) {
         let pair = optionsData[optionIndex].split('=');
-        if (!optionsData[optionIndex].includes('='))
-            console.log("-> optionsData invalid options key pair", optionsData);
         let key = hyphenatedToCamelCase(pair[0]);
         let value = pair[1];
         options[key] = value;

@@ -19,9 +19,6 @@ export function getExitToLeftFrame(element, position, section, options = {}) {
     let frame = {};
     let rect = element.getBoundingClientRect();
 
-    console.log("-> getExitToLeftFrame element", element);
-    console.log("-> getExitToLeftFrame rect", rect);
-
     if (position === positionStart) {
         // Get element's current position
         //frame['transform'] = 'translateX(' + rect.left.toString() + 'px)';
@@ -36,17 +33,12 @@ export function getExitToLeftFrame(element, position, section, options = {}) {
             frame['transform'] = 'translateX(-' + (rect.right / 2).toString() + 'px)';
     }
 
-    console.log("-> getExitToLeftFrame frame", frame);
-
     return frame;
 }
 
 export function getExitToRightFrame(element, position, section, options = {}) {
     let frame = {};
     let rect = element.getBoundingClientRect();
-
-    console.log("-> getExitToRightFrame element", element);
-    console.log("-> getExitToRightFrame rect", rect);
 
     if (position === positionStart) {
         // Get element's current position
@@ -62,17 +54,12 @@ export function getExitToRightFrame(element, position, section, options = {}) {
             frame['transform'] = 'translateX(' + ((window.innerWidth - rect.left) / 2).toString() + 'px)';
     }
 
-    console.log("-> getExitToRightFrame frame", frame);
-
     return frame;
 }
 
 export function getEnterFromRightFrame(element, position, section, options = {}) {
     let frame = {};
     let rect = element.getBoundingClientRect();
-
-    console.log("-> getEnterFromRightFrame element", element);
-    console.log("-> getEnterFromRightFrame rect", rect);
 
     if (position === positionStart) {
         if (section === sectionFull || section === sectionSecondHalf)
@@ -85,8 +72,6 @@ export function getEnterFromRightFrame(element, position, section, options = {})
     if (position === positionEnd) {
         frame.transform = 'translateX(0) translateY(0)';
     }
-
-    console.log("-> getEnterFromRightFrame frame", frame);
 
     return frame;
 }
@@ -149,9 +134,6 @@ export function getFadeInFrame(element, position, section, options = {}) {
 export function getMoveToTargetFrame(element, position, section, options = {}) {
     let frame = {};
     let rect = element.getBoundingClientRect();
-    console.log("-> getMoveToTargetFrame element", element);
-    console.log("-> moveToTarget rect", rect);
-    console.log("-> getMoveToTargetFrame options", options);
 
     if (position === positionStart) {
         //frame.transform = 'translateX(' + rect.left.toString() + 'px) translateY(' + rect.top.toString() + 'px)';
@@ -163,7 +145,6 @@ export function getMoveToTargetFrame(element, position, section, options = {}) {
         document.moveToTarget[element.id] = {}
         document.moveToTarget[element.id]['target'] = target.id
         let targetRect = target.getBoundingClientRect();
-        console.log("-> moveToTarget targetRect", targetRect);
 
         let widthOffset = 0, heightOffset = 0, leftOffset = 0, topOffset = 0;
         if(options.widthOffset)
@@ -176,19 +157,11 @@ export function getMoveToTargetFrame(element, position, section, options = {}) {
             frame.transform = 'translateX(' + (targetRect.left - leftOffset - rect.left).toString() + 'px) translateY(' + (targetRect.top - topOffset - rect.top).toString() + 'px)';
             document.moveToTarget[element.id]['left'] = (targetRect.left - leftOffset).toString() + 'px';
             document.moveToTarget[element.id]['top'] = (targetRect.top - topOffset).toString() + 'px';
-            console.log("-> getMoveToTargetFrame calculation (", targetRect.left , " - ", leftOffset, ").toString()");
-            console.log("-> moveToTarget X distance", (targetRect.left - leftOffset).toString()+ 'px');
-            console.log("-> moveToTarget Y distance", (targetRect.top - topOffset).toString() + 'px');
         }
-
 
         if (section === sectionFirstHalf)
             frame.transform = 'translateX(' + ((targetRect.left - leftOffset - rect.left)/2).toString() + 'px) translateY(' + ((targetRect.top - topOffset - rect.top)/2).toString() + 'px)';
     }
-
-    console.log("-> moveToTarget frame", frame);
-    console.log("-> moveToTarget position", position);
-    console.log("-> moveToTarget section", section);
 
     return frame;
 }
@@ -221,7 +194,6 @@ export function getResizeWidthFrame(element, position, section, options = {}) {
 }
 
 export function getChangeColorFrame(element, position, section, options = {}) {
-    console.log("-> getChangeColorFrame options", options);
     let frame = {}, properties = options.properties.split(propertiesDelimiter), startColors = [], endColors = [];
 
     for (const propertiesIndex in properties) {
@@ -239,12 +211,6 @@ export function getChangeColorFrame(element, position, section, options = {}) {
         if (isCssVariable(endColor))
             endColor = getCssVariableColor(endColor);
 
-        console.log("-> getChangeColorFrame property:", property);
-        console.log("-> getChangeColorFrame position:", position);
-        console.log("-> getChangeColorFrame section:", section);
-        console.log("-> getChangeColorFrame startColor:", startColor);
-        console.log("-> getChangeColorFrame endColor:", endColor);
-
         if (position === positionStart) {
             frame[hyphenatedToCamelCase(property)] = startColor;
         }
@@ -255,15 +221,12 @@ export function getChangeColorFrame(element, position, section, options = {}) {
             if (section === sectionFirstHalf)
                 frame[hyphenatedToCamelCase(property)] = midpointColor(startColor, endColor);
         }
-
-
     }
 
     return frame;
 }
 
 export function getMakeColorTransparentFrame(element, position, section, options = {}) {
-    console.log("-> getMakeColorTransparentFrame options", options);
     let frame = {}, properties = options.properties.split(propertiesDelimiter), startColors = [], endColors = [];
     for (const propertiesIndex in properties) {
         let startColor, endColor, midColor, startAlpha, midAlpha, property = properties[propertiesIndex];
@@ -312,10 +275,6 @@ export function getMakeColorTransparentFrame(element, position, section, options
         }
 
     }
-
-    console.log("-> getMakeColorTransparentFrame position", position);
-    console.log("-> getMakeColorTransparentFrame section", section);
-    console.log("-> getMakeColorTransparentFrame frame", frame);
 
     return frame;
 }
