@@ -45,38 +45,23 @@ export const turboVisitCallback = function (event) {
 }
 
 export const turboSubmitStartCallback = function (event) {
-    console.log("-> eventDebug turboSubmitStartCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboSubmitStartCallback event.detail.action", event.detail.action);
-    }
+
 }
 
 export const turboBeforeFetchRequestCallback = function (event) {
-    console.log("-> eventDebug turboBeforeFetchRequestCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboBeforeFetchRequestCallback event.detail.action", event.detail.action);
-    }
+
 }
 
 export const turboBeforeFetchResponseCallback = function (event) {
-    console.log("-> eventDebug turboBeforeFetchResponseCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboBeforeFetchResponseCallback event.detail.action", event.detail.action);
-    }
+
 }
 
 export const turboSubmitEndCallback = function (event) {
-    console.log("-> eventDebug turboSubmitEndCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboSubmitEndCallback event.detail.action", event.detail.action);
-    }
+
 }
 
 export const turboBeforeCacheCallback = function (event) {
-    console.log("-> eventDebug turboBeforeCacheCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboBeforeCacheCallback event.detail.action", event.detail.action);
-    }
+
 }
 
 export const turboBeforeRenderCallback = async function (event) {
@@ -91,7 +76,6 @@ export const turboBeforeRenderCallback = async function (event) {
 
     // Schedule default renderings
     if (!skipDefaultAnimation() && !document.preRenderDefaultAnimationExecuted) {
-        console.log("-> prepwork scheduling defaultSubscribers:", defaultSubscribers);
         for (const defaultSubscriberIndex in defaultSubscribers) {
             let defaultSubscriber = defaultSubscribers[defaultSubscriberIndex];
             let preSubscription = {
@@ -120,21 +104,16 @@ export const turboBeforeRenderCallback = async function (event) {
                 document.animations[turboRender][defaultSubscriber.id] = []
             document.animations[turboRender][defaultSubscriber.id].push(postSubscription)
         }
-        for (const subscriber in document.animations[turboBeforeRender]) {
-            console.log("-> prepwork after default animations subscribers added document.animations[turboBeforeRender][subscriber]", document.animations[turboBeforeRender][subscriber]);
-        }
-
     }
 
     for (const subscriber in document.animations[turboBeforeRender]) {
-        let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
+        let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), subscriptionsDefinitions = document.animations[turboBeforeRender][subscriber];
         let preRenderSubscriber = document.getElementById(subscriber);
 
-        for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
+        for (const subscriptionsDefinitionsIndex in subscriptionsDefinitions) {
             let keyframeEffect, options;
-            const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
-            console.log("-> turboBeforeRenderCallback keyframeEffectDefinition", keyframeEffectDefinition);
-            !!keyframeEffectDefinition.options ? options = parseOptions(keyframeEffectDefinition.options) : options = {};
+            const subscription = subscriptionsDefinitions[subscriptionsDefinitionsIndex], schedule = subscription.schedule;
+            !!subscription.options ? options = parseOptions(subscription.options) : options = {};
             if (options.toggleOffClasses) {
                 let toggleClassList = options.toggleOffClasses.split(optionsDelimiter);
                 for (const toggleClassListIndex in toggleClassList){
@@ -143,17 +122,14 @@ export const turboBeforeRenderCallback = async function (event) {
             }
 
             if (schedule === scheduleComplete || schedule === schedulePreNextPageRender || (schedule === scheduleSpan && !postRenderSubscriber)) {
-                keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionFull);
+                keyframeEffect = buildKeyFrameEffect(subscriber, subscription, sectionFull);
             }
 
             if (schedule === scheduleSpan && postRenderSubscriber) {
-                keyframeEffect = buildKeyFrameEffect(subscriber, keyframeEffectDefinition, sectionFirstHalf);
+                keyframeEffect = buildKeyFrameEffect(subscriber, subscription, sectionFirstHalf);
             }
             const animationController = new Animation(keyframeEffect, document.timeline);
 
-            console.log("-> turboBeforeRenderCallback animationDebug Playing animation for subscriber", subscriber);
-            console.log("-> turboBeforeRenderCallback animationDebug animation", keyframeEffectDefinition.animation);
-            console.log("-> turboBeforeRenderCallback animationDebug subscription", keyframeEffectDefinition);
             animationController.play();
             await sleep(debugDelay);
             preRenderPrep(subscriber, event.detail.newBody);
@@ -172,27 +148,21 @@ export const turboBeforeRenderCallback = async function (event) {
     await Promise.all(animationPromises);
 
     for (const subscriber in document.animations[turboBeforeRender]) {
-        let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), keyframeEffectDefinitions = document.animations[turboBeforeRender][subscriber];
+        let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), subscriptionsDefinitions = document.animations[turboBeforeRender][subscriber];
         let preRenderSubscriber = document.getElementById(subscriber);
 
-        for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
-            const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
-            let animation = keyframeEffectDefinition.animation, element = keyframeEffectDefinition.element;
-            let boxAfter = keyframeEffectDefinition.element.getBoundingClientRect();
+        for (const subscriptionsDefinitionsIndex in subscriptionsDefinitions) {
+            const subscription = subscriptionsDefinitions[subscriptionsDefinitionsIndex], schedule = subscription.schedule;
+            let animation = subscription.animation, element = subscription.element;
+            let boxAfter = subscription.element.getBoundingClientRect();
 
             if (schedule === scheduleSpan && postRenderSubscriber) {
-
-                //postRenderSubscriber.parentNode.replaceChild(preRenderSubscriber.cloneNode(true), postRenderSubscriber);
-                //postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`)
-
                 if (animation === moveToTarget) {
                     postRenderSubscriber.style.left = boxAfter.left.toString() + 'px';
                     postRenderSubscriber.style.top = boxAfter.top.toString() + 'px';
-                    //preRenderSubscriber.style.left = boxAfter.left.toString() + 'px';
-                    //preRenderSubscriber.style.top = boxAfter.top.toString() + 'px';
                 }
                 if (animation === resizeWidth) {
-                    let options = parseOptions(keyframeEffectDefinition.options);
+                    let options = parseOptions(subscription.options);
                     postRenderSubscriber.style.width = midpoint(options.startWidth, options.endWidth);
                     //preRenderSubscriber.style.width = midpoint(options.startWidth, options.endWidth);
                 }
@@ -201,7 +171,7 @@ export const turboBeforeRenderCallback = async function (event) {
                     //preRenderSubscriber.style.opacity = window.getComputedStyle(element).opacity.toString();
                 }
                 if (animation === changeColor || animation === makeColorTransparent) {
-                    let options = parseOptions(keyframeEffectDefinition.options);
+                    let options = parseOptions(subscription.options);
                     let properties = options.properties.split(propertiesDelimiter);
                     for (const propertiesIndex in properties) {
                         let property = properties[propertiesIndex];
@@ -210,18 +180,9 @@ export const turboBeforeRenderCallback = async function (event) {
                     }
                 }
             }
-
-            if (postRenderSubscriber) {
+            if (postRenderSubscriber)
                 postRenderPrep(subscriber, event.detail.newBody);
-            }
-            else
-                console.log("-> turboBeforeRenderCallback postRenderSubscriber not found in newBody - postRenderSubscriber:", postRenderSubscriber);
         }
-
-
-        //for (const animationControllersIndex in animationControllers[subscriber]) {
-        //    animationControllers[subscriber][animationControllersIndex].cancel()
-        //}
 
         delete document.animations['turbo:before-render'][subscriber];
     }
@@ -229,14 +190,10 @@ export const turboBeforeRenderCallback = async function (event) {
     // Resume rendering
     event.detail.resume();
 
-
 }
 
 export const turboBeforeStreamRenderCallback = function (event) {
-    console.log("-> eventDebug turboBeforeStreamRenderCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboBeforeStreamRenderCallback event.detail.action", event.detail.action);
-    }
+
 }
 
 export const turboRenderCallback = async function (event) {
@@ -255,9 +212,6 @@ export const turboRenderCallback = async function (event) {
             const subscription = subscriptions[subscriptionsDefinitionsIndex];
             const keyframeEffect = buildKeyFrameEffect(subscriber, subscription, sectionSecondHalf);
             const animationController = new Animation(keyframeEffect, document.timeline);
-            console.log("-> turboBeforeRenderCallback animationDebug Playing animation for subscriber", subscriber);
-            console.log("-> turboBeforeRenderCallback animationDebug animation", subscription.animation);
-            console.log("-> turboBeforeRenderCallback animationDebug subscription", subscription);
             animationController.play();
             await sleep(debugDelay);
             animationPromises.push(animationController.finished);
