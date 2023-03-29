@@ -4,7 +4,7 @@ Animation Orchestrator provides an interface to perform basic animations immedia
 
 # Getting Started
 
-This package was developed using Stimulus 3.1.0 and Turbo 7.1.0. It has not been tested against older versions. At a minimum, you will need a Turbo version that supports pausable rendering witht he before-render event.
+This package was developed using Stimulus 3.1.0 and Turbo 7.1.0. It has not been tested against older versions. At a minimum, you will need a Turbo version that supports pausable rendering with he before-render event.
 
 It's possible you could use this with just Stimulus but only immediate animations would work.
 
