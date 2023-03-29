@@ -1,4 +1,4 @@
-import {off, positionEnd, positionStart, sectionFirstHalf, sectionFull, sectionSecondHalf} from "./constants";
+import {off} from "./constants";
 
 export function storeItem(itemName, itemData)
 {

@@ -7,9 +7,9 @@ import {
     sectionSecondHalf
 } from "./constants";
 import {
-    calculateMidpointColor, convertToRGB, getAlpha,
+    convertToRGB, getAlpha,
     getCssVariableColor, getPropertyColor,
-    getUnit, hyphenatedToCamelCase,
+    hyphenatedToCamelCase,
     isCssVariable, isRGBA,
     midpoint,
     midpointColor, rgbToRgba

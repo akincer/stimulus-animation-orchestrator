@@ -2,20 +2,15 @@ import { Controller } from "@hotwired/stimulus";
 import {capitalizeFirstLetter, fetchItem, hyphenatedToCamelCase, storeItem} from "../imports/helper-functions";
 import {
     currentStepNumber,
-    flowInstanceId, immediate,
+    flowInstanceId,
     inlineAnimationSubscriptions,
-    jsonAnimationSubscriptions,
+    immediate,
     navigationSource,
-    positionEnd,
-    positionStart,
-    scheduleComplete,
-    scheduleImmediate,
-    scheduleNow, schedulePostNextPageRender, schedulePreNextPageRender,
-    scheduleSpan, scheduleSpanPages,
-    sectionFull, subscriptionDelimiter, turboBeforeRender, turboRender
+    scheduleComplete, scheduleImmediate, scheduleNow, schedulePostNextPageRender, schedulePreNextPageRender, scheduleSpan,
+    subscriptionDelimiter,
+    turboBeforeRender, turboRender
 } from "../imports/constants";
 import * as orchestratorCallbacks from "../imports/callbacks";
-import * as orchestratorHelpers from "../imports/helper-functions";
 import {buildKeyFrameEffect, parseOptions} from "../imports/waapi";
 import {popStateCallback} from "../imports/callbacks";
 

@@ -1,4 +1,4 @@
-import {fetchItem, hyphenatedToCamelCase, midpoint, storeItem, toggleClass} from "./helper-functions";
+import {hyphenatedToCamelCase, midpoint, toggleClass} from "./helper-functions";
 import {
     changeColor,
     directionForwards,
