@@ -40,9 +40,6 @@ class src_default extends Controller {
         this.addListener('turbo:load');
         this.addListener('turbo:frame-render');
         this.addListener('turbo:fetch-request-error');
-
-        console.log("-> superConnect document.orchestrator", document.orchestrator);
-
     }
 
     initialize() {
@@ -162,7 +159,6 @@ class src_default extends Controller {
         eventListenerTarget = this.getListenerTarget(eventListener);
 
         if (document.orchestrator.listeners[callbackFlag] !== true) {
-            console.log("-> addListener callbackName", callbackName);
             if (callbackName === 'popstateCallback')
                 eventListenerTarget.addEventListener(eventListener, popStateCallback);
             else if (callbackName === 'customPopstateCallback')

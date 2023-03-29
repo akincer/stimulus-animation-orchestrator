@@ -23,32 +23,21 @@ import {
 import {buildKeyFrameEffect, parseOptions, postRenderPrep, preRenderPrep, skipDefaultAnimation} from "./waapi";
 
 export const popStateCallback = function (event) {
-    console.log("-> eventDebug popStateCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug popStateCallback event.detail.action", event.detail.action);
-    }
+
 }
 
 export const turboClickCallback = function (event) {
-    console.log("-> eventDebug turboClickCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboClickCallback event.detail.action", event.detail.action);
-    }
+
 }
 
 export const turboBeforeVisitCallback = function (event) {
-    console.log("-> eventDebug turboBeforeVisitCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboBeforeVisitCallback event.detail.action", event.detail.action);
-    }
+
 }
 
 export const turboVisitCallback = function (event) {
-    console.log("-> eventDebug turboVisitCallback event", event);
+
     document.preRenderDefaultAnimationExecuted = false
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboVisitCallback event.detail.action", event.detail.action);
-    }
+
     if (event.detail.action === 'restore')
         document.restorePending = true
     if (event.detail.action === 'replace')
@@ -134,6 +123,7 @@ export const turboBeforeRenderCallback = async function (event) {
         for (const subscriber in document.animations[turboBeforeRender]) {
             console.log("-> prepwork after default animations subscribers added document.animations[turboBeforeRender][subscriber]", document.animations[turboBeforeRender][subscriber]);
         }
+        document.preRenderDefaultAnimationExecuted = true
     }
 
     for (const subscriber in document.animations[turboBeforeRender]) {
@@ -283,59 +273,6 @@ export const turboRenderCallback = async function (event) {
     await Promise.all(animationPromises);
 
     for (const subscriber in document.animations[turboRender]) {
-        let postRenderSubscriber = document.getElementById(subscriber);
-        let keyframeEffects = document.animations[turboRender][subscriber];
-
-        for (const keyframeEffectsIndex in keyframeEffects) {
-            const keyframeEffect = keyframeEffects[keyframeEffectsIndex];
-
-            if (keyframeEffect.schedule === scheduleSpan && postRenderSubscriber) {
-                if (document.moveToTarget[subscriber]) {
-                    //let rect = postRenderSubscriber.getBoundingClientRect();
-                    //postRenderSubscriber.style.left = rect.left.toString() + 'px';
-                    //postRenderSubscriber.style.top = rect.top.toString() + 'px';
-                    //delete document.moveToTarget[subscriber];
-                }
-
-                if (document.resizeWidth[subscriber]) {
-                    //let rect = postRenderSubscriber.getBoundingClientRect();
-                    //console.log("-> turboRenderCallback CHANGING WIDTH FOR nextPageSubscriber", postRenderSubscriber);
-                    //postRenderSubscriber.style.width = rect.width.toString() + 'px';
-                    //delete document.resizeWidth[subscriber];
-                }
-
-                if (document.changeColor[subscriber]) {
-                    //console.log("-> BEFORE cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(postRenderSubscriber).getPropertyValue('background-color'));
-                    //postRenderSubscriber.style.backgroundColor = window.getComputedStyle(postRenderSubscriber).getPropertyValue('background-color');
-                    //delete document.changeColor[subscriber];
-                    //console.log("-> AFTER cancel - window.getComputedStyle(nextPageSubscriber).getPropertyValue('background-color')", window.getComputedStyle(postRenderSubscriber).getPropertyValue('background-color'));
-                }
-            }
-        }
-
-        //console.log('-> turboRenderCallback Before looping to cancel animations');
-        //await sleep(debugDelay);
-
-
-        for (const animationControllersIndex in animationControllers[subscriber]) {
-            //console.log("-> Canceling animationControllers[subscriber][animationControllersIndex]", animationControllers[subscriber][animationControllersIndex]);
-            //animationControllers[subscriber][animationControllersIndex].cancel()
-            //let keyframeEffectDefinitions = document.animations[turboRender][subscriber];
-            //let postRenderSubscriber = document.getElementById(subscriber);
-            //for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
-            //    const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex];
-            //    let options = parseOptions(keyframeEffectDefinition.options);
-            //    if (options.toggleClasses) {
-            //        let toggleClassList = options.toggleClasses.split(optionsDelimiter);
-            //        for (const toggleClassListIndex in toggleClassList){
-            //           toggleClass(postRenderSubscriber, toggleClassList[toggleClassListIndex], on);
-            //       }
-            //   }
-            //}
-        }
-
-        //console.log('-> turboRenderCallback After looping to cancel animations');
-        //await sleep(debugDelay);
         delete document.animations[turboRender][subscriber];
     }
 
@@ -344,29 +281,17 @@ export const turboRenderCallback = async function (event) {
 }
 
 export const turboLoadCallback = function (event) {
-    console.log("-> eventDebug turboLoadCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboLoadCallback event.detail.action", event.detail.action);
-    }
+
 }
 
 export const turboFrameRenderCallback = function (event) {
-    console.log("-> eventDebug turboFrameRenderCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboFrameRenderCallback event.detail.action", event.detail.action);
-    }
+
 }
 
 export const turboFrameLoadCallback = function (event) {
-    console.log("-> eventDebug turboFrameLoadCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboFrameLoadCallback event.detail.action", event.detail.action);
-    }
+
 }
 
 export const turboFetchRequestErrorCallback = function (event) {
-    console.log("-> eventDebug turboFetchRequestErrorCallback event", event);
-    if (!!event.detail && !!event.detail.action) {
-        console.log("-> eventDebug turboFetchRequestErrorCallback event.detail.action", event.detail.action);
-    }
+
 }
