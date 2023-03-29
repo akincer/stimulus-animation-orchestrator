@@ -8,6 +8,8 @@ This package was developed using Stimulus 3.1.0 and Turbo 7.1.0. It has not been
 
 It's possible you could use this with just Stimulus but only immediate animations would work.
 
+**Note: for orchestrator to work correctly you must disable Turbo caching.**
+
 ### Using yarn
 
 ```
