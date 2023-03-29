@@ -8,8 +8,6 @@ This package was developed using Stimulus 3.1.0 and Turbo 7.1.0. It has not been
 
 It's possible you could use this with just Stimulus but only immediate animations would work.
 
-**Note: for orchestrator to work correctly you must disable Turbo caching.**
-
 ### Using yarn
 
 ```
@@ -30,6 +28,8 @@ yarn add @akincer/stimulus-animation-orchestrator
 # Using Orchestrator
 
 Create a controller in your controller repository folder and import Orchestrator. Name it whatever you want but for these examples we'll use animation_orchestrator_controller.js. Call the parent connect method in the connect method and set your config preferences.
+
+**Note: for orchestrator to work correctly you must disable Turbo caching.**
 
 ```
 import Orchestrator from '@akincer/stimulus-animation-orchestrator'
