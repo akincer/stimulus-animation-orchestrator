@@ -2,9 +2,15 @@
 
 Animation Orchestrator provides an interface to perform basic animations immediately, that can span seamlessly across page visits or pause rendering to allow an animation to complete before loading the next page. The goal is get SPA experience with animations using Stimulus and Turbo.
 
+# Architecture
+
+One of the primary goals of Animation Orchestrator to put the design of your animations closer to your templates and out of your CSS by leveraging the power of Web Animations API.
+
+For the moment the animations available are single step oriented. You can configure multiple animations to run at the same time. Defining multiple animations steps not yet supported.
+
 # Getting Started
 
-This package was developed using Stimulus 3.1.0 and Turbo 7.1.0. It has not been tested against older versions. At a minimum, you will need a Turbo version that supports pausable rendering with he before-render event.
+This package was developed using Stimulus 3.1.0 and Turbo 7.1.0. It has not been tested against older versions. At a minimum, you will need a Turbo version that supports pausable rendering with the before-render event.
 
 It's possible you could use this with just Stimulus but only immediate animations would work.
 
@@ -98,8 +104,20 @@ This subscription causes the subscriber to exit off the screen to the left and f
 
 ```
 <div
+    id="myDiv"
     data-inline-animation-subscriptions="
         source->myButton:event->click:animation->exitToLeft:schedule->pre:direction->forwards:duration->300
         source->myButton:event->click:animation->fadeOut:schedule->pre:direction->forwards:duration->300
     "
 ```
+
+# Configuration and Settings Reference
+
+### Defaults 
+
+Defaults can be set two ways. You can set them in your controller instance after running super.connect() or you can set them in data attributes in your <html> tag.
+
+| Data Attribute                              |Config Setting| Description                                               |MDN|
+|---------------------------------------------|--------------|-----------------------------------------------------------|---|
+| data-orchestrator-default-animation-duration |document.orchestrator.defaults.duration| Time the animation takes to complete. Must be an integer. |[:information_source:](https://developer.mozilla.org/en-US/docs/Web/CSS/animation-duration)|
+|data-orchestrator-default-fill-direction|document.orchestrator.defaults.fillDirection|Defines how styles are applied during the animation life cycle. |[:information_source:](https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode)|
