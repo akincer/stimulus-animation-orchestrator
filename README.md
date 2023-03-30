@@ -104,7 +104,7 @@ This subscription causes the subscriber to exit off the screen to the left and f
 
 ### Defaults 
 
-Defaults can be set two ways. You can set them in your controller instance after running super.connect() or you can set them in data attributes in your <html> tag.
+Defaults can be set two ways. You can set them in your controller instance after running super.connect() or you can set them in data attributes in your &lt;html> tag.
 
 | Data Attribute                               | Config Setting                               | Description                                                               | Preset           | MDN                                                                                          |
 |----------------------------------------------|----------------------------------------------|---------------------------------------------------------------------------|------------------|----------------------------------------------------------------------------------------------|
