@@ -93,10 +93,10 @@ class src_default extends Controller {
         else
             document.orchestrator.defaults.postAnimation = this.element.dataset.orchestratorDefaultPostAnimation;
 
-        if (!("orchestratorDefaultStartColor" in this.element.dataset))
+        if (!("orchestratorDefaultColor" in this.element.dataset))
             document.orchestrator.defaults.color = 'rgb(255,255,255)';
         else
-            document.orchestrator.defaults.color = this.element.dataset.orchestratorDefaultStartColor;
+            document.orchestrator.defaults.color = this.element.dataset.orchestratorDefaultColor;
 
     }
 
