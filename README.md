@@ -51,15 +51,26 @@ Load the controller on your html element and assign your html element an ID.
 
 ### Default Animation
 
-Out of the box the default animation sequence is fadeIn and fadeOut. This is most effectively set on the element that holds your content. If you're using a templating engine such as Twig it's easiest to set it in your base.html.twig file. Use the data attribute **data-orchestrator-default** to configure an element to accept the default animation.
+Out of the box the default animation sequence is fadeIn and fadeOut. This is most effectively set on the element that holds your content. Use the data attribute **data-orchestrator-default** to configure an element to accept the default animation.
 
 ```
     <main
         data-orchestrator-default
         id="main"
     >
-    {% block body %}
-    {% endblock %}
+        /* Page content */
+    </main>
+```
+
+If you're using a templating engine such as Twig it's easiest to set it in your base.html.twig file.
+
+```
+    <main
+        data-orchestrator-default
+        id="main"
+    >
+        {% block body %}
+        {% endblock %}
     </main>
 ```
 
