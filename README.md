@@ -165,7 +165,7 @@ options->optionName1=value1;value2;value3||optionName2=value1;value2;value3
 Note if you have options that correspond to each other you need to keep them in order.
 
 ```
-options->properties=backgroundcolor;border-color||endColors=--my-primary-background-color;--my-primary-border-color
+options->properties=background-color;border-color||endColors=--my-primary-background-color;--my-primary-border-color
 ```
 
 | Name         | Animations                        | Values                                                             | MDN                                                                                              |
