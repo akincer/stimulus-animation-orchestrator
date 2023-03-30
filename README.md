@@ -128,16 +128,18 @@ Defaults can be set two ways. You can set them in your controller instance after
 
 # Settings
 
-| Name      | Description                                            | Requirement |
-|-----------|--------------------------------------------------------|-------------|
-| source    | The source id of the event the subscriber is accepting | Required    |
-| event     | The event the subscriber is accepting                  | Required    |
-| animation | The animation to be played in the subscription         | Required    |
-| schedule  | When the animation will be played                      | Required    |
-| direction | The fill mode direction                                | Optional    |
-| duration  | Time given for the animation to complete               | Optional    |
-| easing    | The rate of change of an animation                     | Optional    |
-| options   | Additional configuration parameters for animations     | Optional    |
+Note for optional settings the default will be use if excluded from a subscription.
+
+| Name      | Description                                            | Requirement        |
+|-----------|--------------------------------------------------------|--------------------|
+| source    | The source id of the event the subscriber is accepting | Required           |
+| event     | The event the subscriber is accepting                  | Required           |
+| animation | The animation to be played in the subscription         | Required           |
+| schedule  | When the animation will be played                      | Required           |
+| direction | The fill mode direction                                | Optional           |
+| duration  | Time given for the animation to complete               | Optional           |
+| easing    | The rate of change of an animation                     | Optional           |
+| options   | Additional configuration parameters for animations     | Animation Specific |
 
 # Animations
 
