@@ -101,11 +101,13 @@ class src_default extends Controller {
     }
 
     getFormState() {
-        if ("currentStepNumber" in this.element.dataset) {
+        if (currentStepNumber in document.body.dataset) {
+            document.orchestrator.forms[currentStepNumber]= document.body.dataset[currentStepNumber]
             storeItem(currentStepNumber, this.element.dataset.currentStepNumber);
         }
 
-        if ("currentStepNumber" in this.element.dataset) {
+        if (flowInstanceId in this.element.dataset) {
+            document.orchestrator.forms[flowInstanceId]= document.body.dataset[flowInstanceId]
             storeItem(flowInstanceId, this.element.dataset.currentStepNumber);
         }
     }

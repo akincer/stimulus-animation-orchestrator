@@ -128,7 +128,7 @@ Defaults can be set two ways. You can set them in your controller instance after
 
 # Settings
 
-Note for optional settings the default will be use if excluded from a subscription.
+Note for optional settings the default will be used if excluded from a subscription.
 
 | Name      | Description                                            | Requirement        |
 |-----------|--------------------------------------------------------|--------------------|
