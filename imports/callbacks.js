@@ -23,19 +23,19 @@ import {
 import {buildKeyFrameEffect, parseOptions, postRenderPrep, preRenderPrep, skipDefaultAnimation} from "./waapi";
 
 export const popStateCallback = function (event) {
-
+    console.log("-> eventDebug popStateCallback event", event);
 }
 
 export const turboClickCallback = function (event) {
-
+    console.log("-> eventDebug turboClickCallback event", event);
 }
 
 export const turboBeforeVisitCallback = function (event) {
-
+    console.log("-> eventDebug turboBeforeVisitCallback event", event);
 }
 
 export const turboVisitCallback = function (event) {
-
+    console.log("-> eventDebug turboVisitCallback event", event);
     document.preRenderDefaultAnimationExecuted = false
 
     if (event.detail.action === 'restore')
@@ -45,30 +45,31 @@ export const turboVisitCallback = function (event) {
 }
 
 export const turboSubmitStartCallback = function (event) {
-
+    console.log("-> eventDebug turboSubmitStartCallback event", event);
 }
 
 export const turboBeforeFetchRequestCallback = function (event) {
-
+    console.log("-> eventDebug turboBeforeFetchRequestCallback event", event);
 }
 
 export const turboBeforeFetchResponseCallback = function (event) {
-
+    console.log("-> eventDebug turboBeforeFetchResponseCallback event", event);
 }
 
 export const turboSubmitEndCallback = function (event) {
-
+    console.log("-> eventDebug turboSubmitEndCallback event", event);
 }
 
 export const turboBeforeCacheCallback = function (event) {
-
+    console.log("-> eventDebug turboBeforeCacheCallback event", event);
 }
 
 export const turboBeforeRenderCallback = async function (event) {
+    console.log("-> eventDebug turboBeforeRenderCallback event", event);
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
-    let debugDelay = 0;
+    let debugDelay = 3000;
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     // Pause rendering
@@ -193,10 +194,11 @@ export const turboBeforeRenderCallback = async function (event) {
 }
 
 export const turboBeforeStreamRenderCallback = function (event) {
-
+    console.log("-> eventDebug turboBeforeStreamRenderCallback event", event);
 }
 
 export const turboRenderCallback = async function (event) {
+    console.log("-> eventDebug turboRenderCallback event", event);
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
     let animationControllers = {};
@@ -235,17 +237,17 @@ export const turboRenderCallback = async function (event) {
 }
 
 export const turboLoadCallback = function (event) {
-
+    console.log("-> eventDebug turboLoadCallback event", event);
 }
 
 export const turboFrameRenderCallback = function (event) {
-
+    console.log("-> eventDebug turboFrameRenderCallback event", event);
 }
 
 export const turboFrameLoadCallback = function (event) {
-
+    console.log("-> eventDebug turboFrameLoadCallback event", event);
 }
 
 export const turboFetchRequestErrorCallback = function (event) {
-
+    console.log("-> eventDebug turboFetchRequestErrorCallback event", event);
 }
