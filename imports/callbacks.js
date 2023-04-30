@@ -111,6 +111,7 @@ export const turboBeforeRenderCallback = async function (event) {
         let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), subscriptionsDefinitions = document.animations[turboBeforeRender][subscriber];
         let preRenderSubscriber = document.getElementById(subscriber);
 
+        console.log("-> DEBUG: turboBeforeRenderCallback() preRenderSubscriber", preRenderSubscriber);
         for (const subscriptionsDefinitionsIndex in subscriptionsDefinitions) {
             let keyframeEffect, options;
             const subscription = subscriptionsDefinitions[subscriptionsDefinitionsIndex], schedule = subscription.schedule;
