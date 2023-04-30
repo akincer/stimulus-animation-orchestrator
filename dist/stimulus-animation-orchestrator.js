@@ -67,6 +67,7 @@ class src_default extends Controller {
     getConfig() {
 
         document.orchestrator = {defaults: {}};
+        document.orchestrator = {forms: {}};
 
         if (!("orchestratorDefaultAnimationDuration" in this.element.dataset))
             document.orchestrator.defaults.duration = 600;
@@ -98,17 +99,30 @@ class src_default extends Controller {
         else
             document.orchestrator.defaults.color = this.element.dataset.orchestratorDefaultColor;
 
+        if (!("orchestratorFormDataSourceId" in this.element.dataset))
+            document.orchestrator.forms.formDataSourceId = 'body';
+        else
+            document.orchestrator.forms.formDataSourceId = this.element.dataset.formDataSourceId;
+
+        if (!("orchestratorUseFormControl" in this.element.dataset))
+            document.orchestrator.defaults.useFormControl = false;
+        else
+            document.orchestrator.defaults.useFormControl = true;
+
     }
 
     getFormState() {
-        if (currentStepNumber in document.body.dataset) {
-            document.orchestrator.forms[currentStepNumber]= document.body.dataset[currentStepNumber]
-            storeItem(currentStepNumber, this.element.dataset.currentStepNumber);
+        const formDataSource = document.getElementById(document.orchestrator.defaults.formDataSourceId)
+        let stepNumber;
+        if (currentStepNumber in formDataSource.dataset) {
+            stepNumber =
+            document.orchestrator.forms[currentStepNumber] = formDataSource.dataset[currentStepNumber]
+            storeItem(currentStepNumber, formDataSource.dataset.currentStepNumber);
         }
 
-        if (flowInstanceId in this.element.dataset) {
-            document.orchestrator.forms[flowInstanceId]= document.body.dataset[flowInstanceId]
-            storeItem(flowInstanceId, this.element.dataset.currentStepNumber);
+        if (flowInstanceId in formDataSource.dataset) {
+            document.orchestrator.forms[flowInstanceId] = formDataSource.dataset[flowInstanceId]
+            storeItem(flowInstanceId, formDataSource.dataset.currentStepNumber);
         }
     }
 
