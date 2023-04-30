@@ -111,7 +111,7 @@ class src_default extends Controller {
     }
 
     getFormState() {
-        const formDataSource = document.getElementById(document.orchestrator.defaults.formDataSourceId)
+        const formDataSource = document.getElementById(document.orchestrator.forms.formDataSourceId)
         let stepNumber;
         if (currentStepNumber in formDataSource.dataset) {
             stepNumber =
