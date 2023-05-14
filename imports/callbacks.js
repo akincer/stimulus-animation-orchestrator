@@ -116,6 +116,7 @@ export const turboBeforeRenderCallback = async function (event) {
             for (const subscriptionsDefinitionsIndex in subscriptionsDefinitions) {
                 const subscription = subscriptionsDefinitions[subscriptionsDefinitionsIndex];
                 let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
+                console.log("-> DEBUG: turboBeforeRenderCallback() running prep function: ", prepFunction, " with schedule: ", subscription.schedule);
                 if (typeof prepFunctions[prepFunction] !== 'undefined')
                     prepFunctions[prepFunction](cachedSubscriber, subscription);
             }
