@@ -83,7 +83,7 @@ export function parseOptions (optionsRaw) {
 
 export function postRenderPrep(subscriber, newBody) {
     let postRenderSubscriber = newBody.querySelector(`#${subscriber}`)
-    let subscriptions = document.animations[turboRender][subscriber];
+    let subscriptions = document.orchestrator.animations[turboRender][subscriber];
 
     for (const subscriptionsIndex in subscriptions) {
         const subscription = subscriptions[subscriptionsIndex];
@@ -95,7 +95,7 @@ export function postRenderPrep(subscriber, newBody) {
 
 export function preRenderPrep(subscriber) {
     let preRenderSubscriber = document.getElementById(subscriber);
-    let subscriptions = document.animations[turboBeforeRender][subscriber];
+    let subscriptions = document.orchestrator.animations[turboBeforeRender][subscriber];
 
     for (const subscriptionsIndex in subscriptions) {
         const subscription = subscriptions[subscriptionsIndex];

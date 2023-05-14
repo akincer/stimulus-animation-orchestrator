@@ -39,6 +39,12 @@ class src_default extends Controller {
 
     initialize() {
         // Initialize event animations
+        if (!document.orchestrator) {
+            document.orchestrator = {defaults: {}, forms: {}, animations: {}, config: {}, state: {}};
+            document.orchestrator.animations['immediate'] = {};
+            document.orchestrator.animations['turbo:before-render'] = {};
+            document.orchestrator.animations['turbo:render'] = {};
+        }
         if (!document.animations) {
             document.animations = {};
             document.animations['popstate'] = {};
@@ -66,7 +72,7 @@ class src_default extends Controller {
 
     getConfig() {
 
-        document.orchestrator = {defaults: {}, forms: {}};
+
 
         if (!("orchestratorDefaultAnimationDuration" in this.element.dataset))
             document.orchestrator.defaults.duration = 600;
@@ -201,8 +207,8 @@ class src_default extends Controller {
         }
 
         // Play immediate animations
-        for (const subscriber in document.animations[immediate]) {
-            let keyframeEffectDefinitions = document.animations[immediate][subscriber]
+        for (const subscriber in document.orchestrator.animations[immediate]) {
+            let keyframeEffectDefinitions = document.orchestrator.animations[immediate][subscriber]
             for (const keyframeEffectDefinitionsIndex in keyframeEffectDefinitions) {
                 let keyframeEffect, options;
                 const keyframeEffectDefinition = keyframeEffectDefinitions[keyframeEffectDefinitionsIndex], schedule = keyframeEffectDefinition.schedule;
@@ -212,7 +218,7 @@ class src_default extends Controller {
                 animationController.play();
             }
 
-            delete document.animations.immediate[subscriber];
+            delete document.orchestrator.animations.immediate[subscriber];
         }
     }
 
@@ -224,31 +230,31 @@ class src_default extends Controller {
             let element = subscription.element;
 
             if (schedule === scheduleImmediate || schedule === scheduleNow) {
-                if (!document.animations[immediate][subscriber])
-                    document.animations[immediate][subscriber] = []
-                document.animations[immediate][subscriber].push(subscription);
+                if (!document.orchestrator.animations[immediate][subscriber])
+                    document.orchestrator.animations[immediate][subscriber] = []
+                document.orchestrator.animations[immediate][subscriber].push(subscription);
             }
 
             if (schedule === scheduleSpan) {
-                if (!document.animations[turboRender][subscriber])
-                    document.animations[turboRender][subscriber] = []
-                document.animations[turboRender][subscriber].push(subscription);
+                if (!document.orchestrator.animations[turboRender][subscriber])
+                    document.orchestrator.animations[turboRender][subscriber] = []
+                document.orchestrator.animations[turboRender][subscriber].push(subscription);
 
-                if (!document.animations[turboBeforeRender][subscriber])
-                    document.animations[turboBeforeRender][subscriber] = []
-                document.animations[turboBeforeRender][subscriber].push(subscription);
+                if (!document.orchestrator.animations[turboBeforeRender][subscriber])
+                    document.orchestrator.animations[turboBeforeRender][subscriber] = []
+                document.orchestrator.animations[turboBeforeRender][subscriber].push(subscription);
             }
 
             if (schedule === schedulePreNextPageRender || schedule === scheduleComplete) {
-                if (!document.animations[turboBeforeRender][subscriber])
-                    document.animations[turboBeforeRender][subscriber] = []
-                document.animations[turboBeforeRender][subscriber].push(subscription);
+                if (!document.orchestrator.animations[turboBeforeRender][subscriber])
+                    document.orchestrator.animations[turboBeforeRender][subscriber] = []
+                document.orchestrator.animations[turboBeforeRender][subscriber].push(subscription);
             }
 
             if (schedule === schedulePostNextPageRender) {
-                if (!document.animations[turboRender][subscriber])
-                    document.animations[turboRender][subscriber] = []
-                document.animations[turboRender][subscriber].push(subscription);
+                if (!document.orchestrator.animations[turboRender][subscriber])
+                    document.orchestrator.animations[turboRender][subscriber] = []
+                document.orchestrator.animations[turboRender][subscriber].push(subscription);
             }
         }
     }

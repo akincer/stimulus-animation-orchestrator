@@ -1,4 +1,4 @@
-import {hyphenatedToCamelCase, midpoint, toggleClass} from "./helper-functions";
+import {capitalizeFirstLetter, hyphenatedToCamelCase, midpoint, toggleClass} from "./helper-functions";
 import {
     changeColor,
     directionForwards,
@@ -21,6 +21,7 @@ import {
     turboRender
 } from "./constants";
 import {buildKeyFrameEffect, parseOptions, postRenderPrep, preRenderPrep, skipDefaultAnimation} from "./waapi";
+import * as prepFunctions from "./prep-functions";
 
 export const popStateCallback = function (event) {
     console.log("-> eventDebug popStateCallback event", event);
@@ -39,9 +40,9 @@ export const turboVisitCallback = function (event) {
     document.preRenderDefaultAnimationExecuted = false
 
     if (event.detail.action === 'restore')
-        document.restorePending = true
+        document.orchestrator.state.restoreCache = true
     if (event.detail.action === 'replace')
-        document.replacePending = true
+        document.orchestrator.state.replaceCache = true
 }
 
 export const turboSubmitStartCallback = function (event) {
@@ -107,42 +108,55 @@ export const turboBeforeRenderCallback = async function (event) {
         }
     }
 
+
     for (const subscriber in document.animations[turboBeforeRender]) {
-        let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), subscriptionsDefinitions = document.animations[turboBeforeRender][subscriber];
-        let preRenderSubscriber = document.getElementById(subscriber);
+        let subscriptionsDefinitions = document.animations[turboBeforeRender][subscriber];
+        if (document.orchestrator.state.restoreCache) {
+            let cachedSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
+            for (const subscriptionsDefinitionsIndex in subscriptionsDefinitions) {
+                const subscription = subscriptionsDefinitions[subscriptionsDefinitionsIndex];
+                let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
+                if (typeof prepFunctions[prepFunction] !== 'undefined')
+                    prepFunctions[prepFunction](cachedSubscriber, subscription);
+            }
+        } else {
+            let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
+            let preRenderSubscriber = document.getElementById(subscriber);
 
-        console.log("-> DEBUG: turboBeforeRenderCallback() postRenderSubscriber:", postRenderSubscriber);
-        for (const subscriptionsDefinitionsIndex in subscriptionsDefinitions) {
-            let keyframeEffect, options;
-            const subscription = subscriptionsDefinitions[subscriptionsDefinitionsIndex], schedule = subscription.schedule;
-            !!subscription.options ? options = parseOptions(subscription.options) : options = {};
-            if (options.toggleOffClasses) {
-                let toggleClassList = options.toggleOffClasses.split(optionsDelimiter);
-                for (const toggleClassListIndex in toggleClassList){
-                    toggleClass(preRenderSubscriber, toggleClassList[toggleClassListIndex], off);
+            for (const subscriptionsDefinitionsIndex in subscriptionsDefinitions) {
+                let keyframeEffect, options;
+                const subscription = subscriptionsDefinitions[subscriptionsDefinitionsIndex];
+                const schedule = subscription.schedule;
+
+                !!subscription.options ? options = parseOptions(subscription.options) : options = {};
+                if (options.toggleOffClasses) {
+                    let toggleClassList = options.toggleOffClasses.split(optionsDelimiter);
+                    for (const toggleClassListIndex in toggleClassList){
+                        toggleClass(preRenderSubscriber, toggleClassList[toggleClassListIndex], off);
+                    }
                 }
+
+                if (schedule === scheduleComplete || schedule === schedulePreNextPageRender || (schedule === scheduleSpan && !postRenderSubscriber)) {
+                    keyframeEffect = buildKeyFrameEffect(subscriber, subscription, sectionFull);
+                }
+
+                if (schedule === scheduleSpan && postRenderSubscriber) {
+                    keyframeEffect = buildKeyFrameEffect(subscriber, subscription, sectionFirstHalf);
+                }
+                const animationController = new Animation(keyframeEffect, document.timeline);
+
+                animationController.play();
+                await sleep(debugDelay);
+                preRenderPrep(subscriber, event.detail.newBody);
+
+
+
+                animationPromises.push(animationController.finished);
+                if (!animationControllers[subscriber]) {
+                    animationControllers[subscriber] = []
+                }
+                animationControllers[subscriber].push(animationController);
             }
-
-            if (schedule === scheduleComplete || schedule === schedulePreNextPageRender || (schedule === scheduleSpan && !postRenderSubscriber)) {
-                keyframeEffect = buildKeyFrameEffect(subscriber, subscription, sectionFull);
-            }
-
-            if (schedule === scheduleSpan && postRenderSubscriber) {
-                keyframeEffect = buildKeyFrameEffect(subscriber, subscription, sectionFirstHalf);
-            }
-            const animationController = new Animation(keyframeEffect, document.timeline);
-
-            animationController.play();
-            await sleep(debugDelay);
-            preRenderPrep(subscriber, event.detail.newBody);
-
-
-
-            animationPromises.push(animationController.finished);
-            if (!animationControllers[subscriber]) {
-                animationControllers[subscriber] = []
-            }
-            animationControllers[subscriber].push(animationController);
         }
     }
 
@@ -225,7 +239,7 @@ export const turboRenderCallback = async function (event) {
         }
     }
 
-    document.restorePending = false;
+    document.orchestrator.state.restoreCache = false;
 
     await Promise.all(animationPromises);
 
