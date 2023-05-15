@@ -103,7 +103,7 @@ export const turboBeforeRenderCallback = async function (event) {
                 duration: parseInt(document.orchestrator.defaults.duration),
                 format: 'inline'
             };
-            if (document.orchestrator.animations[turboRender][defaultSubscriber.id])
+            if (!document.orchestrator.animations[turboRender][defaultSubscriber.id])
                 document.orchestrator.animations[turboRender][defaultSubscriber.id] = []
             document.orchestrator.animations[turboRender][defaultSubscriber.id].push(postSubscription)
             console.log("-> DEBUG: turboBeforeRenderCallback() set postAnimation on element with id: ", defaultSubscriber.id, " animation: ", document.orchestrator.defaults.postAnimation);
