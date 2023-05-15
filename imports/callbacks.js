@@ -91,7 +91,8 @@ export const turboBeforeRenderCallback = async function (event) {
             };
             if (!document.animations[turboBeforeRender][defaultSubscriber.id])
                 document.animations[turboBeforeRender][defaultSubscriber.id] = []
-            document.animations[turboBeforeRender][defaultSubscriber.id].push(preSubscription)
+            document.orchestrator.animations[turboBeforeRender][defaultSubscriber.id].push(preSubscription)
+            console.log("-> DEBUG: turboBeforeRenderCallback() set preAnimation on element with id: ", defaultSubscriber.id, " animation: ", document.orchestrator.defaults.preAnimation);
 
             let postSubscription = {
                 element: defaultSubscriber,
@@ -104,7 +105,8 @@ export const turboBeforeRenderCallback = async function (event) {
             };
             if (!document.animations[turboRender][defaultSubscriber.id])
                 document.animations[turboRender][defaultSubscriber.id] = []
-            document.animations[turboRender][defaultSubscriber.id].push(postSubscription)
+            document.orchestrator.animations[turboRender][defaultSubscriber.id].push(postSubscription)
+            console.log("-> DEBUG: turboBeforeRenderCallback() set postAnimation on element with id: ", defaultSubscriber.id, " animation: ", document.orchestrator.defaults.postAnimation);
         }
     }
 
@@ -116,7 +118,7 @@ export const turboBeforeRenderCallback = async function (event) {
             for (const subscriptionsDefinitionsIndex in subscriptionsDefinitions) {
                 const subscription = subscriptionsDefinitions[subscriptionsDefinitionsIndex];
                 let prepFunction = 'do' + capitalizeFirstLetter(subscription.animation) + 'Prep';
-                console.log("-> DEBUG: turboBeforeRenderCallback() running prep function: ", prepFunction, " with schedule: ", subscription.schedule);
+                console.log("-> DEBUG: turboBeforeRenderCallback() running prep function: ", prepFunction, " with schedule: ", subscription.schedule, " on element: ", cachedSubscriber);
                 if (typeof prepFunctions[prepFunction] !== 'undefined')
                     prepFunctions[prepFunction](cachedSubscriber, subscription);
             }
