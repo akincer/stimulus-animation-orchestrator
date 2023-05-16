@@ -69,6 +69,7 @@ export const turboBeforeRenderCallback = async function (event) {
     console.log("-> eventDebug turboBeforeRenderCallback event", event);
     let animationPromises = [];
     let defaultSubscribers = [...document.querySelectorAll('[data-orchestrator-default]')];
+    console.log("-> DEBUG: turboBeforeRenderCallback() defaultSubscribers: ", defaultSubscribers);
     let animationControllers = {};
     let debugDelay = 0;
     const sleep = ms => new Promise(r => setTimeout(r, ms));
