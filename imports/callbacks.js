@@ -140,6 +140,7 @@ export const turboBeforeRenderCallback = async function (event) {
                 }
 
                 if (schedule === scheduleComplete || schedule === schedulePreNextPageRender || (schedule === scheduleSpan && !postRenderSubscriber)) {
+                    console.log("-> DEBUG: turboBeforeRenderCallback() building sectionFull keyframeEffect for subscriber: ", subscriber, " with subscription: ", subscription);
                     keyframeEffect = buildKeyFrameEffect(subscriber, subscription, sectionFull);
                 }
 
