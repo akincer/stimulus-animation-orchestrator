@@ -37,8 +37,8 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     }
 
 
-    !!subscription.duration ? frameEffectOptions.duration = subscription.duration : frameEffectOptions.duration = document.defaultAnimationDuration;
-    !!subscription.direction ? frameEffectOptions.fill = subscription.direction : frameEffectOptions.fill = document.orchestratorDefaultFillDirection;
+    !!subscription.duration ? frameEffectOptions.duration = subscription.duration : frameEffectOptions.duration = document.orchestrator.defaults.duration;
+    !!subscription.direction ? frameEffectOptions.fill = subscription.direction : frameEffectOptions.fill = document.orchestrator.defaults.fillDirection;
     if (!subscription.easing && section === sectionFirstHalf)
         frameEffectOptions.easing = easeIn
     if (!subscription.easing && section === sectionSecondHalf)
@@ -46,7 +46,7 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
     if (!!subscription.easing && section === sectionFull)
         frameEffectOptions.easing = subscription.easing
     if (!subscription.easing)
-        frameEffectOptions.easing = document.orchestratorDefaultEasing;
+        frameEffectOptions.easing = document.orchestrator.defaults.easing;
 
 
     return new KeyframeEffect(
@@ -58,9 +58,9 @@ export function buildKeyFrameEffect(subscriber, subscription, section = sectionF
 
 export function skipDefaultAnimation() {
     let spanScheduled = false;
-    for (const subscriber in document.inlineSubscribers) {
-        for (const subscriptionIndex in document.inlineSubscribers[subscriber]) {
-            if (document.inlineSubscribers[subscriber][subscriptionIndex].schedule === scheduleSpan)
+    for (const subscriber in document.orchestrator.animations.inlineSubscribers) {
+        for (const subscriptionIndex in document.orchestrator.animations.inlineSubscribers[subscriber]) {
+            if (document.orchestrator.animations.inlineSubscribers[subscriber][subscriptionIndex].schedule === scheduleSpan)
                 spanScheduled = true;
         }
     }

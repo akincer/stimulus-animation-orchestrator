@@ -196,7 +196,7 @@ class src_default extends Controller {
             eventSource = event.target.id;
 
         let inlineSubscribers = this.getSubscribers(eventSource, eventType, inlineAnimationSubscriptions);
-        document.inlineSubscribers = inlineSubscribers;
+        document.orchestrator.animations.inlineSubscribers = inlineSubscribers;
 
         // TODO: handle json subscription definitions
         //let jsonSubscribers = this.getSubscribers(eventSource, eventType, jsonAnimationSubscriptions);

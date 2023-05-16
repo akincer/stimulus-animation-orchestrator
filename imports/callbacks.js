@@ -37,7 +37,7 @@ export const turboBeforeVisitCallback = function (event) {
 
 export const turboVisitCallback = function (event) {
     console.log("-> eventDebug turboVisitCallback event", event);
-    document.preRenderDefaultAnimationExecuted = false
+    document.orchestrator.state.preRenderDefaultAnimationExecuted = false
 
     if (event.detail.action === 'restore')
         document.orchestrator.state.restoreCache = true
@@ -78,7 +78,7 @@ export const turboBeforeRenderCallback = async function (event) {
     event.preventDefault();
 
     // Schedule default renderings
-    if (!skipDefaultAnimation() && !document.preRenderDefaultAnimationExecuted) {
+    if (!skipDefaultAnimation() && !document.orchestrator.state.preRenderDefaultAnimationExecuted) {
         for (const defaultSubscriberIndex in defaultSubscribers) {
             let defaultSubscriber = defaultSubscribers[defaultSubscriberIndex];
             let preSubscription = {
@@ -112,8 +112,8 @@ export const turboBeforeRenderCallback = async function (event) {
     }
 
 
-    for (const subscriber in document.animations[turboBeforeRender]) {
-        let subscriptionsDefinitions = document.animations[turboBeforeRender][subscriber];
+    for (const subscriber in document.orchestrator.animations[turboBeforeRender]) {
+        let subscriptionsDefinitions = document.orchestrator.animations[turboBeforeRender][subscriber];
         if (document.orchestrator.state.restoreCache) {
             let cachedSubscriber = event.detail.newBody.querySelector(`#${subscriber}`);
             for (const subscriptionsDefinitionsIndex in subscriptionsDefinitions) {
@@ -168,7 +168,7 @@ export const turboBeforeRenderCallback = async function (event) {
 
     await Promise.all(animationPromises);
 
-    for (const subscriber in document.animations[turboBeforeRender]) {
+    for (const subscriber in document.orchestrator.animations[turboBeforeRender]) {
         let postRenderSubscriber = event.detail.newBody.querySelector(`#${subscriber}`), subscriptionsDefinitions = document.animations[turboBeforeRender][subscriber];
         let preRenderSubscriber = document.getElementById(subscriber);
 
@@ -205,7 +205,7 @@ export const turboBeforeRenderCallback = async function (event) {
                 postRenderPrep(subscriber, event.detail.newBody);
         }
 
-        delete document.animations['turbo:before-render'][subscriber];
+        delete document.orchestrator.animations['turbo:before-render'][subscriber];
     }
 
     // Resume rendering
@@ -227,9 +227,9 @@ export const turboRenderCallback = async function (event) {
 
 
 
-    for (const subscriber in document.animations[turboRender]) {
+    for (const subscriber in document.orchestrator.animations[turboRender]) {
 
-        let subscriptions = document.animations[turboRender][subscriber];
+        let subscriptions = document.orchestrator.animations[turboRender][subscriber];
         for (const subscriptionsDefinitionsIndex in subscriptions) {
             const subscription = subscriptions[subscriptionsDefinitionsIndex];
             const keyframeEffect = buildKeyFrameEffect(subscriber, subscription, sectionSecondHalf);
@@ -248,11 +248,11 @@ export const turboRenderCallback = async function (event) {
 
     await Promise.all(animationPromises);
 
-    for (const subscriber in document.animations[turboRender]) {
-        delete document.animations[turboRender][subscriber];
+    for (const subscriber in document.orchestrator.animations[turboRender]) {
+        delete document.orchestrator.animations[turboRender][subscriber];
     }
 
-    delete document.inlineSubscribers;
+    delete document.orchestrator.animations.inlineSubscribers;
 
 }
 
