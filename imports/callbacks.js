@@ -146,8 +146,11 @@ export const turboBeforeRenderCallback = async function (event) {
                 }
 
                 if (schedule === scheduleSpan && postRenderSubscriber) {
+                    console.log("-> DEBUG: turboBeforeRenderCallback() building sectionFirstHalf keyframeEffect for subscriber: ", subscriber, " with subscription: ", subscription);
                     keyframeEffect = buildKeyFrameEffect(subscriber, subscription, sectionFirstHalf);
                 }
+
+                console.log("-> DEBUG: turboBeforeRenderCallback() playing animation for subscriber: ", subscriber, " with subscription: ", subscription);
                 const animationController = new Animation(keyframeEffect, document.timeline);
 
                 animationController.play();
